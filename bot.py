@@ -17,7 +17,7 @@ GUILD = os.getenv('DISCORD_GUILD')
 
 bot = commands.Bot(command_prefix='!')
 
-def calc_skilling(hiscore_list):
+def calc_skilling(hiscore_list, user_type):
     points = 0
 
     total_level = int(hiscore_list[0][1])
@@ -39,6 +39,8 @@ def calc_skilling(hiscore_list):
         points += 1600
     elif total_level == 2277:
         points += 2600
+    if user_type == "hardcore" or user_type == "ironman":
+        points = int(points * 1.1)
     return points
 
 def calc_clue(hiscore_list):
@@ -239,22 +241,62 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
+def check_account_type(username):
+    hiscore_list = get_hiscore_list(username, "hardcore")
+    if hiscore_list:
+        return [hiscore_list, "hardcore"]
+    else:
+        hiscore_list = get_hiscore_list(username, "ironman")
+        if hiscore_list:
+            return [hiscore_list, "ironman"]
+        else:
+            hiscore_list = get_hiscore_list(username, "main")
+            if hiscore_list:
+                return [hiscore_list, "main"]
+    return False
 
 
-@bot.command(name='points')
-async def points(ctx, arg):
-
-    url = 'https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=' + arg
+def get_hiscore_list(username, account_type):
+    flag = False
+    base_url = ''
+    if account_type == "main":
+        base_url = 'https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player='
+    if account_type == "ironman":
+        base_url = 'https://secure.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws?player='
+    if account_type == "hardcore":
+        base_url = 'https://secure.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws?player='
+    url = base_url + username
     response = ""
     osrs_response = requests.get(url)
     if osrs_response.status_code == 200:
-        #text takes the webpages data and converts it to a string
+        # text takes the webpages data and converts it to a string
         response = osrs_response.text
         split_space = response.split("\n")
         hiscore_list = []
         for index in split_space:
             split_index = index.split(",")
             hiscore_list.append(split_index)
+        flag = hiscore_list
+    elif osrs_response.status_code == 404:
+        big_string = "User not found"
+        flag = False
+    else:
+        print(osrs_response.status_code)
+        flag = False
+    return flag
+
+
+@bot.command(name='points')
+async def points(ctx, arg):
+
+    hiscore_list = False
+    user_type = False
+    user_list = check_account_type(arg)
+    if user_list:
+        hiscore_list = user_list[0]
+        user_type = user_list[1]
+
+    if hiscore_list:
 
         print(hiscore_list)
 
@@ -269,7 +311,7 @@ async def points(ctx, arg):
         total_xp_points = "Total EXP points: " + str(total_xp_points)
 
         #calculating skilling points
-        skilling_points = calc_skilling(hiscore_list)
+        skilling_points = calc_skilling(hiscore_list, user_type)
         #adds skilling points to total points
         total_points += skilling_points
         skilling_points = "Skilling points: " + str(skilling_points)
@@ -292,30 +334,67 @@ async def points(ctx, arg):
             raid_points = 0
         raid_points = "Raid points: " + str(raid_points)
 
-        '''
-        gwd_points = calc_bossing(hiscore_list)
-        if gwd_points > 0:
-            total_points += gwd_points
-        else:
-            gwd_points = 0
-
-        gwd_points = "GWD points: " + str(gwd_points)
-        '''
+        #calculating bossing points
         bossing_points = calc_bossing(hiscore_list)
         total_points += bossing_points
-
         bossing_points = "Bossing points: " + str(bossing_points)
 
-
         total_points = "Total points: " + str(total_points)
+
+
         big_string = FORMAT_SYMBOLS + total_xp_points + "\n" + skilling_points + "\n" + clue_points + "\n" + \
                      raid_points + "\n" + bossing_points + "\n" + total_points + FORMAT_SYMBOLS
 
-    elif osrs_response.status_code == 404:
+    else:
         big_string = "User not found"
 
     #await ctx.send(total_level)
     await ctx.send(big_string)
 
+
+@bot.command(name='apply')
+async def save_application(ctx, rsn, about_me):
+    discord_name = ctx.author
+    print(discord_name)
+    os.makedirs('applications', exist_ok=True)
+
+    hiscore_list = False
+    user_type = False
+    user_list = check_account_type(rsn)
+    if user_list:
+        hiscore_list = user_list[0]
+        user_type = user_list[1]
+
+    if hiscore_list:
+        skill_points = calc_skilling(hiscore_list, user_type)
+        clue_points = calc_clue(hiscore_list)
+        raid_points = calc_raids(hiscore_list)
+        bossing_points = calc_bossing(hiscore_list)
+
+        total_xp = int(hiscore_list[0][2])
+        total_xp_points = (total_xp // 250000)
+
+        total_points = skill_points + clue_points + raid_points + bossing_points + total_xp_points
+
+        fileName = 'applications/' + rsn + ".txt"
+        myFile = open(fileName, 'w')
+        fileContents = \
+        '''RSN: %s
+        About Me: %s
+        Discord Name: %s
+        Raids Points: %s
+        PVM Points: %s
+        Level Points: %s
+        Exp Points: %s
+        Total Points: %d
+            ''' % (rsn, about_me, discord_name, raid_points, bossing_points, skill_points, total_xp_points, total_points)
+
+        myFile.write(fileContents)
+        myFile.close()
+        application_received = "Your application has been submitted for review!"
+    else:
+        application_received = "User not found"
+
+    await ctx.send(application_received)
 
 bot.run(TOKEN)
