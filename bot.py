@@ -2,9 +2,13 @@
 #we import os so we can access environment variables
 #class that allows you to interact with the operating system
 FORMAT_SYMBOLS = "```"
+BOLD = "**"
 
 import os
+from os import path
 import random
+import datetime
+import sys
 
 import discord
 from discord.ext import commands
@@ -122,7 +126,7 @@ def calc_bossing(hiscore_list):
         if boss_A_dict[key] > 0:
             boss_A_points += boss_A_dict[key]
 
-    boss_points += boss_A_points // 30
+    boss_points += boss_A_points // 20
 
     #GROUP B POINTS
     boss_B_dict = {"Chaos Elemental": int(hiscore_list[43][1]), "Chaos Fanatic": int(hiscore_list[44][1]),
@@ -139,7 +143,7 @@ def calc_bossing(hiscore_list):
         if boss_B_dict[key] > 0:
             boss_B_points += boss_B_dict[key]
 
-    boss_points += boss_B_points // 60
+    boss_points += boss_B_points // 50
     #print(boss_points)
 
     #GROUP C POINTS
@@ -152,7 +156,7 @@ def calc_bossing(hiscore_list):
         if boss_C_dict[key] > 0:
             boss_C_points += boss_C_dict[key]
 
-    boss_points += boss_C_points // 90
+    boss_points += boss_C_points // 80
     #print(boss_C_dict["Deranged Archaeologist"])
     #print(boss_C_dict["Deranged Archaeologist"])
     print(boss_points)
@@ -241,64 +245,148 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
-def check_account_type(username):
-    hiscore_list = get_hiscore_list(username, "hardcore")
-    if hiscore_list:
-        return [hiscore_list, "hardcore"]
+
+
+
+def get_user_data(username, account_type, force):
+    flag = check_highscore_status(username)
+    if flag == "UTD" and not force:
+        return get_data_from_file(username)
     else:
-        hiscore_list = get_hiscore_list(username, "ironman")
-        if hiscore_list:
-            return [hiscore_list, "ironman"]
+        high_score_data = query_website(username, account_type)
+        # If website is down but an older file exists for that user, we
+        # want to query using old data since that is better than nothing
+        if high_score_data == False:
+            if flag == "Old":
+                return get_data_from_file(username)
+            else:
+                return "Down"
+        # If the query returned a 404 that means we want to return that the
+        # user wasn't found
+        elif high_score_data == "404":
+            return "UNF"
+        # If it is neither of the above it returned a proper response from the runescape
+        # api with the user's data
         else:
-            hiscore_list = get_hiscore_list(username, "main")
-            if hiscore_list:
-                return [hiscore_list, "main"]
-    return False
+            create_file(username, account_type, high_score_data)
+            return high_score_data
 
+#def check_account_type(username):
+#    hiscore_list = get_hiscore_list(username, "main")
+#    if hiscore_list:
+#        return [hiscore_list, "main"]
+#    else:
+#        hiscore_list = get_hiscore_list(username, "ironman")
+#        if hiscore_list:
+#            return [hiscore_list, "ironman"]
+#    return False
 
-def get_hiscore_list(username, account_type):
-    flag = False
+def query_website(username, account_type):
     base_url = ''
     if account_type == "main":
         base_url = 'https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player='
     if account_type == "ironman":
         base_url = 'https://secure.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws?player='
-    if account_type == "hardcore":
-        base_url = 'https://secure.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws?player='
     url = base_url + username
-    response = ""
-    osrs_response = requests.get(url)
-    if osrs_response.status_code == 200:
-        # text takes the webpages data and converts it to a string
-        response = osrs_response.text
-        split_space = response.split("\n")
-        hiscore_list = []
-        for index in split_space:
-            split_index = index.split(",")
-            hiscore_list.append(split_index)
-        flag = hiscore_list
-    elif osrs_response.status_code == 404:
-        big_string = "User not found"
-        flag = False
+    try:
+        osrs_response = requests.get(url, timeout=10)
+        if osrs_response.status_code == 200:
+            # text takes the webpages data and converts it to a string
+            response = osrs_response.text
+            split_space = response.split("\n")
+            if len(split_space) > 85:
+                # Goes to the except block if what is returned is a 200 but not what we expected
+                # Most likely returns html from the website down page
+                return False
+            return response
+        elif osrs_response.status_code == 404:
+            return "404"
+        else:
+            return False
+    except:
+        return False
+
+# This is checking if the user's highscore file exists
+# returns False if doesn't exist
+# returns "UTD" (Up to Date) if up to date
+# returns "Old" if it needs to be updated
+def check_highscore_status(username):
+    hiscore_file = "_hiscoreFile"
+    file_path = 'hiscore_files/' + username + hiscore_file + ".txt"
+
+    # if file does not exist already then we need to write the time its created to the file
+    if path.exists(file_path) == False:
+        return False
     else:
-        print(osrs_response.status_code)
-        flag = False
-    return flag
+        with open(file_path) as f:
+            current_time = datetime.datetime.now()
+            file_modified_date_str = f.readline().strip()
+            file_modified_date = datetime.datetime.strptime(file_modified_date_str, '%Y-%m-%d %H:%M:%S')
+            if file_modified_date < current_time - datetime.timedelta(hours=4):
+                return "Old"
+            else:
+                return "UTD"
+
+
+def create_file(username, account_type, high_score_data):
+    hiscore_file = "_hiscoreFile"
+    file_path = 'hiscore_files/' + username + hiscore_file + ".txt"
+
+    myFile = open(file_path, 'w')
+    current_time = datetime.datetime.now()
+    saved_time =str(current_time).split(".")[0]
+
+    fileContents = saved_time + "\n" + high_score_data
+
+    myFile.write(fileContents)
+    myFile.close()
+
+
+def get_data_from_file(username):
+    hiscore_file = "_hiscoreFile"
+    file_path = 'hiscore_files/' + username + hiscore_file + ".txt"
+
+    myFile = open(file_path, 'r')
+
+    high_scores = myFile.readlines()[1:]
+    high_score_data = ""
+    for line in high_scores:
+        high_score_data = high_score_data + line
+
+    return high_score_data
+
+def get_hiscore_list(user_data):
+    split_space = user_data.split("\n")
+    hiscore_list = []
+    for index in split_space:
+        split_index = index.split(",")
+        hiscore_list.append(split_index)
+    return hiscore_list
 
 
 @bot.command(name='points')
-async def points(ctx, arg):
+async def points(ctx, rsn, type=None, force=None):
+    big_string = ""
+    account_type = "ironman"
 
-    hiscore_list = False
-    user_type = False
-    user_list = check_account_type(arg)
-    if user_list:
-        hiscore_list = user_list[0]
-        user_type = user_list[1]
+    if force == "force":
+        force = True
+    else:
+        force = False
 
-    if hiscore_list:
+    if type != "ironman":
+        account_type = "main"
 
-        print(hiscore_list)
+    user_data = get_user_data(rsn, account_type, force)
+
+    if user_data == "Down":
+        big_string = "OH NO! The OSRS Highscore Page is down. Please try again later."
+    elif user_data == "UNF":
+        big_string = "User Not Found. Please make sure the username and account type you put are correct"
+    else:
+        hiscore_list = get_hiscore_list(user_data)
+
+        #print(hiscore_list)
 
         total_points = 0
 
@@ -311,7 +399,7 @@ async def points(ctx, arg):
         total_xp_points = "Total EXP points: " + str(total_xp_points)
 
         #calculating skilling points
-        skilling_points = calc_skilling(hiscore_list, user_type)
+        skilling_points = calc_skilling(hiscore_list, account_type)
         #adds skilling points to total points
         total_points += skilling_points
         skilling_points = "Skilling points: " + str(skilling_points)
@@ -341,32 +429,36 @@ async def points(ctx, arg):
 
         total_points = "Total points: " + str(total_points)
 
+        user = f"User: " + rsn
 
-        big_string = FORMAT_SYMBOLS + total_xp_points + "\n" + skilling_points + "\n" + clue_points + "\n" + \
+        big_string = FORMAT_SYMBOLS + user + "\n" + total_xp_points + "\n" + skilling_points + "\n" + clue_points + "\n" + \
                      raid_points + "\n" + bossing_points + "\n" + total_points + FORMAT_SYMBOLS
-
-    else:
-        big_string = "User not found"
 
     #await ctx.send(total_level)
     await ctx.send(big_string)
 
 
 @bot.command(name='apply')
-async def save_application(ctx, rsn, about_me):
-    discord_name = ctx.author
-    print(discord_name)
-    os.makedirs('applications', exist_ok=True)
+async def save_application(ctx, rsn, type=None, about_me=""):
+    application_received = ""
+    account_type = "ironman"
 
-    hiscore_list = False
-    user_type = False
-    user_list = check_account_type(rsn)
-    if user_list:
-        hiscore_list = user_list[0]
-        user_type = user_list[1]
+    if type != "ironman":
+        account_type = "main"
 
-    if hiscore_list:
-        skill_points = calc_skilling(hiscore_list, user_type)
+    user_data = get_user_data(rsn, account_type)
+
+    if user_data == "Down":
+        application_received = "OH NO! The OSRS Highscore Page is down. Please try again later."
+    elif user_data == "UNF":
+        application_received = "RSN Not Found. Please make sure the username and account type you put are correct"
+    else:
+        hiscore_list = get_hiscore_list(user_data)
+        discord_name = ctx.author
+        print(discord_name)
+        os.makedirs('applications', exist_ok=True)
+
+        skill_points = calc_skilling(hiscore_list, account_type)
         clue_points = calc_clue(hiscore_list)
         raid_points = calc_raids(hiscore_list)
         bossing_points = calc_bossing(hiscore_list)
@@ -392,9 +484,10 @@ async def save_application(ctx, rsn, about_me):
         myFile.write(fileContents)
         myFile.close()
         application_received = "Your application has been submitted for review!"
-    else:
-        application_received = "User not found"
 
     await ctx.send(application_received)
 
 bot.run(TOKEN)
+
+#@bot.command(name='rules')
+#rules = ""
