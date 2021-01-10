@@ -1,0 +1,5 @@
+
+*.env
+*.pyc
+hiscore_files/
+__pycache__/

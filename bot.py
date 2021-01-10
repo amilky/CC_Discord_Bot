@@ -15,6 +15,10 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import requests
 
+from pointsdisplay import pointsdisplay
+from threading import Lock
+image_file_lock = Lock()
+
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
@@ -416,13 +420,13 @@ async def points(ctx, rsn, type=None, force=None):
         total_xp_points = (total_xp // 250000)
         #adds total xp points to total points
         total_points += total_xp_points
-        total_xp_points = "Total EXP points: " + str(total_xp_points)
+        total_xp_points_str = "Total EXP points: " + str(total_xp_points)
 
         #calculating skilling points
         skilling_points = calc_skilling(hiscore_list, account_type)
         #adds skilling points to total points
         total_points += skilling_points
-        skilling_points = "Skilling points: " + str(skilling_points)
+        skilling_points_str = "Skilling points: " + str(skilling_points)
 
         #calculating clue points
         clue_points = calc_clue(hiscore_list)
@@ -431,7 +435,7 @@ async def points(ctx, rsn, type=None, force=None):
             total_points += clue_points
         else:
             clue_points = 0
-        clue_points = "Clue points: " + str(clue_points)
+        clue_points_str = "Clue points: " + str(clue_points)
 
         #calculating lms points
         lms_points = calc_lms(hiscore_list)
@@ -457,27 +461,49 @@ async def points(ctx, rsn, type=None, force=None):
             if raid > 0:
                 raid_points += raid
         total_points += raid_points
-        raid_points = "Raid points: " + str(raid_points)
-        cox_points = "  COX_points: " + str(raid_list[0])
-        cm_points = "  CM_points: " + str(raid_list[1])
-        tob_points = "  TOB_points: " + str(raid_list[2])
+        raid_points_str = "Raid points: " + str(raid_points)
+        cox_points = raid_list[0]
+        cox_points_str = "  COX_points: " + str(cox_points)
+        cm_points = raid_list[1]
+        cm_points_str = "  CM_points: " + str(cm_points)
+        tob_points = raid_list[2]
+        tob_points_str = "  TOB_points: " + str(tob_points)
 
 
 
         #calculating bossing points
         bossing_points = calc_bossing(hiscore_list)
         total_points += bossing_points
-        bossing_points = "Bossing points: " + str(bossing_points)
+        bossing_points_str = "Bossing points: " + str(bossing_points)
 
-        total_points = "Total points: " + str(total_points)
+        total_points_str = "Total points: " + str(total_points)
 
         user = f"User: " + rsn
 
-        big_string = FORMAT_SYMBOLS + user + "\n" + total_xp_points + "\n" + skilling_points + "\n" + clue_points + "\n" + \
-                     raid_points + "\n" + cox_points + "\n" + cm_points + "\n" + tob_points + "\n" + bossing_points + "\n" + total_points + FORMAT_SYMBOLS
+        big_string = FORMAT_SYMBOLS + user + "\n" + total_xp_points_str + "\n" + skilling_points_str + "\n" + clue_points_str + "\n" + \
+                     raid_points_str + "\n" + cox_points_str + "\n" + cm_points_str + "\n" + tob_points_str + "\n" + bossing_points_str + "\n" + total_points_str + FORMAT_SYMBOLS
 
-    #await ctx.send(total_level)
-    await ctx.send(big_string)
+    
+    
+        raids_tuple = calc_raids(hiscore_list)
+        
+        cm_pts = raids_tuple[1]
+        tob_pts = raids_tuple[2]
+        raids_pts = raids_tuple[0]+cm_pts+tob_pts
+        #await ctx.send(total_level)
+        #pvm_points = (cm, tob, raids, other)
+        #skilling_points=[tlbonus=0, tepoints=0, allsps=0] 
+        image_file_lock.acquire()
+        player = pointsdisplay.PointsImage()
+        image_file = player.draw_all_text(rsn, 
+            total_points, 
+            pvm_points=[raid_points, cm_points, tob_points, bossing_points], 
+            skilling_points=[skilling_points, total_xp_points, skilling_points+total_xp_points])
+            
+        await ctx.channel.send(file=discord.File(image_file))
+        os.remove(image_file)
+        image_file_lock.release()
+
 
 
 @bot.command(name='apply')
