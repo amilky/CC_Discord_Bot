@@ -507,14 +507,19 @@ async def points(ctx, rsn, type=None, force=None):
 
 
 @bot.command(name='apply')
-async def save_application(ctx, rsn, type=None, about_me=""):
+async def save_application(ctx, rsn, type=None, about_me="", force=None):
     application_received = ""
     account_type = "ironman"
 
     if type != "ironman":
         account_type = "main"
 
-    user_data = get_user_data(rsn, account_type)
+    if force == "force":
+        force = True
+    else:
+        force = False
+
+    user_data = get_user_data(rsn, account_type, force)
 
     if user_data == "Down":
         application_received = "OH NO! The OSRS Highscore Page is down. Please try again later."
@@ -530,6 +535,13 @@ async def save_application(ctx, rsn, type=None, about_me=""):
         clue_points = calc_clue(hiscore_list)
         raid_points = calc_raids(hiscore_list)
         bossing_points = calc_bossing(hiscore_list)
+
+        raid_list = calc_raids(hiscore_list)
+        print(raid_list)
+        raid_points = 0
+        for raid in raid_list:
+            if raid > 0:
+                raid_points += raid
 
         total_xp = int(hiscore_list[0][2])
         total_xp_points = (total_xp // 250000)
