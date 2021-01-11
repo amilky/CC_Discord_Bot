@@ -81,13 +81,13 @@ class PointsImage:
     def draw_skilling_co2(self, skilling_points, spstr="Skill Points"):
         #specify location, content, font, and color of text
         #Header - Skilling Points
-        self.d.text((self.width/2 - self.get_half_length(spstr),self.height*.18), spstr, font =self.fnt, fill=((46,49,49,255)))
+        self.d.text((self.width/2 - (self.get_half_length(spstr) - (self.get_half_length(spstr)/20)),self.height*.18), spstr, font =self.fnt, fill=((46,49,49,255)))
         #Total Level Points
-        self.d.text(((self.width/2 - self.get_half_length(spstr)),self.height*.33), "Level: {0:4d}".format(skilling_points[0]), font =self.fnt, fill=((46,49,49,255)))
+        self.d.text(((self.width/2 - (self.get_half_length(spstr) - (self.get_half_length(spstr)/20))),self.height*.33), "Level: {0:5d}".format(skilling_points[0]), font =self.fnt, fill=((46,49,49,255)))
         #Total Exp Points
-        self.d.text(((self.width/2 - self.get_half_length(spstr)),self.height*.43), "Exp: {0:6d}".format(skilling_points[1]), font =self.fnt, fill=((46,49,49,255)))
+        self.d.text(((self.width/2 - (self.get_half_length(spstr) - (self.get_half_length(spstr)/20))),self.height*.43), "Exp: {0:7d}".format(skilling_points[1]), font =self.fnt, fill=((46,49,49,255)))
         #Total Skilling Points
-        self.d.text(((self.width/2 - self.get_half_length(spstr)),self.height*.53), "All: {0:6d}".format(skilling_points[2]), font =self.fnt, fill=((46,49,49,255)))
+        self.d.text(((self.width/2 - (self.get_half_length(spstr) - (self.get_half_length(spstr)/20))),self.height*.53), "All: {0:7d}".format(skilling_points[2]), font =self.fnt, fill=((46,49,49,255)))
 
 
     def draw_totalpoints_co3(self, allpoints, tpstr = "Total Points"):
@@ -95,7 +95,7 @@ class PointsImage:
         #Header - Total Points
         self.d.text((((self.width/2)+((self.width/2)-(self.width/6)) - self.get_half_length(tpstr)),self.height*.18), tpstr, font =self.fnt, fill=((46,49,49,255)))
         #All Points
-        self.d.text((((self.width/2)+((self.width/2)-(self.width/6)) - self.get_half_length(tpstr)),self.height*.33), "All: {0:<5d}".format(allpoints), font =self.fnt, fill=((46,49,49,255)))    
+        self.d.text((((self.width/2)+((self.width/2)-(self.width/6)) - self.get_half_length(tpstr)),self.height*.33), "All: {0:7d}".format(allpoints), font =self.fnt, fill=((46,49,49,255)))    
         
 
     #draw text
