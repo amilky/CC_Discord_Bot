@@ -2,7 +2,7 @@
 #we import os so we can access environment variables
 #class that allows you to interact with the operating system
 FORMAT_SYMBOLS = "```"
-BOLD = "**"
+TOTAL_POINTS_MIN = 100
 
 import os
 from os import path
@@ -23,7 +23,10 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
-bot = commands.Bot(command_prefix='!')
+intents = discord.Intents.default()
+intents.members = True
+
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 def calc_skilling(hiscore_list, user_type):
     points = 0
@@ -112,7 +115,7 @@ def calc_raids(hiscore_list):
     else:
         raid_list.append(placeHolder)
 
-    print(raid_list)
+    #print(raid_list)
     return raid_list
 
 def calc_lms(hiscore_list):
@@ -145,7 +148,7 @@ def calc_bossing(hiscore_list):
             gwd_points += gwd_dict[key]
 
     boss_points += gwd_points // 10
-    print(boss_points)
+    #print(boss_points)
 
 
     #GROUP A POINTS
@@ -186,14 +189,14 @@ def calc_bossing(hiscore_list):
 
     boss_C_points = 0
     for key in boss_C_dict:
-        print(boss_C_dict, "kc", boss_C_dict[key])
+        #print(boss_C_dict, "kc", boss_C_dict[key])
         if boss_C_dict[key] > 0:
             boss_C_points += boss_C_dict[key]
 
     boss_points += boss_C_points // 80
     #print(boss_C_dict["Deranged Archaeologist"])
     #print(boss_C_dict["Deranged Archaeologist"])
-    print(boss_points)
+    #print(boss_points)
 
     skotizo_kc = int(hiscore_list[67][1])
     if skotizo_kc > 0:
@@ -413,7 +416,7 @@ async def points(ctx, rsn, type=None, force=None):
 
         total_points = 0
 
-        print(int(hiscore_list[35][1]))
+        #print(int(hiscore_list[35][1]))
         #querying total xp from website
         total_xp = int(hiscore_list[0][2])
         #calculating total EXP points
@@ -455,7 +458,7 @@ async def points(ctx, rsn, type=None, force=None):
 
         # calculating raid points
         raid_list = calc_raids(hiscore_list)
-        print(raid_list)
+        #print(raid_list)
         raid_points = 0
         for raid in raid_list:
             if raid > 0:
@@ -537,7 +540,7 @@ async def save_application(ctx, rsn, type=None, about_me="", force=None):
         bossing_points = calc_bossing(hiscore_list)
 
         raid_list = calc_raids(hiscore_list)
-        print(raid_list)
+        #print(raid_list)
         raid_points = 0
         for raid in raid_list:
             if raid > 0:
@@ -548,26 +551,82 @@ async def save_application(ctx, rsn, type=None, about_me="", force=None):
 
         total_points = skill_points + clue_points + raid_points + bossing_points + total_xp_points
 
-        fileName = 'applications/' + rsn + ".txt"
-        myFile = open(fileName, 'w')
-        fileContents = \
-        '''RSN: %s
-        About Me: %s
-        Discord Name: %s
-        Raids Points: %s
-        PVM Points: %s
-        Level Points: %s
-        Exp Points: %s
-        Total Points: %d
-            ''' % (rsn, about_me, discord_name, raid_points, bossing_points, skill_points, total_xp_points, total_points)
+        if total_points >= TOTAL_POINTS_MIN:
+            fileName = 'applications/' + rsn + ".txt"
+            myFile = open(fileName, 'w')
+            fileContents = \
+            '''RSN: %s
+            About Me: %s
+            Discord Name: %s
+            Raids Points: %s
+            PVM Points: %s
+            Level Points: %s
+            Exp Points: %s
+            Total Points: %d
+                ''' % (rsn, about_me, discord_name, raid_points, bossing_points, skill_points, total_xp_points, total_points)
+            #print(discord_name)
+            myFile.write(fileContents)
+            myFile.close()
 
-        myFile.write(fileContents)
-        myFile.close()
-        application_received = "Your application has been submitted for review!"
+            #sends the file in the app=review channel
+            filePath = 'applications/' + rsn + ".txt"
+            fileName = rsn + "_application.txt"
+            discordFile = discord.File(filePath, filename=fileName)
+            #application_received = "Your application has been submitted for review!"
+            channel = bot.get_channel(798013179195162654)
+            application_received = "Your application has been submitted for review!"
+            await channel.send(file=discordFile)
+
+        elif total_points < TOTAL_POINTS_MIN:
+            discord_name = ctx.author
+            discord.AllowedMentions(everyone=True)
+            discord_name = ctx.author
+            ping_user = ctx.author.mention
+            test = ("'*** test ***'")
+
+            application_received = "Unfortunately, " + ping_user + " the OSRS account " + '**' + rsn + '**' + " does not meet the " \
+                                   "minimum requirement of " + '**' + "100 total points" + '**' + " to apply to the Pinkopia CC. " \
+                                   + "\n" + "Please resubmit your application once you fulfill this requirement! "
 
     await ctx.send(application_received)
 
-bot.run(TOKEN)
+@bot.command(name='accept')
+@commands.has_role('Pinkopia Admin')
+async def accept_application(ctx, rsn, role_name):
+    role = discord.utils.get(ctx.guild.roles, name=role_name)
+    filePath = 'applications/' + rsn + ".txt"
+    myFile = open(filePath, 'r')
 
-#@bot.command(name='rules')
-#rules = ""
+    discord_name = myFile.readlines()[2].split(":")[1].strip()
+    print(discord_name)
+
+    #getting member object of the person with discord name in application file
+    discord_member = ctx.guild.get_member_named(discord_name)
+    ping_user = discord_member.mention
+    await discord.Member.add_roles(discord_member, role)
+
+    accept_msg = "Congrats " + ping_user + "! The osrs account " + '**' + rsn + '**' + " has just been ranked " + role_name + "!"
+    channel = await bot.fetch_channel(797957000788180992)
+    print("Got Channel")
+    await channel.send(accept_msg)
+
+@bot.command(pass_context = True)
+async def clear(ctx, amount):
+    channel = ctx.message.channel
+    messages = []
+
+    async for message in ctx.message.channel.history(limit=int(amount)):
+        messages.append(message)
+    await ctx.channel.delete_messages(messages)
+
+
+
+
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.errors.MissingRole):
+        await ctx.send("Missing Role")
+
+
+
+bot.run(TOKEN)
