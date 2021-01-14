@@ -596,14 +596,17 @@ async def accept_application(ctx, rsn, role_name):
     role = discord.utils.get(ctx.guild.roles, name=role_name)
     filePath = 'applications/' + rsn + ".txt"
     myFile = open(filePath, 'r')
-
     discord_name = myFile.readlines()[2].split(":")[1].strip()
     print(discord_name)
+    myFile.close()
 
     #getting member object of the person with discord name in application file
     discord_member = ctx.guild.get_member_named(discord_name)
     ping_user = discord_member.mention
     await discord.Member.add_roles(discord_member, role)
+
+    if role_name == "Captain":
+        os.replace('applications/' + rsn + ".txt", 'applications/Captain/' + rsn + ".txt")
 
     accept_msg = "Congrats " + ping_user + "! The osrs account " + '**' + rsn + '**' + " has just been ranked " + role_name + "!"
     channel = await bot.fetch_channel(797957000788180992)
