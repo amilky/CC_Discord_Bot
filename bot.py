@@ -597,7 +597,12 @@ async def save_application(ctx, rsn, type=None, about_me="", force=None):
 
 @bot.command(name='accept')
 @commands.has_role('Pinkopia Admin')
-async def accept_application(ctx, rsn, role_name):
+async def accept_application(ctx, rsn, role_name="Trial"):
+
+    if role_name == "Trial":
+        role_name = "Trial Member"
+
+    #needs exact role name to get from discord
     role = discord.utils.get(ctx.guild.roles, name=role_name)
     filePath = 'applications/' + rsn + ".txt"
     myFile = open(filePath, 'r')
@@ -610,26 +615,29 @@ async def accept_application(ctx, rsn, role_name):
     ping_user = discord_member.mention
     await discord.Member.add_roles(discord_member, role)
 
+    if role_name == "Trial Member":
+        os.replace('applications/' + rsn + ".txt", 'applications/Trial/' + rsn + ".txt")
+
     if role_name == "Captain":
-        os.replace('applications/' + rsn + ".txt", 'applications/Captain/' + rsn + ".txt")
+        os.replace('applications/Trial/' + rsn + ".txt", 'applications/Captain/' + rsn + ".txt")
 
     elif role_name == "Corporal":
-        os.replace('applications/' + rsn + ".txt", 'applications/Corporal/' + rsn + ".txt")
+        os.replace('applications/Trial/' + rsn + ".txt", 'applications/Corporal/' + rsn + ".txt")
 
     elif role_name == "General":
-        os.replace('applications/' + rsn + ".txt", 'applications/General/' + rsn + ".txt")
+        os.replace('applications/Trial/' + rsn + ".txt", 'applications/General/' + rsn + ".txt")
 
     elif role_name == "Sergeant":
-        os.replace('applications/' + rsn + ".txt", 'applications/Sergeant/' + rsn + ".txt")
+        os.replace('applications/Trial/' + rsn + ".txt", 'applications/Sergeant/' + rsn + ".txt")
 
     elif role_name == "Friend":
-        os.replace('applications/' + rsn + ".txt", 'applications/Friend/' + rsn + ".txt")
+        os.replace('applications/Trial/' + rsn + ".txt", 'applications/Friend/' + rsn + ".txt")
 
     elif role_name == "Lieutenant":
-        os.replace('applications/' + rsn + ".txt", 'applications/Lieutenant/' + rsn + ".txt")
+        os.replace('applications/Trial/' + rsn + ".txt", 'applications/Lieutenant/' + rsn + ".txt")
 
     elif role_name == "Recruit":
-        os.replace('applications/' + rsn + ".txt", 'applications/Recruit/' + rsn + ".txt")
+        os.replace('applications/Trial/' + rsn + ".txt", 'applications/Recruit/' + rsn + ".txt")
 
     accept_msg = "Congrats " + ping_user + "! The osrs account " + '**' + rsn + '**' + " has just been ranked " + role_name + "!"
     channel = await bot.fetch_channel(797957000788180992)
