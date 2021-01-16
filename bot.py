@@ -604,7 +604,11 @@ async def accept_application(ctx, rsn, role_name="Trial"):
 
     #needs exact role name to get from discord
     role = discord.utils.get(ctx.guild.roles, name=role_name)
-    filePath = 'applications/' + rsn + ".txt"
+    if role_name != "Trial Member":
+        filePath = 'applications/Trial/' + rsn + ".txt"
+    else:
+        filePath = 'applications/' + rsn + ".txt"
+
     myFile = open(filePath, 'r')
     discord_name = myFile.readlines()[2].split(":")[1].strip()
     print(discord_name)
