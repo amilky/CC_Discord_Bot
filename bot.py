@@ -511,6 +511,9 @@ async def points(ctx, rsn, type=None, force=None):
 
 @bot.command(name='apply')
 async def save_application(ctx, rsn, type=None, about_me="", force=None):
+    channel = await bot.fetch_channel(797956922703347764)
+    if channel != ctx.channel:
+        return
     application_received = ""
     account_type = "ironman"
 
@@ -607,6 +610,24 @@ async def accept_application(ctx, rsn, role_name):
 
     if role_name == "Captain":
         os.replace('applications/' + rsn + ".txt", 'applications/Captain/' + rsn + ".txt")
+
+    elif role_name == "Corporal":
+        os.replace('applications/' + rsn + ".txt", 'applications/Corporal/' + rsn + ".txt")
+
+    elif role_name == "General":
+        os.replace('applications/' + rsn + ".txt", 'applications/General/' + rsn + ".txt")
+
+    elif role_name == "Sergeant":
+        os.replace('applications/' + rsn + ".txt", 'applications/Sergeant/' + rsn + ".txt")
+
+    elif role_name == "Friend":
+        os.replace('applications/' + rsn + ".txt", 'applications/Friend/' + rsn + ".txt")
+
+    elif role_name == "Lieutenant":
+        os.replace('applications/' + rsn + ".txt", 'applications/Lieutenant/' + rsn + ".txt")
+
+    elif role_name == "Recruit":
+        os.replace('applications/' + rsn + ".txt", 'applications/Recruit/' + rsn + ".txt")
 
     accept_msg = "Congrats " + ping_user + "! The osrs account " + '**' + rsn + '**' + " has just been ranked " + role_name + "!"
     channel = await bot.fetch_channel(797957000788180992)
