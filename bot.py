@@ -656,7 +656,7 @@ async def on_command_error(ctx, error):
 
 
 #update the information in "how to rank up" channel and delete all previous messages
-@bot.command(name='updaterankchannel')
+@bot.command(name='updateapplychannel')
 async def write_all_info(ctx, amount=None):
 #purge previous messages
     if amount is None:

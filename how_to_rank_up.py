@@ -43,7 +43,11 @@ def each_rank_reqs():
     message = '''
 -----------------
 __**Requirements for Each Rank**__
-Following is a list of requirements to obtain each rank. Starting with the Sergeant rank, you will have a total point requirement, as well as additional point requirements within that total. *Example: to obtain a Bronze rank, you will need 1,000 points, with 200 of those points belonging to the PvM category.'''
+-Following is a list of requirements to obtain each rank.
+-Points are the *minimum* criteria you need to be eligible to be considered for a rank. Other factors, such as time since joining the CC and activity, will also play a role.
+
+-Starting with the Sergeant rank, you will have a total point requirement, as well as additional point requirements within that total.
+__Example:__ To obtain a Bronze rank, you will need 1,000 points, with 200 of those points belonging to the PvM category.'''
     return message
 
 #How to Find My Points    
@@ -57,7 +61,7 @@ __Example:__ !points milkopia
 
 *For usernames that include spaces:*
 -Place quotes around the username
-__Example:__ !points "i love runescape"
+__Example:__ !points "lynx titan"
 
 *For ironmen:*
 -Add the word "ironman" after your username.
@@ -74,7 +78,9 @@ __**How To Initially Apply**__
 -Feel free to check your points in #apply-requests.
 
 __Applying to Join__
--In order to apply, type !apply in #apply-requests.
+-In order to apply, go to #apply-requests and type the following: !apply <username> <"info">
+__Example:__ !apply milkopia "This is where you type info about why you want to join the CC and what kind of stuff you like to do in runescape!"
+*Please make sure to include quotes around your username if it is more than one word!*
 -Admins will review your request and notify you if you were accepted as a Trial member in #new-rank-ups.'''
 
     return message
