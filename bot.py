@@ -664,7 +664,7 @@ async def on_command_error(ctx, error):
 
 
 #update the information in "how to rank up" channel and delete all previous messages
-@bot.command(name='updateapplychannel')
+@bot.command(name='applychannelupdate')
 async def write_all_info(ctx, amount=None):
 #purge previous messages
     if amount is None:
@@ -677,26 +677,26 @@ async def write_all_info(ctx, amount=None):
 #updates the channel with information from how_to_rank_up.py
     await ctx.send(how_to_rank_up.general_info())
     #bossing points image
-    f = open("how_to_rank_up_images\\bossing.png", "rb")
+    f = open("how_to_rank_up_images/bossing.png", "rb")
     await ctx.channel.send(file=discord.File(f))
     f.close()
     #skilling points image
-    f = open("how_to_rank_up_images\\skilling.png", "rb")
+    f = open("how_to_rank_up_images/skilling.png", "rb")
     await ctx.channel.send(file=discord.File(f))
     f.close()
     #other points image
-    f = open("how_to_rank_up_images\\other.png", "rb")
+    f = open("how_to_rank_up_images/other.png", "rb")
     await ctx.channel.send(file=discord.File(f))
     f.close()
     await ctx.send(how_to_rank_up.min_reqs_to_join())
     await ctx.send(how_to_rank_up.each_rank_reqs())
     #cc ranks image
-    f = open("how_to_rank_up_images\\rank_requirements.png", "rb")
+    f = open("how_to_rank_up_images/rank_requirements.png", "rb")
     await ctx.channel.send(file=discord.File(f))
     f.close()
     await ctx.send(how_to_rank_up.my_points())  
     #example !points image
-    f = open("how_to_rank_up_images\\example_points.png", "rb")
+    f = open("how_to_rank_up_images/example_points.png", "rb")
     await ctx.channel.send(file=discord.File(f))
     f.close()    
     await ctx.send(how_to_rank_up.initial_apply())  
