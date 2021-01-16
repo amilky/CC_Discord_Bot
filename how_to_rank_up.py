@@ -43,7 +43,11 @@ def each_rank_reqs():
     message = '''
 -----------------
 __**Requirements for Each Rank**__
-Following is a list of requirements to obtain each rank. Points are the *minimum* criteria you need to be eligible to be considered for a rank. Other factors, such as time since joining the CC and activity, will also play a role. Starting with the Sergeant rank, you will have a total point requirement, as well as additional point requirements within that total. *Example: to obtain a Bronze rank, you will need 1,000 points, with 200 of those points belonging to the PvM category.'''
+-Following is a list of requirements to obtain each rank.
+-Points are the *minimum* criteria you need to be eligible to be considered for a rank. Other factors, such as time since joining the CC and activity, will also play a role.
+
+-Starting with the Sergeant rank, you will have a total point requirement, as well as additional point requirements within that total.
+__Example:__ To obtain a Bronze rank, you will need 1,000 points, with 200 of those points belonging to the PvM category.'''
     return message
 
 #How to Find My Points    
@@ -57,7 +61,7 @@ __Example:__ !points milkopia
 
 *For usernames that include spaces:*
 -Place quotes around the username
-__Example:__ !points "i love runescape"
+__Example:__ !points "lynx titan"
 
 *For ironmen:*
 -Add the word "ironman" after your username.
