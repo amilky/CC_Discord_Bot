@@ -74,7 +74,9 @@ __**How To Initially Apply**__
 -Feel free to check your points in #apply-requests.
 
 __Applying to Join__
--In order to apply, type !apply in #apply-requests.
+-In order to apply, go to #apply-requests and type the following: !apply <username> <"info">
+__Example:__ !apply milkopia "This is where you type info about why you want to join the CC and what kind of stuff you like to do in runescape!"
+*Please make sure to include quotes around your username if it is more than one word!*
 -Admins will review your request and notify you if you were accepted as a Trial member in #new-rank-ups.'''
 
     return message
