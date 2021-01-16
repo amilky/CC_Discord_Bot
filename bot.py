@@ -513,7 +513,7 @@ async def points(ctx, rsn, type=None, force=None):
 
 @bot.command(name='apply')
 async def save_application(ctx, rsn, type=None, about_me="", force=None):
-    channel = await bot.fetch_channel(797957000788180992)
+    channel = await bot.fetch_channel(797956922703347764)
     if channel != ctx.channel:
         return
     application_received = ""
