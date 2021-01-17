@@ -41,7 +41,7 @@ def calc_skilling(hiscore_list, user_type):
     elif 750 <= total_level < 1250:
         points += 50
     elif 1250 <= total_level < 1500:
-        ponts += 100
+        points += 100
     elif 1500 <= total_level < 1750:
         points += 200
     elif 1750 <= total_level < 2000:
