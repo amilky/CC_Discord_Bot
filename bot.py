@@ -34,6 +34,7 @@ def calc_skilling(hiscore_list, user_type):
     points = 0
 
     total_level = int(hiscore_list[0][1])
+
     if total_level < 500:
         points = 0
     elif 500 <= total_level < 750:
@@ -41,7 +42,7 @@ def calc_skilling(hiscore_list, user_type):
     elif 750 <= total_level < 1250:
         points += 50
     elif 1250 <= total_level < 1500:
-        ponts += 100
+        points += 100
     elif 1500 <= total_level < 1750:
         points += 200
     elif 1750 <= total_level < 2000:
@@ -150,6 +151,7 @@ def calc_bossing(hiscore_list):
             gwd_points += gwd_dict[key]
 
     boss_points += gwd_points // 10
+    print(gwd_points)
     #print(boss_points)
 
 
@@ -166,6 +168,7 @@ def calc_bossing(hiscore_list):
             boss_A_points += boss_A_dict[key]
 
     boss_points += boss_A_points // 20
+    print(boss_A_points)
 
     #GROUP B POINTS
     boss_B_dict = {"Chaos Elemental": int(hiscore_list[44][1]), "Chaos Fanatic": int(hiscore_list[45][1]),
@@ -173,8 +176,12 @@ def calc_bossing(hiscore_list):
                      "Dagannoth Supreme": int(hiscore_list[51][1]), "Giant Mole": int(hiscore_list[54][1]),
                      "Grotesque Guardians": int(hiscore_list[55][1]), "Kalphite Queen": int(hiscore_list[57][1]),
                      "King Black Dragon": int(hiscore_list[58][1]), "Kraken": int(hiscore_list[59][1]), "Sarachnis":
-                      int(hiscore_list[64][1]), "Scorpia": int(hiscore_list[66][1]), "Thermonuclear Smoke Devil":
-                      int(hiscore_list[70][1]), "Zalcano": int(hiscore_list[78][1])}
+                      int(hiscore_list[65][1]), "Scorpia": int(hiscore_list[66][1]), "Thermonuclear Smoke Devil":
+                      int(hiscore_list[71][1]), "Zalcano": int(hiscore_list[78][1])}
+
+    print("Sarachnis",int(hiscore_list[65][1]) )
+    print("Scorpia", int(hiscore_list[66][1]))
+
 
     boss_B_points = 0
     for key in boss_B_dict:
@@ -183,7 +190,8 @@ def calc_bossing(hiscore_list):
             boss_B_points += boss_B_dict[key]
 
     boss_points += boss_B_points // 50
-    #print(boss_points)
+    print(boss_B_points)
+    print(boss_B_dict)
 
     #GROUP C POINTS
     boss_C_dict = {"Barrows Chests": int(hiscore_list[38][1]),"Crazy Archaeologist": int(hiscore_list[48][1]),
@@ -196,6 +204,7 @@ def calc_bossing(hiscore_list):
             boss_C_points += boss_C_dict[key]
 
     boss_points += boss_C_points // 80
+    print(boss_C_points)
     #print(boss_C_dict["Deranged Archaeologist"])
     #print(boss_C_dict["Deranged Archaeologist"])
     #print(boss_points)
@@ -203,45 +212,55 @@ def calc_bossing(hiscore_list):
     skotizo_kc = int(hiscore_list[67][1])
     if skotizo_kc > 0:
         boss_points += skotizo_kc // 3
+    print("skotizo", skotizo_kc)
 
     obor_kc = int(hiscore_list[64][1])
     if obor_kc > 0:
         boss_points += obor_kc // 10
+    print("obor", obor_kc)
 
 
     bryophyta_kc = int(hiscore_list[39][1])
     if bryophyta_kc > 0:
         boss_points += bryophyta_kc // 10
+    print("bryophyta_kc", bryophyta_kc)
 
     mimic_kc = int(hiscore_list[62][1])
     if mimic_kc > 0:
         boss_points += mimic_kc
+    print("mimic_kc", mimic_kc)
 
     hespori_kc = int(hiscore_list[56][1])
     if hespori_kc > 0:
         boss_points += hespori_kc // 5
+    print("hespori", hespori_kc)
 
     nightmare_kc = int(hiscore_list[63][1])
     if nightmare_kc > 0:
         boss_points += nightmare_kc // 5
+    print("nightmare_kc", nightmare_kc)
 
 
-    gauntlet_kc = int(hiscore_list[67][1])
+    gauntlet_kc = int(hiscore_list[68][1])
     if gauntlet_kc > 0:
         boss_points += gauntlet_kc // 5
+    print("gauntlet_kc", gauntlet_kc)
 
     corrupted_gauntlet_kc = int(hiscore_list[69][1])
     if corrupted_gauntlet_kc > 0:
         boss_points += corrupted_gauntlet_kc // 3
+    print("corrupted_gauntlet_kc", corrupted_gauntlet_kc)
 
     jad_kc = int(hiscore_list[73][1])
     if jad_kc > 0:
         boss_points += jad_kc
+    print("jad_kc", jad_kc)
 
     zuk_kc = int(hiscore_list[72][1])
     if zuk_kc > 0:
         boss_points += zuk_kc * 9
-
+    print("zuk_kc", zuk_kc)
+    print(boss_points)
     return boss_points
 
 
@@ -450,11 +469,11 @@ async def points(ctx, rsn, type=None, force=None):
             lms_points = 0
 
         #calculating soul wars points
-        soulWars_points = calc_soulWars(hiscore_list)
-        if soulWars_points > 0:
-            total_points += soulWars_points
-        else:
-            soulWars_points = 0
+        #soulWars_points = calc_soulWars(hiscore_list)
+        #if soulWars_points > 0:
+            #total_points += soulWars_points
+        #else:
+            #soulWars_points = 0
 
 
 
@@ -491,7 +510,9 @@ async def points(ctx, rsn, type=None, force=None):
     
     
         raids_tuple = calc_raids(hiscore_list)
-        
+
+        print()
+
         cm_pts = raids_tuple[1]
         tob_pts = raids_tuple[2]
         raids_pts = raids_tuple[0]+cm_pts+tob_pts
