@@ -69,10 +69,8 @@ class PointsImage:
          #   d.text(((self.width/7 - self.get_half_length(ppstr)),self.height*.73), "GWD KC:    Y", font =self.fnt, fill=((46,49,49,255)))
         #else:
          #   d.text(((self.width/7 - self.get_half_length(ppstr)),self.height*.73), "GWD KC:    N", font =self.fnt, fill=((46,49,49,255)))
-        allpps=0
-        for x in pvm_points:
-            if type(x) != type(True):
-                allpps+=int(x)
+
+        allpps = int(pvm_points[0])+int(pvm_points[3])
           
         #Total PvM Points        
         self.d.text(((self.width/7 - self.get_half_length(ppstr)),self.height*.73), "All: {0:8d}".format(allpps), font =self.fnt, fill=((46,49,49,255)))
