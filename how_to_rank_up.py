@@ -55,6 +55,7 @@ def my_points():
     message = '''
 -----------------
 __**How to Find My Points**__
+-Feel free to check your points in #apply-requests.
 -In order to find out how many points you currrently have, use the following command, without the brackets:
 !points <username>
 __Example:__ !points milkopia
@@ -70,17 +71,23 @@ __Example:__ !points tradememilk ironman
 The above commands will bring up an image displaying your points **relevant for ranking up.** Below is an example:'''
     return message
 
-#HOw to Initially Apply    
+#How to Initially Apply    
 def initial_apply():
     message = '''
 -----------------
 __**How To Initially Apply**__
--Feel free to check your points in #apply-requests.
-
-__Applying to Join__
 -In order to apply, go to #apply-requests and type the following: !apply <username> <"info">
+
+-Please include quotes around:
+--Your username if it's more than one word.
+--The *info* section.
+
 __Example:__ !apply milkopia "This is where you type info about why you want to join the CC and what kind of stuff you like to do in runescape!"
-*Please make sure to include quotes around your username if it is more than one word!*
--Admins will review your request and notify you if you were accepted as a Trial member in #new-rank-ups.'''
+
+-Admins will review your request and notify you if you were accepted as a Trial member in #new-rank-ups.
+
+*Interested in increasing your rank?*
+-Check out this spreadsheet created by CC member Cargigde that calculates how many kills you need for a boos in order to receive your next PvM point!
+-Admin will be reviewing members' progress and activity to determine rank-ups.'''
 
     return message
