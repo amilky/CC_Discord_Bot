@@ -523,7 +523,7 @@ async def points(ctx, rsn, type=None, force=None):
         player = pointsdisplay.PointsImage()
         image_file = player.draw_all_text(rsn, 
             total_points, 
-            pvm_points=[raid_points, cm_points, tob_points, bossing_points], 
+            pvm_points=[raids_pts, cm_points, tob_points, bossing_points], 
             skilling_points=[skilling_points, total_xp_points, skilling_points+total_xp_points])
             
         await ctx.channel.send(file=discord.File(image_file))
