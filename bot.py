@@ -3,6 +3,7 @@
 #class that allows you to interact with the operating system
 FORMAT_SYMBOLS = "```"
 TOTAL_POINTS_MIN = 100
+MAX_PEOPLE = 7
 
 import os
 from os import path
@@ -13,7 +14,9 @@ import sys
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
+from collections import deque
 import requests
+
 
 from pointsdisplay import pointsdisplay
 from threading import Lock
@@ -279,8 +282,8 @@ async def on_ready():
         f'{guild.name}(id: {guild.id})'
         )
 
-    for member in guild.members:
-        print(f'Guild Members:\n - {member}')
+    #for member in guild.members:
+        #print(f'Guild Members:\n - {member}')
 
 @bot.event
 async def on_message(message):
@@ -411,18 +414,22 @@ def get_hiscore_list(user_data):
     return hiscore_list
 
 
+
+
 @bot.command(name='points')
-async def points(ctx, rsn, type=None, force=None):
-    big_string = ""
-    account_type = "ironman"
+async def points(ctx, rsn, *args):
 
-    if force == "force":
-        force = True
-    else:
-        force = False
+    force = False
+    advanced = False
+    account_type = "main"
 
-    if type != "ironman":
-        account_type = "main"
+    for arg in args:
+        if arg == "force":
+            force = True
+        if arg == "advanced":
+            advanced = True
+        if arg == "ironman":
+            account_type = "ironman"
 
     user_data = get_user_data(rsn, account_type, force)
 
@@ -436,7 +443,7 @@ async def points(ctx, rsn, type=None, force=None):
         #print(hiscore_list)
 
         total_points = 0
-
+        skill_points = 0
         #print(int(hiscore_list[35][1]))
         #querying total xp from website
         total_xp = int(hiscore_list[0][2])
@@ -444,13 +451,18 @@ async def points(ctx, rsn, type=None, force=None):
         total_xp_points = (total_xp // 250000)
         #adds total xp points to total points
         total_points += total_xp_points
-        total_xp_points_str = "Total EXP points: " + str(total_xp_points)
+        skill_points += total_xp_points
+        total_xp_points_str = "  Exp: " + str(total_xp_points)
 
         #calculating skilling points
         skilling_points = calc_skilling(hiscore_list, account_type)
         #adds skilling points to total points
         total_points += skilling_points
-        skilling_points_str = "Skilling points: " + str(skilling_points)
+        skill_points += skilling_points
+        skilling_points_str = "  Level: " + str(skilling_points)
+        skill_points_str = "Skill points: " + str(skill_points)
+
+        miscellaneous_points = 0
 
         #calculating clue points
         clue_points = calc_clue(hiscore_list)
@@ -459,7 +471,8 @@ async def points(ctx, rsn, type=None, force=None):
             total_points += clue_points
         else:
             clue_points = 0
-        clue_points_str = "Clue points: " + str(clue_points)
+        clue_points_str = "  Clues: " + str(clue_points)
+        miscellaneous_points += clue_points
 
         #calculating lms points
         lms_points = calc_lms(hiscore_list)
@@ -467,7 +480,9 @@ async def points(ctx, rsn, type=None, force=None):
             total_points += lms_points
         else:
             lms_points = 0
+        lms_points_str = "  LMS: " + str(lms_points)
 
+        miscellaneous_points += lms_points
         #calculating soul wars points
         #soulWars_points = calc_soulWars(hiscore_list)
         #if soulWars_points > 0:
@@ -476,6 +491,7 @@ async def points(ctx, rsn, type=None, force=None):
             #soulWars_points = 0
 
 
+        pvm_points = 0
 
         # calculating raid points
         raid_list = calc_raids(hiscore_list)
@@ -485,30 +501,33 @@ async def points(ctx, rsn, type=None, force=None):
             if raid > 0:
                 raid_points += raid
         total_points += raid_points
-        raid_points_str = "Raid points: " + str(raid_points)
+        pvm_points += raid_points
+        raid_points_str = "  Raids: " + str(raid_points)
         cox_points = raid_list[0]
-        cox_points_str = "  COX_points: " + str(cox_points)
+        cox_points_str = "    COX: " + str(cox_points)
         cm_points = raid_list[1]
-        cm_points_str = "  CM_points: " + str(cm_points)
+        cm_points_str = "    CM: " + str(cm_points)
         tob_points = raid_list[2]
-        tob_points_str = "  TOB_points: " + str(tob_points)
+        tob_points_str = "    TOB: " + str(tob_points)
 
 
 
         #calculating bossing points
         bossing_points = calc_bossing(hiscore_list)
         total_points += bossing_points
-        bossing_points_str = "Bossing points: " + str(bossing_points)
+        pvm_points += bossing_points
+        bossing_points_str = "  Other: " + str(bossing_points)
+        pvm_points_str = "PVM Points: " + str(pvm_points)
+        total_points_str = "TOTAL POINTS: " + str(total_points)
 
-        total_points_str = "Total points: " + str(total_points)
+        user = f"USER: " + "⚔️ " + rsn + " ⚔️"
+        misc_points_str = f"Misc points: " + str(miscellaneous_points)
 
-        user = f"User: " + rsn
+        big_string = FORMAT_SYMBOLS + user + "\n" + "\n" + pvm_points_str + "\n" + raid_points_str + "\n" + cox_points_str + \
+                     "\n" + cm_points_str + "\n" + tob_points_str + "\n" + bossing_points_str + "\n" + "\n" + skill_points_str + "\n" + total_xp_points_str + "\n" + skilling_points_str +\
+                     "\n" + "\n" + misc_points_str + "\n" + clue_points_str + "\n" + lms_points_str + "\n" + "\n" + total_points_str + FORMAT_SYMBOLS
 
-        big_string = FORMAT_SYMBOLS + user + "\n" + total_xp_points_str + "\n" + skilling_points_str + "\n" + clue_points_str + "\n" + \
-                     raid_points_str + "\n" + cox_points_str + "\n" + cm_points_str + "\n" + tob_points_str + "\n" + bossing_points_str + "\n" + total_points_str + FORMAT_SYMBOLS
 
-    
-    
         raids_tuple = calc_raids(hiscore_list)
 
         print()
@@ -525,11 +544,20 @@ async def points(ctx, rsn, type=None, force=None):
             total_points, 
             pvm_points=[raids_pts, cm_points, tob_points, bossing_points], 
             skilling_points=[skilling_points, total_xp_points, skilling_points+total_xp_points])
-            
-        await ctx.channel.send(file=discord.File(image_file))
+
+        if advanced:
+            await ctx.channel.send(big_string)
+        else:
+            await ctx.channel.send(file=discord.File(image_file))
         os.remove(image_file)
         image_file_lock.release()
 
+
+def verify_rsn(rsn):
+    if rsn.isalnum() and len(rsn) < 25:
+        return True
+    else:
+        return False
 
 
 @bot.command(name='apply')
@@ -670,6 +698,7 @@ async def accept_application(ctx, rsn, role_name="Trial"):
     await channel.send(accept_msg)
 
 @bot.command(pass_context = True)
+@commands.has_role('Pinkopia Admin')
 async def clear(ctx, amount):
     channel = ctx.message.channel
     messages = []
@@ -690,6 +719,7 @@ async def on_command_error(ctx, error):
 
 #update the information in "how to rank up" channel and delete all previous messages
 @bot.command(name='applychannelupdate')
+@commands.has_role('Pinkopia Admin')
 async def write_all_info(ctx, amount=None):
 #purge previous messages
     if amount is None:
