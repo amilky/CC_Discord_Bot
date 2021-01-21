@@ -88,6 +88,7 @@ __Example:__ !apply milkopia "This is where you type info about why you want to 
 
 *Interested in increasing your rank?*
 -Check out this spreadsheet created by CC member Cargigde that calculates how many kills you need for a boos in order to receive your next PvM point!
+https://docs.google.com/spreadsheets/d/1a4BN8z6Kxebld6g0ctyEUwdQbVBR8X7iCSnAJ_ej_CQ/edit#gid=519453420
 -Admin will be reviewing members' progress and activity to determine rank-ups.'''
 
     return message
