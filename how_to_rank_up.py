@@ -68,7 +68,7 @@ __Example:__ !points "lynx titan"
 -Add the word "ironman" after your username.
 __Example:__ !points tradememilk ironman
 
-The above commands will bring up an image displaying your points **relevant for ranking up.** Below is an example:'''
+The above commands will bring up an image displaying your points. Below is an example:'''
     return message
 
 #How to Initially Apply    
