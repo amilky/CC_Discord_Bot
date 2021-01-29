@@ -544,8 +544,8 @@ async def points(ctx, rsn, *args):
         player = pointsdisplay.PointsImage()
         image_file = player.draw_all_text(rsn, 
             total_points, 
-            pvm_points=[raids_pts, cm_points, tob_points, bossing_points], 
-            skilling_points=[skilling_points, total_xp_points, skilling_points+total_xp_points])
+            pvm_points=[raids_pts, cox_points, cm_points, tob_points, bossing_points], 
+            skilling_points=[skilling_points, total_xp_points, skilling_points+total_xp_points], other_points=[clue_points, lms_points])
 
         if advanced:
             await ctx.channel.send(big_string)
@@ -942,5 +942,5 @@ async def write_all_info(ctx, amount=None):
     f.close()    
     await ctx.send(how_to_rank_up.initial_apply())  
 
-
-bot.run(TOKEN)
+if __name__ == '__main__':
+    bot.run(TOKEN)
