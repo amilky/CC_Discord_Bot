@@ -16,7 +16,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 from collections import deque
 import requests
-
+from raid_queue import *
 
 from pointsdisplay import pointsdisplay
 from threading import Lock
@@ -32,6 +32,8 @@ intents = discord.Intents.default()
 intents.members = True
 
 bot = commands.Bot(command_prefix='!', intents=intents)
+
+global_raids_list = [RaidTeachingSession("learner-raids-1"), RaidTeachingSession("learner-raids-2")]
 
 def calc_skilling(hiscore_list, user_type):
     points = 0
@@ -558,6 +560,190 @@ def verify_rsn(rsn):
         return True
     else:
         return False
+
+
+
+
+
+@bot.command(name='teach')
+@commands.has_role('Teacher CoX')
+async def teacher_join(ctx, rsn):
+    output_string = "You are not in a learner raids channel."
+    discord_name = ctx.author
+    discord_name = str(discord_name)
+    channel_name = ctx.channel.name
+    if "learner-raids-" in channel_name:
+        global_raids_list[int(channel_name[-1]) - 1].add_teacher(discord_name, rsn)
+        output_string = rsn + " has been added as a teacher."
+
+    await ctx.channel.send(output_string)
+
+
+@bot.command(name='createparty')
+@commands.has_role('Teacher CoX')
+async def create_party(ctx):
+    output_string = "You are not in a learner raids channel."
+    discord_name = ctx.author
+    discord_name = str(discord_name)
+    channel_name = ctx.channel.name
+    if "learner-raids-" in channel_name:
+        global_raids_list[int(channel_name[-1]) - 1].open_queue()
+        output_string = discord_name + " has opened the queue."
+
+    await ctx.channel.send(output_string)
+
+
+@bot.command(name='endparty')
+@commands.has_role('Teacher CoX')
+async def end_party(ctx):
+    output_string = "You are not in a learner raids channel."
+    discord_name = ctx.author
+    discord_name = str(discord_name)
+    channel_name = ctx.channel.name
+    if "learner-raids-" in channel_name:
+        global_raids_list[int(channel_name[-1]) - 1].close_queue()
+        output_string = discord_name + " has closed the queue."
+
+    await ctx.channel.send(output_string)
+
+
+@bot.command(name='join')
+async def join_queue(ctx, rsn):
+    if verify_rsn(rsn) == False:
+        return
+
+    channel_name = ctx.channel.name
+    raid_roles = ["Novice CoX", "Beginner CoX", "Intermediate CoX", "Advanced CoX", "Teacher CoX"]
+
+    if "learner-raids-" in channel_name:
+        roles = ctx.author.roles
+        # print(roles)
+        cox_rank = ""
+        for role in roles:
+            if role.name in raid_roles:
+                cox_rank = role.name
+        print(cox_rank)
+        discord_name = ctx.author
+        discord_name = str(discord_name)
+        print(discord_name)
+        # global_raids_list[0].add_to_session
+        output_string = ""
+        if cox_rank != "":
+            if global_raids_list[int(channel_name[-1]) - 1].get_status() == True:
+                global_raids_list[int(channel_name[-1]) - 1].add_to_queue(discord_name, rsn, cox_rank, 0)
+                output_string = rsn + " has been added to the queue."
+            else:
+                output_string = "This queue is currently not open."
+        else:
+            output_string = "You are not currently assigned a CoX role."
+
+        await ctx.channel.send(output_string)
+
+#allows a teacher to start a raid
+@bot.command(name='startraid')
+@commands.has_role('Teacher CoX')
+async def start_raid(ctx):
+    channel_name = ctx.channel.name
+    if "learner-raids-" in channel_name:
+        global_raids_list[int(channel_name[-1]) - 1].generate_next_party()
+        party_members = global_raids_list[int(channel_name[-1]) - 1].get_raid_party()
+        print("Got Party")
+        party_string = ""
+        for member in party_members:
+            cox_rank = member.cox_rank
+            print(member.rsn + ", " + cox_rank)
+            if cox_rank != "Teacher CoX":
+                raids_left = member.get_max_raids() - member.consecutive_raids
+                party_string = party_string + member.rsn + ", " + str(raids_left) + " raid(s) left.\n"
+            else:
+                party_string = party_string + member.rsn + " (TEACHER)\n"
+
+        await ctx.channel.send(party_string)
+
+#allows a teacher to start a raid
+@bot.command(name='showraid')
+@commands.has_role('Teacher CoX')
+async def start_raid(ctx):
+    channel_name = ctx.channel.name
+    if "learner-raids-" in channel_name:
+        party_members = global_raids_list[int(channel_name[-1]) - 1].get_raid_party()
+        party_string = ""
+        for member in party_members:
+            cox_rank = member.cox_rank
+            if cox_rank != "Teacher CoX":
+                raids_left = member.get_max_raids() - member.consecutive_raids
+                party_string = party_string + member.rsn + ", " + str(raids_left) + " raid(s) left.\n"
+            else:
+                party_string = party_string + member.rsn + " (TEACHER)\n"
+
+        await ctx.channel.send(party_string)
+
+@bot.command(name='endraid')
+@commands.has_role('Pinkopia Admin')
+async def end_raid(ctx):
+    channel_name = ctx.channel.name
+    if "learner-raids-" in channel_name:
+        global_raids_list[int(channel_name[-1]) - 1].end_raid()
+
+    await ctx.channel.send("Raid has ended")
+
+
+@bot.command(name='cancelraid')
+@commands.has_role('Pinkopia Admin')
+async def cancel_raid(ctx):
+    channel_name = ctx.channel.name
+    if "learner-raids-" in channel_name:
+        global_raids_list[int(channel_name[-1]) - 1].cancel_raid()
+
+    await ctx.channel.send("Raid has been cancelled")
+
+@bot.command(name='leave')
+async def leave_queue(ctx, rsn):
+    teacher_role = "Teacher CoX"
+    return_string = "You are not in a learner raids channel."
+    if "learner-raids-" in channel_name:
+        channel_name = ctx.channel.name
+        roles = ctx.author.roles
+        is_teacher = False
+        for role in roles:
+            if role.name == teacher_role:
+                is_teacher = True
+        if is_teacher:
+             if global_raids_list[int(channel_name[-1]) - 1].leave_teacher(rsn):
+                 return_string = rsn + " has been removed as a teacher."
+             else:
+                 return_string = rsn + " is not currently teaching."
+        else:
+             if global_raids_list[int(channel_name[-1]) - 1].leave_raid(rsn):
+                 return_string = rsn + " has been removed from the queue."
+             else:
+                 return_string = rsn + " was not found in the queue."
+
+    await ctx.channel.send(return_string)
+
+
+@bot.command(name='showqueue')
+async def show_queue(ctx):
+    channel_name = ctx.channel.name
+    if "learner-raids-" in channel_name:
+        #current_raid_queue is a queue of raid member objects
+        current_raid_queue = global_raids_list[int(channel_name[-1]) - 1].get_raid_queue()
+        queue_output = ""
+        queue_position = 1
+        for element in current_raid_queue:
+            queue_output = queue_output + str(queue_position) + ". " + element.rsn + ": "
+            queue_output += "Qualifies for " + str(element.get_max_raids()) + " consecutive raid(s)" + "\n"
+            queue_position += 1
+
+        if len(current_raid_queue) > 0:
+            queue_output = FORMAT_SYMBOLS + queue_output + FORMAT_SYMBOLS
+        else:
+            queue_output = "The queue is empty"
+
+        await ctx.channel.send(queue_output)
+
+
+
 
 
 @bot.command(name='apply')
