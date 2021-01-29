@@ -559,7 +559,7 @@ def verify_rsn(rsn):
     if rsn.isalnum() and len(rsn) < 25:
         return True
     else:
-        return False
+        return True
 
 
 
@@ -617,7 +617,7 @@ async def join_queue(ctx, rsn):
 
     if "learner-raids-" in channel_name:
         roles = ctx.author.roles
-        # print(roles)
+        print(roles)
         cox_rank = ""
         for role in roles:
             if role.name in raid_roles:
@@ -639,6 +639,7 @@ async def join_queue(ctx, rsn):
 
         await ctx.channel.send(output_string)
 
+
 #allows a teacher to start a raid
 @bot.command(name='startraid')
 @commands.has_role('Teacher CoX')
@@ -647,18 +648,21 @@ async def start_raid(ctx):
     if "learner-raids-" in channel_name:
         global_raids_list[int(channel_name[-1]) - 1].generate_next_party()
         party_members = global_raids_list[int(channel_name[-1]) - 1].get_raid_party()
-        print("Got Party")
         party_string = ""
         for member in party_members:
             cox_rank = member.cox_rank
-            print(member.rsn + ", " + cox_rank)
-            if cox_rank != "Teacher CoX":
-                raids_left = member.get_max_raids() - member.consecutive_raids
-                party_string = party_string + member.rsn + ", " + str(raids_left) + " raid(s) left.\n"
-            else:
-                party_string = party_string + member.rsn + " (TEACHER)\n"
+            if cox_rank == "Teacher CoX":
+                party_string = party_string + member.rsn + " [TEACHER]\n"
 
-        await ctx.channel.send(party_string)
+        party_string = party_string + "\n"
+
+        for member in party_members:
+            cox_rank = member.cox_rank
+            if cox_rank != "Teacher CoX":
+                party_string = party_string + member.rsn + " (" + str(member.consecutive_raids) + "/" + str(
+                    member.get_max_raids()) + " consecutive raids)\n"
+
+    await ctx.channel.send(FORMAT_SYMBOLS + party_string + FORMAT_SYMBOLS)
 
 #allows a teacher to start a raid
 @bot.command(name='showraid')
@@ -670,13 +674,17 @@ async def start_raid(ctx):
         party_string = ""
         for member in party_members:
             cox_rank = member.cox_rank
-            if cox_rank != "Teacher CoX":
-                raids_left = member.get_max_raids() - member.consecutive_raids
-                party_string = party_string + member.rsn + ", " + str(raids_left) + " raid(s) left.\n"
-            else:
-                party_string = party_string + member.rsn + " (TEACHER)\n"
+            if cox_rank == "Teacher CoX":
+                party_string = party_string + member.rsn + " [TEACHER]\n"
 
-        await ctx.channel.send(party_string)
+        party_string = party_string + "\n"
+
+        for member in party_members:
+            cox_rank = member.cox_rank
+            if cox_rank != "Teacher CoX":
+                party_string = party_string + member.rsn + " (" + str(member.consecutive_raids) + "/" + str(member.get_max_raids()) + " consecutive raids)\n"
+
+        await ctx.channel.send(FORMAT_SYMBOLS + party_string + FORMAT_SYMBOLS)
 
 @bot.command(name='endraid')
 @commands.has_role('Pinkopia Admin')
