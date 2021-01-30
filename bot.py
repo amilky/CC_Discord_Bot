@@ -697,6 +697,21 @@ async def end_raid(ctx):
 
     await ctx.channel.send("Raid has ended")
 
+@bot.command(name='teachers')
+async def show_teachers(ctx):
+    channel_name = ctx.channel.name
+    output_string = "You are not in a learner raids channel."
+    if "learner-raids-" in channel_name:
+        teachers = global_raids_list[int(channel_name[-1]) - 1].get_teachers()
+        output_string = "Current Teachers for This Channel: \n"
+        if len(teachers) > 0:
+            for teacher in teachers:
+                output_string = output_string + teacher.rsn + "\n"
+        else:
+            output_string = output_string + "None."
+
+    await ctx.channel.send(output_string)
+
 
 @bot.command(name='cancelraid')
 @commands.has_role('Pinkopia Admin')
@@ -709,11 +724,13 @@ async def cancel_raid(ctx):
 
 @bot.command(name='leave')
 async def leave_queue(ctx, rsn):
+    channel_name = ctx.channel.name
     teacher_role = "Teacher CoX"
     return_string = "You are not in a learner raids channel."
     if "learner-raids-" in channel_name:
         channel_name = ctx.channel.name
         roles = ctx.author.roles
+        print(roles)
         is_teacher = False
         for role in roles:
             if role.name == teacher_role:
@@ -724,7 +741,7 @@ async def leave_queue(ctx, rsn):
              else:
                  return_string = rsn + " is not currently teaching."
         else:
-             if global_raids_list[int(channel_name[-1]) - 1].leave_raid(rsn):
+             if global_raids_list[int(channel_name[-1]) - 1].leave_queue(rsn):
                  return_string = rsn + " has been removed from the queue."
              else:
                  return_string = rsn + " was not found in the queue."

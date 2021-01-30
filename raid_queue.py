@@ -84,14 +84,19 @@ class RaidTeachingSession():
     def get_status(self):
         return self.accepting
 
+    def get_teachers(self):
+        return self.teachers
+
 
     def add_to_queue(self, discord_name, rsn, cox_rank, consecutive_raids=0):
         new_member = RaidMember(discord_name, rsn, cox_rank, consecutive_raids)
         self.raid_queue.append(new_member)
+
     #returns the queue
     def get_raid_queue(self):
         queue = self.raid_queue
         return queue
+
     #returns the current raid party
     def get_raid_party(self):
         party = self.raid_party
@@ -128,10 +133,10 @@ class RaidTeachingSession():
     def leave_queue(self, rsn):
         for member in self.raid_queue:
             if rsn == member.rsn:
+                print("test")
                 self.raid_queue.remove(member)
                 return True
         return False
-
 
     def leave_teacher(self, rsn):
         for teacher in self.teachers:
