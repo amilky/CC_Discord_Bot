@@ -922,7 +922,7 @@ async def clear(ctx, amount):
     async for message in ctx.message.channel.history(limit=int(amount)):
         messages.append(message)
     await ctx.channel.delete_messages(messages)
- 
+
 
 
 
