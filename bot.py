@@ -570,11 +570,13 @@ def verify_rsn(rsn):
 async def teacher_join(ctx, rsn):
     output_string = "You are not in a learner raids channel."
     discord_name = ctx.author
+    ping_name = ctx.author.mention
+    ping_name = str(ping_name)
     discord_name = str(discord_name)
     channel_name = ctx.channel.name
     if "learner-raids-" in channel_name:
         global_raids_list[int(channel_name[-1]) - 1].add_teacher(discord_name, rsn)
-        output_string = rsn + " has been added as a teacher."
+        output_string = ping_name + " has been added as a teacher."
 
     await ctx.channel.send(output_string)
 
@@ -583,7 +585,7 @@ async def teacher_join(ctx, rsn):
 @commands.has_role('Teacher CoX')
 async def create_party(ctx):
     output_string = "You are not in a learner raids channel."
-    discord_name = ctx.author
+    discord_name = ctx.author.mention
     discord_name = str(discord_name)
     channel_name = ctx.channel.name
     if "learner-raids-" in channel_name:
@@ -598,11 +600,12 @@ async def create_party(ctx):
 async def end_party(ctx):
     output_string = "You are not in a learner raids channel."
     discord_name = ctx.author
+    ping_name = ctx.author.mention
     discord_name = str(discord_name)
     channel_name = ctx.channel.name
     if "learner-raids-" in channel_name:
         global_raids_list[int(channel_name[-1]) - 1].close_queue()
-        output_string = discord_name + " has closed the queue."
+        output_string = ping_name + " has closed the queue."
 
     await ctx.channel.send(output_string)
 
@@ -659,8 +662,7 @@ async def start_raid(ctx):
         for member in party_members:
             cox_rank = member.cox_rank
             if cox_rank != "Teacher CoX":
-                party_string = party_string + member.rsn + " (" + str(member.consecutive_raids) + "/" + str(
-                    member.get_max_raids()) + " consecutive raids)\n"
+                party_string = party_string + member.rsn + ": " + str(member.consecutive_raids) + "/" + str(member.get_max_raids()) + " Consecutive Raids\n"
 
     await ctx.channel.send(FORMAT_SYMBOLS + party_string + FORMAT_SYMBOLS)
 
@@ -682,7 +684,7 @@ async def start_raid(ctx):
         for member in party_members:
             cox_rank = member.cox_rank
             if cox_rank != "Teacher CoX":
-                party_string = party_string + member.rsn + " (" + str(member.consecutive_raids) + "/" + str(member.get_max_raids()) + " consecutive raids)\n"
+                party_string = party_string + member.rsn + ": " + str(member.consecutive_raids) + "/" + str(member.get_max_raids()) + " Consecutive Raids\n"
 
         await ctx.channel.send(FORMAT_SYMBOLS + party_string + FORMAT_SYMBOLS)
 
@@ -740,7 +742,10 @@ async def show_queue(ctx):
         queue_position = 1
         for element in current_raid_queue:
             queue_output = queue_output + str(queue_position) + ". " + element.rsn + ": "
-            queue_output += "Qualifies for " + str(element.get_max_raids()) + " consecutive raid(s)" + "\n"
+            if element.get_max_raids() == 1:
+                queue_output += "Qualifies for " + str(element.get_max_raids()) + " Consecutive Raid" + "\n"
+            else:
+                queue_output += "Qualifies for " + str(element.get_max_raids()) + " Consecutive Raids" + "\n"
             queue_position += 1
 
         if len(current_raid_queue) > 0:
