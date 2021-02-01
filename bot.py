@@ -137,8 +137,9 @@ def calc_lms(hiscore_list):
 def calc_soulWars(hiscore_list):
     points = 0
     soulWars_kc = int(hiscore_list[35][1])
+    print("this is my soulwars kc", soulWars_kc)
     if soulWars_kc > 0:
-        points = (soulWars_kc - 500) // 10
+        points += (soulWars_kc // 300)
 
     return points
 
@@ -230,6 +231,12 @@ def calc_bossing(hiscore_list):
         boss_points += bryophyta_kc // 10
     print("bryophyta_kc", bryophyta_kc)
 
+
+    corporeal_kc = int(hiscore_list[47][1])
+    if corporeal_kc > 0:
+        boss_points += corporeal_kc // 7
+    print(corporeal_kc)
+
     mimic_kc = int(hiscore_list[62][1])
     if mimic_kc > 0:
         boss_points += mimic_kc
@@ -266,8 +273,8 @@ def calc_bossing(hiscore_list):
         boss_points += zuk_kc * 9
     print("zuk_kc", zuk_kc)
     print(boss_points)
-    return boss_points
 
+    return boss_points
 
 @bot.event
 #on_ready() is an event
@@ -474,7 +481,6 @@ async def points(ctx, rsn, *args):
         else:
             clue_points = 0
         clue_points_str = "  Clues: " + str(clue_points)
-        miscellaneous_points += clue_points
 
         #calculating lms points
         lms_points = calc_lms(hiscore_list)
@@ -485,13 +491,20 @@ async def points(ctx, rsn, *args):
         lms_points_str = "  LMS: " + str(lms_points)
 
         miscellaneous_points += lms_points
+        print("misc points before soul wars", miscellaneous_points )
         #calculating soul wars points
-        #soulWars_points = calc_soulWars(hiscore_list)
-        #if soulWars_points > 0:
-            #total_points += soulWars_points
-        #else:
-            #soulWars_points = 0
 
+        soulWars_points = calc_soulWars(hiscore_list)
+
+        print("soul wars points", soulWars_points)
+        if soulWars_points > 0:
+            total_points += soulWars_points
+        else:
+            soulWars_points = 0
+        miscellaneous_points += soulWars_points
+
+        print("misc points after soul", miscellaneous_points)
+        print("soul wars points", miscellaneous_points)
 
         pvm_points = 0
 
@@ -545,7 +558,7 @@ async def points(ctx, rsn, *args):
         image_file = player.draw_all_text(rsn, 
             total_points, 
             pvm_points=[raids_pts, cox_points, cm_points, tob_points, bossing_points], 
-            skilling_points=[skilling_points, total_xp_points, skilling_points+total_xp_points], other_points=[clue_points, lms_points])
+            skilling_points=[skilling_points, total_xp_points, skilling_points+total_xp_points], other_points=[clue_points, miscellaneous_points])
 
         if advanced:
             await ctx.channel.send(big_string)
