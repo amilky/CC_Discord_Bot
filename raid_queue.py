@@ -109,15 +109,18 @@ class RaidTeachingSession():
         self.raid_party = party_members
 
     def end_raid(self):
+        remove_list = []
         for member in self.raid_party:
             if member.cox_rank != "Teacher CoX":
+                print(str(member.consecutive_raids))
                 member.consecutive_raids = member.consecutive_raids + 1
                 if member.consecutive_raids == ROLE_RAIDS[member.cox_rank]:
+                    print(str(member.cox_rank))
                     member.consecutive_raids = 0
-                    for raid_member in self.raid_party:
-                        if raid_member.rsn == member.rsn:
-                            self.raid_party.remove(raid_member)
-                    self.raid_queue.append(member)
+                    remove_list.append(member)
+        for raid_member in remove_list:
+            self.raid_party.remove(raid_member)
+            self.raid_queue.append(raid_member)
         for member in self.raid_party:
             if member.cox_rank == "Teacher CoX":
                 self.raid_party.remove(member)
@@ -129,6 +132,22 @@ class RaidTeachingSession():
             extending_list.append(member)
         extending_list.reverse()
         self.raid_queue.extendleft(extending_list)
+
+    def remove_user(self, rsn):
+        for member in self.raid_party:
+            if rsn == member.rsn:
+                self.raid_party.remove(member)
+
+                return [True, "party"]
+        for member in self.raid_queue:
+            if rsn == member.rsn:
+                self.raid_queue.remove(member)
+                return [True, "queue"]
+        return [False]
+
+
+        #returns true if user found
+        #retuns false if user not found
 
     def leave_queue(self, rsn):
         for member in self.raid_queue:
