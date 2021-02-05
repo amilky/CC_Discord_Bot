@@ -690,7 +690,6 @@ async def start_raid(ctx):
 
 
 @bot.command(name='showraid')
-@commands.has_role('Teacher CoX')
 async def start_raid(ctx):
     channel_name = ctx.channel.name
     if "learner-raids-" in channel_name:
