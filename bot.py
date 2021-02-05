@@ -998,7 +998,6 @@ async def write_all_info(ctx, amount=None):
     f = open("how_to_rank_up_images/other.png", "rb")
     await ctx.channel.send(file=discord.File(f))
     f.close()
-    await ctx.send(how_to_rank_up.min_reqs_to_join())
     await ctx.send(how_to_rank_up.each_rank_reqs())
     #cc ranks image
     f = open("how_to_rank_up_images/rank_requirements.png", "rb")
@@ -1009,7 +1008,6 @@ async def write_all_info(ctx, amount=None):
     f = open("how_to_rank_up_images/example_points.png", "rb")
     await ctx.channel.send(file=discord.File(f))
     f.close()    
-    await ctx.send(how_to_rank_up.initial_apply())  
 
 if __name__ == '__main__':
     bot.run(TOKEN)
