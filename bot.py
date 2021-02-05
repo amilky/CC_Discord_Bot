@@ -667,6 +667,7 @@ async def join_queue(ctx, rsn):
 @commands.has_role('Teacher CoX')
 async def start_raid(ctx):
     channel_name = ctx.channel.name
+    party_string = "You are not in a learner raids channel"
     if "learner-raids-" in channel_name:
         if len(global_raids_list[int(channel_name[-1]) - 1].get_teachers()) != 0:
             global_raids_list[int(channel_name[-1]) - 1].generate_next_party()
@@ -690,27 +691,31 @@ async def start_raid(ctx):
 
 
 @bot.command(name='showraid')
-async def start_raid(ctx):
+async def show_raid(ctx):
     channel_name = ctx.channel.name
+    party_string = "You are not in a learner raids channel"
     if "learner-raids-" in channel_name:
-        party_members = global_raids_list[int(channel_name[-1]) - 1].get_raid_party()
-        party_string = ""
-        for member in party_members:
-            cox_rank = member.cox_rank
-            if cox_rank == "Teacher CoX":
-                party_string = party_string + member.rsn + " [TEACHER]\n"
+        if len(global_raids_list[int(channel_name[-1]) - 1].get_teachers()) != 0:
+            party_members = global_raids_list[int(channel_name[-1]) - 1].get_raid_party()
+            party_string = ""
+            for member in party_members:
+                cox_rank = member.cox_rank
+                if cox_rank == "Teacher CoX":
+                    party_string = party_string + member.rsn + " [TEACHER]\n"
 
-        party_string = party_string + "\n"
+            party_string = party_string + "\n"
 
-        for member in party_members:
-            cox_rank = member.cox_rank
-            if cox_rank != "Teacher CoX":
-                party_string = party_string + member.rsn + ": " + str(member.consecutive_raids) + "/" + str(member.get_max_raids()) + " Consecutive Raids\n"
+            for member in party_members:
+                cox_rank = member.cox_rank
+                if cox_rank != "Teacher CoX":
+                    party_string = party_string + member.rsn + ": " + str(member.consecutive_raids) + "/" + str(member.get_max_raids()) + " Consecutive Raids\n"
+        else:
+            party_string = "There is no raid in progress."
 
-        await ctx.channel.send(FORMAT_SYMBOLS + party_string + FORMAT_SYMBOLS)
+    await ctx.channel.send(FORMAT_SYMBOLS + party_string + FORMAT_SYMBOLS)
 
 @bot.command(name='endraid')
-@commands.has_role('Pinkopia Admin')
+@commands.has_role('Teacher CoX')
 async def end_raid(ctx):
     channel_name = ctx.channel.name
     if "learner-raids-" in channel_name:
@@ -735,7 +740,7 @@ async def show_teachers(ctx):
 
 
 @bot.command(name='cancelraid')
-@commands.has_role('Pinkopia Admin')
+@commands.has_role('Teacher CoX')
 async def cancel_raid(ctx):
     channel_name = ctx.channel.name
     if "learner-raids-" in channel_name:
