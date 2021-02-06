@@ -149,17 +149,26 @@ class RaidTeachingSession():
         #returns true if user found
         #retuns false if user not found
 
-    def leave_queue(self, rsn):
+    def scan_queue(self, rsn):
         for member in self.raid_queue:
             if rsn == member.rsn:
-                print("test")
+                return True
+        return False
+
+    def leave_queue(self, rsn, discord_name):
+        for member in self.raid_queue:
+            if rsn == member.rsn:
+                if discord_name != member.discord_name:
+                    return False
                 self.raid_queue.remove(member)
                 return True
         return False
 
-    def leave_teacher(self, rsn):
+    def leave_teacher(self, rsn, discord_name):
         for teacher in self.teachers:
             if rsn == teacher.rsn:
+                if discord_name != teacher.discord_name:
+                    return False
                 self.teachers.remove(teacher)
                 return True
         return False

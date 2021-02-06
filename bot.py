@@ -10,6 +10,7 @@ from os import path
 import random
 import datetime
 import sys
+import re
 
 import discord
 from discord.ext import commands
@@ -569,10 +570,11 @@ async def points(ctx, rsn, *args):
 
 
 def verify_rsn(rsn):
-    if rsn.isalnum() and len(rsn) < 25:
+    rsn_re=re.compile('^[a-z0-9 \_]+$').search
+    if bool(rsn_re(rsn)) and len(rsn) < 25:
         return True
     else:
-        return True
+        return False
 
 
 
@@ -634,30 +636,33 @@ async def join_queue(ctx, rsn):
         roles = ctx.author.roles
         print(roles)
         cox_rank = ""
-        for role in roles:
-            if role.name in raid_roles and role.name != "Teacher CoX":
-                cox_rank = role.name
-            if role.name == "Teacher CoX":
-                Flag = True
-        print(cox_rank)
-        discord_name = ctx.author
-        discord_name = str(discord_name)
-        print(discord_name)
-        # global_raids_list[0].add_to_session
-        output_string = ""
-        if Flag == True:
-            output_string = "You are a teacher! To join the raid party use the teacher command -> !teach 'rsn' "
-
-        elif cox_rank != "":
-            if global_raids_list[int(channel_name[-1]) - 1].get_status() == True:
-                global_raids_list[int(channel_name[-1]) - 1].add_to_queue(discord_name, rsn, cox_rank, 0)
-                output_string = rsn + " has been added to the queue."
-            else:
-                output_string = "This queue is currently not open."
-
-
+        if global_raids_list[int(channel_name[-1]) - 1].scan_queue(rsn):
+            output_string = "{} is already in the queue".format(rsn)
         else:
-            output_string = "You are not currently assigned a CoX role."
+            for role in roles:
+                if role.name in raid_roles and role.name != "Teacher CoX":
+                    cox_rank = role.name
+                if role.name == "Teacher CoX":
+                    Flag = True
+            print(cox_rank)
+            discord_name = ctx.author
+            discord_name = str(discord_name)
+            print(discord_name)
+            # global_raids_list[0].add_to_session
+            output_string = ""
+            if Flag == True:
+                output_string = "You are a teacher! To join the raid party use the teacher command -> !teach 'rsn' "
+
+            elif cox_rank != "":
+                if global_raids_list[int(channel_name[-1]) - 1].get_status() == True:
+                    global_raids_list[int(channel_name[-1]) - 1].add_to_queue(discord_name, rsn, cox_rank, 0)
+                    output_string = rsn + " has been added to the queue."
+                else:
+                    output_string = "This queue is currently not open."
+
+
+            else:
+                output_string = "You are not currently assigned a CoX role."
 
         await ctx.channel.send(output_string)
 
@@ -767,11 +772,14 @@ async def remove_user(ctx, rsn):
 
 @bot.command(name='leave')
 async def leave_queue(ctx, rsn):
+    if verify_rsn(rsn) == False:
+        return
     channel_name = ctx.channel.name
     teacher_role = "Teacher CoX"
     return_string = "You are not in a learner raids channel."
     if "learner-raids-" in channel_name:
         channel_name = ctx.channel.name
+        discord_name = str(ctx.author)
         roles = ctx.author.roles
         print(roles)
         is_teacher = False
@@ -779,15 +787,18 @@ async def leave_queue(ctx, rsn):
             if role.name == teacher_role:
                 is_teacher = True
         if is_teacher:
-             if global_raids_list[int(channel_name[-1]) - 1].leave_teacher(rsn):
+             if global_raids_list[int(channel_name[-1]) - 1].leave_teacher(rsn, discord_name):
                  return_string = rsn + " has been removed as a teacher."
              else:
                  return_string = rsn + " is not currently teaching."
         else:
-             if global_raids_list[int(channel_name[-1]) - 1].leave_queue(rsn):
+             if global_raids_list[int(channel_name[-1]) - 1].leave_queue(rsn, discord_name):
                  return_string = rsn + " has been removed from the queue."
              else:
-                 return_string = rsn + " was not found in the queue."
+                if global_raids_list[int(channel_name[-1]) - 1].scan_queue(rsn):
+                    return_string = rsn + " was not added by " + str(discord_name)
+                else:
+                    return_string = rsn + " was not found in the queue."
 
     await ctx.channel.send(return_string)
 
