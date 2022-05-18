@@ -58,13 +58,19 @@ class PointsImage:
         #Raids Points
         self.d.text(((self.width/7 - self.get_half_length(ppstr)),self.height*.26), "Raids: {0:6d}".format(pvm_points[0]), font =self.fnt, fill=((46,49,49,255)))
         #CoX Points
-        self.d.text(((self.width/7 - self.get_half_length(ppstr) + self.get_letter_length()),self.height*.34), "CoX: {0:7d}".format(pvm_points[1]), font =self.fnt, fill=((46,49,49,255)))        
+        self.d.text(((self.width/7 - self.get_half_length(ppstr) + self.get_letter_length()),self.height*.34), "CoX: {0:7d}".format(pvm_points[1]), font =self.fnt, fill=((46,49,49,255)))
         #CM Points
         self.d.text(((self.width/7 - self.get_half_length(ppstr) + self.get_letter_length()),self.height*.42), "CM: {0:8d}".format(pvm_points[2]), font =self.fnt, fill=((46,49,49,255)))
         #ToB Points
         self.d.text(((self.width/7 - self.get_half_length(ppstr) +self.get_letter_length()),self.height*.50), "ToB: {0:7d}".format(pvm_points[3]), font =self.fnt, fill=((46,49,49,255)))
+        # ToB Points
+        self.d.text(((self.width / 7 - self.get_half_length(
+            ppstr) + self.get_letter_length()), self.height * .58),
+                    "ToB HM: {0:4d}".format(pvm_points[4]), font=self.fnt,
+                    fill=((46, 49, 49, 255)))
         #Other Bossing Points
-        self.d.text(((self.width/7 - self.get_half_length(ppstr)),self.height*.58), "Other: {0:6d}".format(pvm_points[4]), font =self.fnt, fill=((46,49,49,255)))
+        self.d.text(((self.width/7 - self.get_half_length(ppstr)),
+                     self.height*.66), "Other: {0:6d}".format(pvm_points[5]), font =self.fnt, fill=((46,49,49,255)))
         
         #Check if total of all 4 GWD boss KCs >= 50
         #if pvm_points[4]:
@@ -72,11 +78,13 @@ class PointsImage:
         #else:
          #   d.text(((self.width/7 - self.get_half_length(ppstr)),self.height*.73), "GWD KC:    N", font =self.fnt, fill=((46,49,49,255)))
 
-        allpps = int(pvm_points[0])+int(pvm_points[4])
+        allpps = int(pvm_points[0])+int(pvm_points[5])
           
         #Total PvM Points        
-        self.d.text(((self.width/7 - self.get_half_length(ppstr)),self.height*.67), "All: {0:8d}".format(allpps), font =self.fnt, fill=((46,49,49,255)))
-        
+        self.d.text(((self.width/7 - self.get_half_length(ppstr)),
+                     self.height*.75), "All: {0:8d}".format(allpps),
+                    font =self.fnt, fill=((46,49,49,255)))
+
     #skilling_points=[tlbonus=0, tepoints=0, allsps=0]    
     def draw_skilling_co2(self, skilling_points, spstr="Skill Points"):
         #specify location, content, font, and color of text

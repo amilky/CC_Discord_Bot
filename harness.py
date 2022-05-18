@@ -2,15 +2,24 @@ import bot
 import asyncio
 from PIL import Image
 import sys, importlib
-
+import shutil
+import random
+import string
 
 class Channel():
     async def send(str=None, file=None):
         if str is not None:
             print(str)
         if file is not None:
+            #ew_file=''.join(random.choice(string.ascii_letters) for x in
+            #                 range(10))+".png"
+            #print(new_file)
+            #input("WAIT4")
+            #shutil.copyfile(file.filename, new_file)
             im = Image.open(file.filename)
             im.show()
+            im.close()
+            #input("WAIT2")
         return
 
 class Context():
