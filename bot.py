@@ -1207,7 +1207,6 @@ async def save_application(ctx, rsn, type=None, about_me="", force=None):
             application_received = "Unfortunately, " + ping_user + " the OSRS account " + '**' + rsn + '**' + " does not meet the " \
                                                                                                               "minimum requirement of " + '**' + "100 total points" + '**' + " to apply to the Pinkopia CC. " \
                                    + "\n" + "Please resubmit your application once you fulfill this requirement! "
-
     await ctx.send(application_received)
 
 
