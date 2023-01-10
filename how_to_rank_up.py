@@ -13,10 +13,14 @@ def general_info():
 ---Chambers of Xeric (CoX)
 ---Challenge Mode - Chambers of Xeric (CM)
 ---Theatre of Blood (ToB)
+---Theatre of Blood Hard Mode
+--Tombs of Amascut normal
+--Tombs of Amascut expert
 -All other bosses
 
 **Skilling **
 -Total level - you will receive a fixed point boost at total level milestones, with an additional boost upon maxing.
+--Ironmen receive a 10% bonus to their total level points
 -Experience points
 
 **Other**
@@ -33,12 +37,19 @@ def each_rank_reqs():
     message = '''
 -----------------
 __**Requirements for Each Rank**__
--Points are the *minimum* criteria you need to be eligible to be considered for a rank. Other factors, such as time since joining the CC and activity, will also play a role.
+-Points are the *minimum* criteria you need to be eligible to be considered for a rank.
+-You can only rank up once per month, and you can't skip any ranks.
+--A higher rank is associated with higher trust and more time spent in the 
+CC, so these factors play a role as well.
+
+-The ranks are not entirely linear. If you enjoy focusing more on skilling (
+or just like the title better), you can choose one of the two skiller focused ranks (Skiller or Maxed), as long as you meet the requirements.
 
 -Following is a list of requirements to obtain each rank.
-
 -Starting with the Sergeant rank, you will have a total point requirement, as well as additional point requirements within that total.
-__Example:__ To obtain a Bronze rank, you will need 1,000 points, with 200 of those points belonging to the PvM category.'''
+__Example:__ To obtain the rank of Infantry, you need 4000 points, with at 
+least 600 of those points being PvM points and at least 250 of those PvM 
+points coming from raids.'''
     return message
 
 #How to Find My Points    
@@ -46,7 +57,7 @@ def my_points():
     message = '''
 -----------------
 __**How to Find My Points**__
--Feel free to check your points in #apply-requests.
+-Feel free to check your points in #check-my-points.
 -In order to find out how many points you currrently have, use the following command, without the brackets:
 !points <username>
 __Example:__ !points milkopia
