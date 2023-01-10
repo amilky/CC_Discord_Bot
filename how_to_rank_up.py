@@ -46,7 +46,6 @@ CC, so these factors play a role as well.
 or just like the title better), you can choose one of the two skiller focused ranks (Skiller or Maxed), as long as you meet the requirements.
 
 -Following is a list of requirements to obtain each rank.
--Starting with the Sergeant rank, you will have a total point requirement, as well as additional point requirements within that total.
 __Example:__ To obtain the rank of Infantry, you need 4000 points, with at 
 least 600 of those points being PvM points and at least 250 of those PvM 
 points coming from raids.'''
