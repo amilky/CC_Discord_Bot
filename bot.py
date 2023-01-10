@@ -29,11 +29,12 @@ image_file_lock = Lock()
 import how_to_rank_up
 
 #load_dotenv()
-#TOKEN = os.getenv('DISCORD_TOKEN')
-#GUILD = os.getenv('DISCORD_GUILD')
+TOKEN = os.getenv('DISCORD_TOKEN')
+GUILD = os.getenv('DISCORD_GUILD')
 
 intents = discord.Intents.default()
 intents.members = True
+intents.message_content = True
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
@@ -179,7 +180,7 @@ def calc_lms(hiscore_list):
 def calc_soulWars(hiscore_list):
     points = 0
     soulWars_kc = int(hiscore_list[36][1])
-    print("this is my soulwars kc", soulWars_kc)
+    #print("this is my soulwars kc", soulWars_kc)
     if soulWars_kc > 0:
         points += (soulWars_kc // 300)
 
@@ -194,7 +195,7 @@ def calc_bossing(hiscore_list):
                 "Kree'Arra": int(hiscore_list[62][1]),
                 "K'ril Tsutsaroth": int(hiscore_list[63][1]),
                 "Nex": int(hiscore_list[65][1])}
-    print("nex kc: ", hiscore_list[65][1])
+    #print("nex kc: ", hiscore_list[65][1])
     gwd_points = 0
     for key in gwd_dict:
         # print(gwd_dict[key])
@@ -203,7 +204,7 @@ def calc_bossing(hiscore_list):
             gwd_points += gwd_dict[key]
 
     boss_points += gwd_points // 10
-    print(gwd_points)
+    #print(gwd_points)
     # print(boss_points)
 
     # GROUP A POINTS
@@ -223,7 +224,7 @@ def calc_bossing(hiscore_list):
             boss_A_points += boss_A_dict[key]
 
     boss_points += boss_A_points // 20
-    print(boss_A_points)
+    #print(boss_A_points)
 
     # GROUP B POINTS
     boss_B_dict = {"Chaos Elemental": int(hiscore_list[46][1]),
@@ -242,8 +243,8 @@ def calc_bossing(hiscore_list):
                        int(hiscore_list[77][1]),
                    "Zalcano": int(hiscore_list[86][1])}
 
-    print("Sarachnis", int(hiscore_list[69][1]))
-    print("Scorpia", int(hiscore_list[70][1]))
+    #print("Sarachnis", int(hiscore_list[69][1]))
+    #print("Scorpia", int(hiscore_list[70][1]))
 
     boss_B_points = 0
     for key in boss_B_dict:
@@ -252,8 +253,8 @@ def calc_bossing(hiscore_list):
             boss_B_points += boss_B_dict[key]
 
     boss_points += boss_B_points // 50
-    print(boss_B_points)
-    print(boss_B_dict)
+    #print(boss_B_points)
+    #print(boss_B_dict)
 
     # GROUP C POINTS
     boss_C_dict = {"Barrows Chests": int(hiscore_list[40][1]),
@@ -270,7 +271,7 @@ def calc_bossing(hiscore_list):
             boss_C_points += boss_C_dict[key]
 
     boss_points += boss_C_points // 80
-    print(boss_C_points)
+    #print(boss_C_points)
     # print(boss_C_dict["Deranged Archaeologist"])
     # print(boss_C_dict["Deranged Archaeologist"])
     # print(boss_points)
@@ -278,63 +279,63 @@ def calc_bossing(hiscore_list):
     skotizo_kc = int(hiscore_list[71][1])
     if skotizo_kc > 0:
         boss_points += skotizo_kc // 3
-    print("skotizo", skotizo_kc)
+    #print("skotizo", skotizo_kc)
 
     obor_kc = int(hiscore_list[68][1])
     if obor_kc > 0:
         boss_points += obor_kc // 10
-    print("obor", obor_kc)
+    #print("obor", obor_kc)
 
     bryophyta_kc = int(hiscore_list[41][1])
     if bryophyta_kc > 0:
         boss_points += bryophyta_kc // 10
-    print("bryophyta_kc", bryophyta_kc)
+    #print("bryophyta_kc", bryophyta_kc)
 
     corporeal_kc = int(hiscore_list[49][1])
     if corporeal_kc > 0:
         boss_points += corporeal_kc // 7
-    print(corporeal_kc)
+    #print(corporeal_kc)
 
     mimic_kc = int(hiscore_list[64][1])
     if mimic_kc > 0:
         boss_points += mimic_kc
-    print("mimic_kc", mimic_kc)
+    #print("mimic_kc", mimic_kc)
 
     hespori_kc = int(hiscore_list[58][1])
     if hespori_kc > 0:
         boss_points += hespori_kc // 5
-    print("hespori", hespori_kc)
+    #print("hespori", hespori_kc)
 
     nightmare_kc = int(hiscore_list[66][1])
     if nightmare_kc > 0:
         boss_points += nightmare_kc // 5
-    print("nightmare_kc", nightmare_kc)
+    #print("nightmare_kc", nightmare_kc)
 
     phosani_nm_kc = int(hiscore_list[67][1])
     if phosani_nm_kc > 0:
         boss_points += phosani_nm_kc // 2
-    print("pnm_kc", phosani_nm_kc)
+    #print("pnm_kc", phosani_nm_kc)
 
     gauntlet_kc = int(hiscore_list[73][1])
     if gauntlet_kc > 0:
         boss_points += gauntlet_kc // 5
-    print("gauntlet_kc", gauntlet_kc)
+    #print("gauntlet_kc", gauntlet_kc)
 
     corrupted_gauntlet_kc = int(hiscore_list[74][1])
     if corrupted_gauntlet_kc > 0:
         boss_points += corrupted_gauntlet_kc // 3
-    print("corrupted_gauntlet_kc", corrupted_gauntlet_kc)
+    #print("corrupted_gauntlet_kc", corrupted_gauntlet_kc)
 
     jad_kc = int(hiscore_list[81][1])
     if jad_kc > 0:
         boss_points += jad_kc
-    print("jad_kc", jad_kc)
+    #print("jad_kc", jad_kc)
 
     zuk_kc = int(hiscore_list[80][1])
     if zuk_kc > 0:
         boss_points += zuk_kc * 9
-    print("zuk_kc", zuk_kc)
-    print(boss_points)
+    #print("zuk_kc", zuk_kc)
+    #print(boss_points)
 
     return boss_points
 
@@ -502,7 +503,7 @@ async def points(ctx, rsn, *args):
     force = False
     advanced = False
     account_type = "main"
-
+    print("In !points")
     for arg in args:
         if arg == "force":
             force = True
@@ -864,6 +865,18 @@ async def create_party(ctx):
 
     await ctx.channel.send(output_string)
 
+@bot.command(name='test')
+async def nine_nine(ctx):
+    print("hello")
+    brooklyn_99_quotes = [
+        'hi',
+        (
+            'hi'
+        ),
+    ]
+
+    response = random.choice(brooklyn_99_quotes)
+    await ctx.send(response)
 
 @bot.command(name='endparty')
 @commands.has_role('Teacher CoX')
@@ -1124,7 +1137,7 @@ async def show_queue(ctx):
 
 
 @bot.command(name='apply')
-async def save_application(ctx, rsn, type=None, about_me="", force=None):
+async def save_application(ctx, rsn, about_me="", type=None, force=None):
     channel = await bot.fetch_channel(797956922703347764)
     if channel != ctx.channel:
         return
@@ -1195,7 +1208,32 @@ async def save_application(ctx, rsn, type=None, about_me="", force=None):
             # application_received = "Your application has been submitted for review!"
             channel = bot.get_channel(798013179195162654)
             application_received = "Your application has been submitted for review!"
+
+            # Get all CC role-related ranks
+            Trialist = discord.utils.get(ctx.guild.roles, name='Trialist')
+            Battlemage = discord.utils.get(ctx.guild.roles, name='Battlemage')
+            Artillery = discord.utils.get(ctx.guild.roles, name='Artillery')
+            Infantry = discord.utils.get(ctx.guild.roles, name='Infantry')
+            Crusader = discord.utils.get(ctx.guild.roles, name='Crusader')
+            Sniper = discord.utils.get(ctx.guild.roles, name='Sniper')
+            Carry = discord.utils.get(ctx.guild.roles, name='Carry')
+            Guthixian = discord.utils.get(ctx.guild.roles, name='Guthixian')
+            Skiller = discord.utils.get(ctx.guild.roles, name='Skiller')
+            Maxed = discord.utils.get(ctx.guild.roles, name='Maxed')
+
+            # List that contains all role ranks
+            role_list = [Trialist, Battlemage, Artillery, Infantry, Crusader,
+                         Sniper, Carry, Guthixian, Skiller, Maxed]
+
+            # Find if user has current rank in CC (and if so, what rank it is)
+            for current_role in ctx.author.roles:
+                if current_role in role_list:
+                    # Send rank to app review channel
+                    await channel.send(current_role)
+            # Send application file to app review channel
             await channel.send(file=discordFile)
+
+
 
         elif total_points < TOTAL_POINTS_MIN:
             discord_name = ctx.author
@@ -1212,73 +1250,86 @@ async def save_application(ctx, rsn, type=None, about_me="", force=None):
 
 @bot.command(name='accept')
 @commands.has_role('Pinkopia Admin')
-async def accept_application(ctx, rsn, role_name="Trialist"):
-    # role_name is the rank that the member is applying for
-    if role_name == "Trialist":
-        role_name = "Trial Member"
+async def accept_application(ctx, rsn, new_role, old_role=''):
+    # Get new role from discord roles. Use these to add/remove roles
+    new_role_disc = discord.utils.get(ctx.guild.roles, name=new_role)
+    old_role_disc = discord.utils.get(ctx.guild.roles, name=old_role)
 
-    # needs exact role name to get from discord
-    role = discord.utils.get(ctx.guild.roles, name=role_name)
-
-
-    if role_name != "Trial Member":
-        filePath = 'applications/Trial/' + rsn + ".txt"
+    # File path if user is new applicant
+    if old_role == '':
+        filePath = 'applications/' + rsn + '.txt'
+        print("none")
+    # File path is user is current applicant
     else:
-        filePath = 'applications/' + rsn + ".txt"
+        filePath = 'applications/' + old_role + '/' + rsn + '.txt'
+        print(filePath)
 
+    # Get user's discord name from application file
     myFile = open(filePath, 'r')
     discord_name = myFile.readlines()[2].split(":")[1].strip()
     print(discord_name)
     myFile.close()
 
-    # getting member object of the person with discord name in application file
+    # Get member object for the user applying
     discord_member = ctx.guild.get_member_named(discord_name)
-    ping_user = discord_member.mention
-    await discord.Member.add_roles(discord_member, role)
 
-    if role_name == "Trialist":
+    # Move application file depending on current role
+    # If member is a Trialist
+    if discord.utils.get(discord_member.roles, name='Trialist'):
+        # Move file
+        os.replace('applications/Trialist/' + rsn + ".txt",
+                   'applications/' + new_role + '/' + rsn + ".txt")
+    # If member is a Battlemage
+    elif discord.utils.get(discord_member.roles, name='Battlemage'):
+        # Move file
+        os.replace('applications/Battlemage/' + rsn + ".txt",
+                   'applications/' + new_role + '/' + rsn + ".txt")
+    # If member is an Artillery
+    elif discord.utils.get(discord_member.roles, name='Artillery'):
+        os.replace('applications/Artillery/' + rsn + ".txt",
+                   'applications/' + new_role + '/' + rsn + ".txt")
+    # If member is an Infantry
+    elif discord.utils.get(discord_member.roles, name='Infantry'):
+        os.replace('applications/Infantry/' + rsn + ".txt",
+                   'applications/' + new_role + '/' + rsn + ".txt")
+    # If member is a Crusader
+    elif discord.utils.get(discord_member.roles, name='Crusader'):
+        os.replace('applications/Crusader/' + rsn + ".txt",
+                   'applications/' + new_role + '/' + rsn + ".txt")
+    # If member is a Sniper
+    elif discord.utils.get(discord_member.roles, name='Sniper'):
+        os.replace('applications/Sniper/' + rsn + ".txt",
+                   'applications/' + new_role + '/' + rsn + ".txt")
+    # If member is a Carry
+    elif discord.utils.get(discord_member.roles, name='Carry'):
+        os.replace('applications/Carry/' + rsn + ".txt",
+                   'applications/' + new_role + '/' + rsn + ".txt")
+    # If member is a Guthixian
+    elif discord.utils.get(discord_member.roles, name='Guthixian'):
+        os.replace('applications/Guthixian/' + rsn + ".txt",
+                   'applications/' + new_role + '/' + rsn + ".txt")
+    # If member is a Skiller
+    elif discord.utils.get(discord_member.roles, name='Skiller'):
+        os.replace('applications/Skiller/' + rsn + ".txt",
+                   'applications/' + new_role + '/' + rsn + ".txt")
+    # If member is a Maxed
+    elif discord.utils.get(discord_member.roles, name='Maxed'):
+        os.replace('applications/Maxed/' + rsn + ".txt",
+                   'applications/' + new_role + '/' + rsn + ".txt")
+    else:
         os.replace('applications/' + rsn + ".txt",
                    'applications/Trialist/' + rsn + ".txt")
 
-    if role_name == "Battlemage":
-        os.replace('applications/Trialist/' + rsn + ".txt",
-                   'applications/Battlemage/' + rsn + ".txt")
+    # Add new role
+    await discord_member.add_roles(new_role_disc)
+    # Remove old role
+    await ctx.author.remove_roles(old_role_disc)
 
-    elif role_name == "Artillery":
-        os.replace('applications/Trialist/' + rsn + ".txt",
-                   'applications/Artillery/' + rsn + ".txt")
-
-    elif role_name == "Infantry":
-        os.replace('applications/Trialist/' + rsn + ".txt",
-                   'applications/Infantry/' + rsn + ".txt")
-
-    elif role_name == "Crusader":
-        os.replace('applications/Trialist/' + rsn + ".txt",
-                   'applications/Crusader/' + rsn + ".txt")
-
-    elif role_name == "Sniper":
-        os.replace('applications/Trialist/' + rsn + ".txt",
-                   'applications/Sniper/' + rsn + ".txt")
-
-    elif role_name == "Carry":
-        os.replace('applications/Trialist/' + rsn + ".txt",
-                   'applications/Carry/' + rsn + ".txt")
-
-    elif role_name == "Guthixian":
-        os.replace('applications/Trialist/' + rsn + ".txt",
-                   'applications/Guthixian/' + rsn + ".txt")
-
-    elif role_name == "Skiller":
-        os.replace('applications/Trialist/' + rsn + ".txt",
-                   'applications/Skiller/' + rsn + ".txt")
-
-    elif role_name == "Maxed":
-        os.replace('applications/Trialist/' + rsn + ".txt",
-                   'applications/Maxed/' + rsn + ".txt")
-
-    accept_msg = "Congrats " + ping_user + "! The osrs account " + '**' + rsn + '**' + " has just been ranked " + role_name + "!"
+    # Notify user of new rank
+    ping_user = discord_member.mention
+    accept_msg = "Congrats " + ping_user + "! The osrs account " + '**' + rsn\
+                 + '**' + " has just been ranked " + new_role + "!"
     channel = await bot.fetch_channel(797957000788180992)
-    print("Got Channel")
     await channel.send(accept_msg)
 
 
