@@ -15,7 +15,7 @@ import time
 
 import discord
 from discord.ext import commands
-#from dotenv import load_dotenv
+from dotenv import load_dotenv  # comment out if testing locally
 from collections import deque
 import requests
 from raid_queue import *
@@ -28,13 +28,12 @@ image_file_lock = Lock()
 
 import how_to_rank_up
 
-#load_dotenv()
+load_dotenv()  # comment out if testing locally
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
 intents = discord.Intents.default()
 intents.members = True
-intents.message_content = True
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
