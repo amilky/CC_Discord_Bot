@@ -1175,6 +1175,12 @@ async def save_application(ctx, rsn, about_me="", type=None, force=None):
             if raid > 0:
                 raid_points += raid
 
+        cox_points = raid_list[0] + raid_list[1]
+        tob_points = raid_list[2] + raid_list[3]
+        toa_points = raid_list[4] + raid_list[5]
+
+        total_pvm_points = raid_points + bossing_points
+
         total_xp = int(hiscore_list[0][2])
         total_xp_points = (total_xp // 250000)
 
@@ -1191,12 +1197,18 @@ async def save_application(ctx, rsn, about_me="", type=None, force=None):
                 About Me: %s
                 Discord Name: %s
                 Raids Points: %s
-                PVM Points: %s
+                CoX Points: %s
+                ToB Points: %s
+                ToA Points: %s
+                Other bossing Points: %s
+                Total PvM Points: %s
                 Level Points: %s
                 Exp Points: %s
                 Total Points: %d
                     ''' % (
-                rsn, about_me, discord_name, raid_points, bossing_points,
+                rsn, about_me, discord_name, raid_points,
+                str(cox_points), str(tob_points), str(toa_points),
+                bossing_points, str(total_pvm_points),
                 skill_points, total_xp_points, total_points) + 'Date: ' + \
                 str(current_date.month) + '/' + str(current_date.day) + '/' +\
                 str(current_date.year)
