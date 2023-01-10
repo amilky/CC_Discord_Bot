@@ -2,7 +2,7 @@
 # we import os so we can access environment variables
 # class that allows you to interact with the operating system
 FORMAT_SYMBOLS = "```"
-TOTAL_POINTS_MIN = 100
+TOTAL_POINTS_MIN = 200
 MAX_PEOPLE = 7
 
 import os
