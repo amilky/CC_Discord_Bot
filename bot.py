@@ -2,7 +2,7 @@
 # we import os so we can access environment variables
 # class that allows you to interact with the operating system
 FORMAT_SYMBOLS = "```"
-TOTAL_POINTS_MIN = 200
+TOTAL_POINTS_MIN = 0
 MAX_PEOPLE = 7
 
 import os
@@ -534,10 +534,10 @@ async def points(ctx, rsn, *args):
         total_points += total_xp_points
         skill_points += total_xp_points
         total_xp_points_str = "  Exp: " + str(total_xp_points)
-        print('this is my total expp: ', total_xp_points)
-        print('this is my total exp: ', total_xp)
-        for x in range(len(hiscore_list)):
-            print(str(x) + ": " + str(hiscore_list[x]))
+        #print('this is my total expp: ', total_xp_points)
+        #print('this is my total exp: ', total_xp)
+        #for x in range(len(hiscore_list)):
+            #print(str(x) + ": " + str(hiscore_list[x]))
 
         # calculating skilling points
         skilling_points = calc_skilling(hiscore_list, account_type)
@@ -567,20 +567,20 @@ async def points(ctx, rsn, *args):
         lms_points_str = "  LMS: " + str(lms_points)
 
         miscellaneous_points += lms_points
-        print("misc points before soul wars", miscellaneous_points)
+        #print("misc points before soul wars", miscellaneous_points)
         # calculating soul wars points
 
         soulWars_points = calc_soulWars(hiscore_list)
 
-        print("soul wars points", soulWars_points)
+        #print("soul wars points", soulWars_points)
         if soulWars_points > 0:
             total_points += soulWars_points
         else:
             soulWars_points = 0
         miscellaneous_points += soulWars_points
 
-        print("misc points after soul", miscellaneous_points)
-        print("soul wars points", miscellaneous_points)
+        #print("misc points after soul", miscellaneous_points)
+        #print("soul wars points", miscellaneous_points)
 
         pvm_points = 0
 
@@ -707,10 +707,10 @@ async def full_points(ctx, rsn, *args):
         total_points += total_xp_points
         skill_points += total_xp_points
         total_xp_points_str = "  Exp: " + str(total_xp_points)
-        print('this is my total expp: ', total_xp_points)
-        print('this is my total exp: ', total_xp)
-        for x in range(len(hiscore_list)):
-            print(str(x) + ": " + str(hiscore_list[x]))
+        #print('this is my total expp: ', total_xp_points)
+        #print('this is my total exp: ', total_xp)
+        #for x in range(len(hiscore_list)):
+            #print(str(x) + ": " + str(hiscore_list[x]))
 
         # calculating skilling points
         skilling_points = calc_skilling(hiscore_list, account_type)
@@ -740,20 +740,20 @@ async def full_points(ctx, rsn, *args):
         lms_points_str = "  LMS: " + str(lms_points)
 
         miscellaneous_points += lms_points
-        print("misc points before soul wars", miscellaneous_points)
+        #print("misc points before soul wars", miscellaneous_points)
         # calculating soul wars points
 
         soulWars_points = calc_soulWars(hiscore_list)
 
-        print("soul wars points", soulWars_points)
+        #print("soul wars points", soulWars_points)
         if soulWars_points > 0:
             total_points += soulWars_points
         else:
             soulWars_points = 0
         miscellaneous_points += soulWars_points
 
-        print("misc points after soul", miscellaneous_points)
-        print("soul wars points", miscellaneous_points)
+        #print("misc points after soul", miscellaneous_points)
+        #print("soul wars points", miscellaneous_points)
 
         pvm_points = 0
 
@@ -802,10 +802,10 @@ async def full_points(ctx, rsn, *args):
                      misc_points_str + "\n" + clue_points_str + "\n" + \
                      lms_points_str + "\n" + "\n" + total_points_str + \
                      FORMAT_SYMBOLS
-        print('big string: ', '\n', big_string)
+        #print('big string: ', '\n', big_string)
         raids_tuple = calc_raids(hiscore_list)
 
-        print()
+        #print()
 
         cm_pts = raids_tuple[1]
         tob_pts = raids_tuple[2]
@@ -1184,6 +1184,7 @@ async def save_application(ctx, rsn, about_me="", type=None, force=None):
         current_date = datetime.datetime.now()
         if total_points >= TOTAL_POINTS_MIN:
             fileName = 'applications/' + rsn + ".txt"
+            print(fileName)
             myFile = open(fileName, 'w')
             fileContents = \
                 '''RSN: %s
@@ -1236,35 +1237,36 @@ async def save_application(ctx, rsn, about_me="", type=None, force=None):
             await channel.send(file=discordFile)
 
 
-
-        elif total_points < TOTAL_POINTS_MIN:
+            '''elif total_points < TOTAL_POINTS_MIN:
             discord_name = ctx.author
             discord.AllowedMentions(everyone=True)
             discord_name = ctx.author
             ping_user = ctx.author.mention
             test = ("'*** test ***'")
+            
 
             application_received = "Unfortunately, " + ping_user + " the OSRS account " + '**' + rsn + '**' + " does not meet the " \
                                                                                                               "minimum requirement of " + '**' + "100 total points" + '**' + " to apply to the Pinkopia CC. " \
-                                   + "\n" + "Please resubmit your application once you fulfill this requirement! "
+                                   + "\n" + "Please resubmit your application once you fulfill this requirement! "'''
     await ctx.send(application_received)
 
 
 @bot.command(name='accept')
 @commands.has_role('Pinkopia Admin')
-async def accept_application(ctx, rsn, new_role, old_role=''):
+async def accept_application(ctx, rsn, new_role, old_role='None'):
     # Get new role from discord roles. Use these to add/remove roles
     new_role_disc = discord.utils.get(ctx.guild.roles, name=new_role)
-    old_role_disc = discord.utils.get(ctx.guild.roles, name=old_role)
+    old_role_disc = "None"
+    if old_role != "None":
+        old_role_disc = discord.utils.get(ctx.guild.roles, name=new_role)
 
     # File path if user is new applicant
-    if old_role == '':
+    if old_role == 'None':
         filePath = 'applications/' + rsn + '.txt'
-        print("none")
     # File path is user is current applicant
     else:
         filePath = 'applications/' + old_role + '/' + rsn + '.txt'
-        print(filePath)
+        #print(filePath)
 
     # Get user's discord name from application file
     myFile = open(filePath, 'r')
@@ -1323,12 +1325,14 @@ async def accept_application(ctx, rsn, new_role, old_role=''):
                    'applications/Trialist/' + rsn + ".txt")
 
     # Remove old application
-    os.remove('applications/' + old_role + '/' + rsn + '.txt')
+    if old_role != "None":
+        os.remove('applications/' + old_role + '/' + rsn + '.txt')
 
     # Add new role
     await discord_member.add_roles(new_role_disc)
     # Remove old role
-    await ctx.author.remove_roles(old_role_disc)
+    if old_role != "None":
+        await ctx.author.remove_roles(old_role_disc)
 
     # Notify user of new rank
     ping_user = discord_member.mention
