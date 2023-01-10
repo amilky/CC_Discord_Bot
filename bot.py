@@ -1266,91 +1266,95 @@ async def save_application(ctx, rsn, type=None, about_me="", force=None):
 @bot.command(name='accept')
 @commands.has_role('Pinkopia Admin')
 async def accept_application(ctx, rsn, new_role, old_role='None'):
-    # Get new role from discord roles. Use these to add/remove roles
-    new_role_disc = discord.utils.get(ctx.guild.roles, name=new_role)
-    old_role_disc = "None"
-    if old_role != "None":
-        old_role_disc = discord.utils.get(ctx.guild.roles, name=new_role)
+    try:
+        # Get new role from discord roles. Use these to add/remove roles
+        new_role_disc = discord.utils.get(ctx.guild.roles, name=new_role)
+        old_role_disc = "None"
+        if old_role != "None":
+            old_role_disc = discord.utils.get(ctx.guild.roles, name=old_role)
 
-    # File path if user is new applicant
-    if old_role == 'None':
-        filePath = 'applications/' + rsn + '.txt'
-    # File path is user is current applicant
-    else:
-        filePath = 'applications/' + old_role + '/' + rsn + '.txt'
-        #print(filePath)
+        # File path if user is new applicant
+        if old_role == 'None':
+            filePath = 'applications/' + rsn + '.txt'
+        # File path is user is current applicant
+        else:
+            filePath = 'applications/' + old_role + '/' + rsn + '.txt'
+            #print(filePath)
 
-    # Get user's discord name from application file
-    myFile = open(filePath, 'r')
-    discord_name = myFile.readlines()[2].split(":")[1].strip()
-    print(discord_name)
-    myFile.close()
+        # Get user's discord name from application file
+        myFile = open(filePath, 'r')
+        discord_name = myFile.readlines()[2].split(":")[1].strip()
+        print(discord_name)
+        myFile.close()
 
-    # Get member object for the user applying
-    discord_member = ctx.guild.get_member_named(discord_name)
+        # Get member object for the user applying
+        discord_member = ctx.guild.get_member_named(discord_name)
 
-    # Move application file depending on current role
-    # If member is a Trialist
-    if discord.utils.get(discord_member.roles, name='Trialist'):
-        # Move file
-        os.replace('applications/' + rsn + ".txt",
-                   'applications/' + new_role + '/' + rsn + ".txt")
-    # If member is a Battlemage
-    elif discord.utils.get(discord_member.roles, name='Battlemage'):
-        # Move file
-        os.replace('applications/' + rsn + ".txt",
-                   'applications/' + new_role + '/' + rsn + ".txt")
-    # If member is an Artillery
-    elif discord.utils.get(discord_member.roles, name='Artillery'):
-        os.replace('applications/' + rsn + ".txt",
-                   'applications/' + new_role + '/' + rsn + ".txt")
-    # If member is an Infantry
-    elif discord.utils.get(discord_member.roles, name='Infantry'):
-        os.replace('applications/' + rsn + ".txt",
-                   'applications/' + new_role + '/' + rsn + ".txt")
-    # If member is a Crusader
-    elif discord.utils.get(discord_member.roles, name='Crusader'):
-        os.replace('applications/' + rsn + ".txt",
-                   'applications/' + new_role + '/' + rsn + ".txt")
-    # If member is a Sniper
-    elif discord.utils.get(discord_member.roles, name='Sniper'):
-        os.replace('applications/' + rsn + ".txt",
-                   'applications/' + new_role + '/' + rsn + ".txt")
-    # If member is a Carry
-    elif discord.utils.get(discord_member.roles, name='Carry'):
-        os.replace('applications/' + rsn + ".txt",
-                   'applications/' + new_role + '/' + rsn + ".txt")
-    # If member is a Guthixian
-    elif discord.utils.get(discord_member.roles, name='Guthixian'):
-        os.replace('applications/' + rsn + ".txt",
-                   'applications/' + new_role + '/' + rsn + ".txt")
-    # If member is a Skiller
-    elif discord.utils.get(discord_member.roles, name='Skiller'):
-        os.replace('applications/' + rsn + ".txt",
-                   'applications/' + new_role + '/' + rsn + ".txt")
-    # If member is a Maxed
-    elif discord.utils.get(discord_member.roles, name='Maxed'):
-        os.replace('applications/' + rsn + ".txt",
-                   'applications/' + new_role + '/' + rsn + ".txt")
-    else:
-        os.replace('applications/' + rsn + ".txt",
-                   'applications/' + new_role + '/' + rsn + ".txt")
+        # Move application file depending on current role
+        # If member is a Trialist
+        if discord.utils.get(discord_member.roles, name='Trialist'):
+            # Move file
+            os.replace('applications/' + rsn + ".txt",
+                       'applications/' + new_role + '/' + rsn + ".txt")
+        # If member is a Battlemage
+        elif discord.utils.get(discord_member.roles, name='Battlemage'):
+            # Move file
+            os.replace('applications/' + rsn + ".txt",
+                       'applications/' + new_role + '/' + rsn + ".txt")
+        # If member is an Artillery
+        elif discord.utils.get(discord_member.roles, name='Artillery'):
+            os.replace('applications/' + rsn + ".txt",
+                       'applications/' + new_role + '/' + rsn + ".txt")
+        # If member is an Infantry
+        elif discord.utils.get(discord_member.roles, name='Infantry'):
+            os.replace(filePath,
+                       'applications/' + new_role + '/' + rsn + ".txt")
+        # If member is a Crusader
+        elif discord.utils.get(discord_member.roles, name='Crusader'):
+            os.replace('applications/' + rsn + ".txt",
+                       'applications/' + new_role + '/' + rsn + ".txt")
+        # If member is a Sniper
+        elif discord.utils.get(discord_member.roles, name='Sniper'):
+            os.replace('applications/' + rsn + ".txt",
+                       'applications/' + new_role + '/' + rsn + ".txt")
+        # If member is a Carry
+        elif discord.utils.get(discord_member.roles, name='Carry'):
+            os.replace('applications/' + rsn + ".txt",
+                       'applications/' + new_role + '/' + rsn + ".txt")
+        # If member is a Guthixian
+        elif discord.utils.get(discord_member.roles, name='Guthixian'):
+            os.replace('applications/' + rsn + ".txt",
+                       'applications/' + new_role + '/' + rsn + ".txt")
+        # If member is a Skiller
+        elif discord.utils.get(discord_member.roles, name='Skiller'):
+            os.replace('applications/' + rsn + ".txt",
+                       'applications/' + new_role + '/' + rsn + ".txt")
+        # If member is a Maxed
+        elif discord.utils.get(discord_member.roles, name='Maxed'):
+            os.replace('applications/' + rsn + ".txt",
+                       'applications/' + new_role + '/' + rsn + ".txt")
+        else:
+            os.replace('applications/' + rsn + ".txt",
+                       'applications/' + new_role + '/' + rsn + ".txt")
 
-    # Remove old application
-    if old_role != "None":
-        os.remove('applications/' + old_role + '/' + rsn + '.txt')
+        # Remove old application
+        #if old_role != "None":
+        #    os.remove('applications/' + old_role + '/' + rsn + '.txt')
 
-    # Add new role
-    await discord_member.add_roles(new_role_disc)
-    # Remove old role
-    if old_role != "None":
-        await ctx.author.remove_roles(old_role_disc)
+        # Add new role
+        await discord_member.add_roles(new_role_disc)
+        # Remove old role
+        if old_role != "None":
+            await discord_member.remove_roles(old_role_disc)
 
-    # Notify user of new rank
-    ping_user = discord_member.mention
-    accept_msg = "Congrats " + ping_user + "! The osrs account " + '**' + rsn\
-                 + '**' + " has just been ranked " + new_role + "!"
-    channel = await bot.fetch_channel(797957000788180992)
+        # Notify user of new rank
+        ping_user = discord_member.mention
+        accept_msg = "Congrats " + ping_user + "! The osrs account " + '**' + rsn\
+                     + '**' + " has just been ranked " + new_role + "!"
+        channel = await bot.fetch_channel(797957000788180992)
+    except Exception as e:
+        print(e)
+        raise e
     await channel.send(accept_msg)
 
 
