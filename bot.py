@@ -12,6 +12,7 @@ import datetime
 import sys
 import re
 import time
+import datetime
 
 import discord
 from discord.ext import commands
@@ -1180,6 +1181,7 @@ async def save_application(ctx, rsn, about_me="", type=None, force=None):
         total_points = skill_points + clue_points + raid_points + \
                        bossing_points + total_xp_points
 
+        current_date = datetime.datetime.now()
         if total_points >= TOTAL_POINTS_MIN:
             fileName = 'applications/' + rsn + ".txt"
             myFile = open(fileName, 'w')
@@ -1194,7 +1196,9 @@ async def save_application(ctx, rsn, about_me="", type=None, force=None):
                 Total Points: %d
                     ''' % (
                 rsn, about_me, discord_name, raid_points, bossing_points,
-                skill_points, total_xp_points, total_points)
+                skill_points, total_xp_points, total_points) + 'Date: ' + \
+                str(current_date.month) + '/' + str(current_date.day) + '/' +\
+                str(current_date.year)
             # print(discord_name)
             myFile.write(fileContents)
             myFile.close()
