@@ -1137,7 +1137,7 @@ async def show_queue(ctx):
 
 
 @bot.command(name='apply')
-async def save_application(ctx, rsn, about_me="", type=None, force=None):
+async def save_application(ctx, rsn, type=None, about_me="", force=None):
     channel = await bot.fetch_channel(797956922703347764)
     if channel != ctx.channel:
         return
@@ -1334,7 +1334,7 @@ async def accept_application(ctx, rsn, new_role, old_role='None'):
                    'applications/' + new_role + '/' + rsn + ".txt")
     else:
         os.replace('applications/' + rsn + ".txt",
-                   'applications/Trialist/' + rsn + ".txt")
+                   'applications/' + new_role + '/' + rsn + ".txt")
 
     # Remove old application
     if old_role != "None":
