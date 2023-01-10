@@ -1291,51 +1291,7 @@ async def accept_application(ctx, rsn, new_role, old_role='None'):
         discord_member = ctx.guild.get_member_named(discord_name)
 
         # Move application file depending on current role
-        # If member is a Trialist
-        if discord.utils.get(discord_member.roles, name='Trialist'):
-            # Move file
-            os.replace('applications/' + rsn + ".txt",
-                       'applications/' + new_role + '/' + rsn + ".txt")
-        # If member is a Battlemage
-        elif discord.utils.get(discord_member.roles, name='Battlemage'):
-            # Move file
-            os.replace('applications/' + rsn + ".txt",
-                       'applications/' + new_role + '/' + rsn + ".txt")
-        # If member is an Artillery
-        elif discord.utils.get(discord_member.roles, name='Artillery'):
-            os.replace('applications/' + rsn + ".txt",
-                       'applications/' + new_role + '/' + rsn + ".txt")
-        # If member is an Infantry
-        elif discord.utils.get(discord_member.roles, name='Infantry'):
-            os.replace(filePath,
-                       'applications/' + new_role + '/' + rsn + ".txt")
-        # If member is a Crusader
-        elif discord.utils.get(discord_member.roles, name='Crusader'):
-            os.replace('applications/' + rsn + ".txt",
-                       'applications/' + new_role + '/' + rsn + ".txt")
-        # If member is a Sniper
-        elif discord.utils.get(discord_member.roles, name='Sniper'):
-            os.replace('applications/' + rsn + ".txt",
-                       'applications/' + new_role + '/' + rsn + ".txt")
-        # If member is a Carry
-        elif discord.utils.get(discord_member.roles, name='Carry'):
-            os.replace('applications/' + rsn + ".txt",
-                       'applications/' + new_role + '/' + rsn + ".txt")
-        # If member is a Guthixian
-        elif discord.utils.get(discord_member.roles, name='Guthixian'):
-            os.replace('applications/' + rsn + ".txt",
-                       'applications/' + new_role + '/' + rsn + ".txt")
-        # If member is a Skiller
-        elif discord.utils.get(discord_member.roles, name='Skiller'):
-            os.replace('applications/' + rsn + ".txt",
-                       'applications/' + new_role + '/' + rsn + ".txt")
-        # If member is a Maxed
-        elif discord.utils.get(discord_member.roles, name='Maxed'):
-            os.replace('applications/' + rsn + ".txt",
-                       'applications/' + new_role + '/' + rsn + ".txt")
-        else:
-            os.replace('applications/' + rsn + ".txt",
-                       'applications/' + new_role + '/' + rsn + ".txt")
+        os.replace(filePath, 'applications/' + new_role + '/' + rsn + ".txt")
 
         # Remove old application
         #if old_role != "None":
