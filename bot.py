@@ -4,6 +4,7 @@
 FORMAT_SYMBOLS = "```"
 TOTAL_POINTS_MIN = 0
 MAX_PEOPLE = 7
+MONTH = 30
 
 import os
 from os import path
@@ -13,6 +14,8 @@ import sys
 import re
 import time
 import datetime
+from dateutil.relativedelta import relativedelta
+
 
 import discord
 from discord.ext import commands
@@ -65,7 +68,7 @@ def calc_skilling(hiscore_list, user_type):
         points += 1600
     elif total_level == 2277:
         points += 2600
-    if user_type == "hardcore" or user_type == "ironman":
+    if user_type == "hardcore" or user_type == "ironman" or user_type == "gim":
         points = int(points * 1.1)
     return points
 
@@ -109,18 +112,18 @@ def calc_raids(hiscore_list):
     # cox
     cox_points = 0
     cm_points = 0
-    cox_kc = int(hiscore_list[44][1])
-    cm_cox_kc = int(hiscore_list[45][1])
+    cox_kc = int(hiscore_list[46][1])
+    cm_cox_kc = int(hiscore_list[47][1])
     # tob
     tob_points = 0
     tob_hm_points = 0
-    tob_kc = int(hiscore_list[75][1])
-    tob_hm_kc = int(hiscore_list[76][1])
+    tob_kc = int(hiscore_list[77][1])
+    tob_hm_kc = int(hiscore_list[78][1])
     # toa
     toa_points = 0
     toa_hard_points = 0
-    toa_kc = int(hiscore_list[78][1])
-    toa_hard_kc = int(hiscore_list[79][1])
+    toa_kc = int(hiscore_list[80][1])
+    toa_hard_kc = int(hiscore_list[81][1])
 
     raid_list = []
     # print(cox_kc)
@@ -190,11 +193,11 @@ def calc_soulWars(hiscore_list):
 def calc_bossing(hiscore_list):
     boss_points = 0
 
-    gwd_dict = {"Commander Zilyana": int(hiscore_list[48][1]),
-                "General Graardor": int(hiscore_list[55][1]),
-                "Kree'Arra": int(hiscore_list[62][1]),
-                "K'ril Tsutsaroth": int(hiscore_list[63][1]),
-                "Nex": int(hiscore_list[65][1])}
+    gwd_dict = {"Commander Zilyana": int(hiscore_list[50][1]),
+                "General Graardor": int(hiscore_list[57][1]),
+                "Kree'Arra": int(hiscore_list[64][1]),
+                "K'ril Tsutsaroth": int(hiscore_list[65][1]),
+                "Nex": int(hiscore_list[67][1])}
     #print("nex kc: ", hiscore_list[65][1])
     gwd_points = 0
     for key in gwd_dict:
@@ -210,12 +213,13 @@ def calc_bossing(hiscore_list):
     # GROUP A POINTS
     boss_A_dict = {"Abyssal Sire": int(hiscore_list[38][1]),
                    "Alchemical Hydra": int(hiscore_list[39][1]),
-                   "Callisto": int(hiscore_list[42][1]),
-                   "Cerberus": int(hiscore_list[43][1]), "Venenatis":
-                       int(hiscore_list[82][1]),
-                   "Vet'ion": int(hiscore_list[83][1]),
-                   "Vorkath": int(hiscore_list[84][1]),
-                   "Zulrah": int(hiscore_list[87][1])}
+                   "Callisto": int(hiscore_list[43][1]),
+                   "Cerberus": int(hiscore_list[45][1]), "Venenatis":
+                       int(hiscore_list[84][1]),
+                   "Vet'ion": int(hiscore_list[85][1]),
+                   "Vorkath": int(hiscore_list[86][1]),
+                   "Zulrah": int(hiscore_list[89][1]), "Phantom Muspah": int(
+                    hiscore_list[71][1])}
 
     boss_A_points = 0
     for key in boss_A_dict:
@@ -227,21 +231,21 @@ def calc_bossing(hiscore_list):
     #print(boss_A_points)
 
     # GROUP B POINTS
-    boss_B_dict = {"Chaos Elemental": int(hiscore_list[46][1]),
-                   "Chaos Fanatic": int(hiscore_list[47][1]),
-                   "Dagannoth Prime": int(hiscore_list[51][1]),
-                   "Dagannoth_Rex": int(hiscore_list[52][1]),
-                   "Dagannoth Supreme": int(hiscore_list[53][1]),
-                   "Giant Mole": int(hiscore_list[56][1]),
-                   "Grotesque Guardians": int(hiscore_list[57][1]),
-                   "Kalphite Queen": int(hiscore_list[59][1]),
-                   "King Black Dragon": int(hiscore_list[60][1]),
-                   "Kraken": int(hiscore_list[61][1]), "Sarachnis":
-                       int(hiscore_list[69][1]),
-                   "Scorpia": int(hiscore_list[70][1]),
+    boss_B_dict = {"Chaos Elemental": int(hiscore_list[48][1]),
+                   "Chaos Fanatic": int(hiscore_list[49][1]),
+                   "Dagannoth Prime": int(hiscore_list[53][1]),
+                   "Dagannoth_Rex": int(hiscore_list[54][1]),
+                   "Dagannoth Supreme": int(hiscore_list[55][1]),
+                   "Giant Mole": int(hiscore_list[58][1]),
+                   "Grotesque Guardians": int(hiscore_list[59][1]),
+                   "Kalphite Queen": int(hiscore_list[61][1]),
+                   "King Black Dragon": int(hiscore_list[62][1]),
+                   "Kraken": int(hiscore_list[63][1]), "Sarachnis":
+                       int(hiscore_list[72][1]),
+                   "Scorpia": int(hiscore_list[71][1]),
                    "Thermonuclear Smoke Devil":
-                       int(hiscore_list[77][1]),
-                   "Zalcano": int(hiscore_list[86][1])}
+                       int(hiscore_list[79][1]),
+                   "Zalcano": int(hiscore_list[88][1])}
 
     #print("Sarachnis", int(hiscore_list[69][1]))
     #print("Scorpia", int(hiscore_list[70][1]))
@@ -257,12 +261,15 @@ def calc_bossing(hiscore_list):
     #print(boss_B_dict)
 
     # GROUP C POINTS
-    boss_C_dict = {"Barrows Chests": int(hiscore_list[40][1]),
-                   "Crazy Archaeologist": int(hiscore_list[50][1]),
-                   "Deranged Archaeologist": int(hiscore_list[54][1]),
-                   "Wintertodt": int(hiscore_list[85][1]),
+    boss_C_dict = {"Barrows Chests": int(hiscore_list[41][1]),
+                   "Crazy Archaeologist": int(hiscore_list[52][1]),
+                   "Deranged Archaeologist": int(hiscore_list[56][1]),
+                   "Wintertodt": int(hiscore_list[87][1]),
                    "Guardians of the Rift": int(hiscore_list[37][1]),
-                   "Tempoross": int(hiscore_list[72][1])}
+                   "Tempoross": int(hiscore_list[74][1]),
+                   "Artio": int(hiscore_list[40][1]),
+                   "Calvar'ion": int(hiscore_list[44][1]),
+                   "Spindel": int(hiscore_list[73][1])}
 
     boss_C_points = 0
     for key in boss_C_dict:
@@ -276,62 +283,62 @@ def calc_bossing(hiscore_list):
     # print(boss_C_dict["Deranged Archaeologist"])
     # print(boss_points)
 
-    skotizo_kc = int(hiscore_list[71][1])
+    skotizo_kc = int(hiscore_list[72][1])
     if skotizo_kc > 0:
         boss_points += skotizo_kc // 3
     #print("skotizo", skotizo_kc)
 
-    obor_kc = int(hiscore_list[68][1])
+    obor_kc = int(hiscore_list[70][1])
     if obor_kc > 0:
         boss_points += obor_kc // 10
     #print("obor", obor_kc)
 
-    bryophyta_kc = int(hiscore_list[41][1])
+    bryophyta_kc = int(hiscore_list[42][1])
     if bryophyta_kc > 0:
         boss_points += bryophyta_kc // 10
     #print("bryophyta_kc", bryophyta_kc)
 
-    corporeal_kc = int(hiscore_list[49][1])
+    corporeal_kc = int(hiscore_list[51][1])
     if corporeal_kc > 0:
         boss_points += corporeal_kc // 7
     #print(corporeal_kc)
 
-    mimic_kc = int(hiscore_list[64][1])
+    mimic_kc = int(hiscore_list[66][1])
     if mimic_kc > 0:
         boss_points += mimic_kc
     #print("mimic_kc", mimic_kc)
 
-    hespori_kc = int(hiscore_list[58][1])
+    hespori_kc = int(hiscore_list[60][1])
     if hespori_kc > 0:
         boss_points += hespori_kc // 5
     #print("hespori", hespori_kc)
 
-    nightmare_kc = int(hiscore_list[66][1])
+    nightmare_kc = int(hiscore_list[68][1])
     if nightmare_kc > 0:
         boss_points += nightmare_kc // 5
     #print("nightmare_kc", nightmare_kc)
 
-    phosani_nm_kc = int(hiscore_list[67][1])
+    phosani_nm_kc = int(hiscore_list[69][1])
     if phosani_nm_kc > 0:
         boss_points += phosani_nm_kc // 2
     #print("pnm_kc", phosani_nm_kc)
 
-    gauntlet_kc = int(hiscore_list[73][1])
+    gauntlet_kc = int(hiscore_list[75][1])
     if gauntlet_kc > 0:
         boss_points += gauntlet_kc // 5
     #print("gauntlet_kc", gauntlet_kc)
 
-    corrupted_gauntlet_kc = int(hiscore_list[74][1])
+    corrupted_gauntlet_kc = int(hiscore_list[76][1])
     if corrupted_gauntlet_kc > 0:
         boss_points += corrupted_gauntlet_kc // 3
     #print("corrupted_gauntlet_kc", corrupted_gauntlet_kc)
 
-    jad_kc = int(hiscore_list[81][1])
+    jad_kc = int(hiscore_list[83][1])
     if jad_kc > 0:
         boss_points += jad_kc
     #print("jad_kc", jad_kc)
 
-    zuk_kc = int(hiscore_list[80][1])
+    zuk_kc = int(hiscore_list[82][1])
     if zuk_kc > 0:
         boss_points += zuk_kc * 9
     #print("zuk_kc", zuk_kc)
@@ -405,7 +412,7 @@ def get_user_data(username, account_type, force):
 
 def query_website(username, account_type):
     base_url = ''
-    if account_type == "main":
+    if account_type == "main" or account_type == "gim":
         base_url = 'https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player='
     if account_type == "ironman":
         base_url = 'https://secure.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws?player='
@@ -413,7 +420,7 @@ def query_website(username, account_type):
     print("Querying: " + str(url))
     try:
         osrs_response = requests.get(url, timeout=10)
-        print("Responded?" + str(osrs_response))
+        #print("Responded?" + str(osrs_response))
         if osrs_response.status_code == 200:
             # text takes the webpages data and converts it to a string
             response = osrs_response.text
@@ -503,7 +510,7 @@ async def points(ctx, rsn, *args):
     force = False
     advanced = False
     account_type = "main"
-    print("In !points")
+    #print("In !points")
     for arg in args:
         if arg == "force":
             force = True
@@ -511,6 +518,8 @@ async def points(ctx, rsn, *args):
             advanced = True
         if arg == "ironman":
             account_type = "ironman"
+        if arg == "gim" or arg =="ugim":
+            account_type = "gim"
 
     user_data = get_user_data(rsn, account_type, force)
 
@@ -518,6 +527,8 @@ async def points(ctx, rsn, *args):
         big_string = "OH NO! The OSRS Highscore Page is down. Please try again later."
     elif user_data == "UNF":
         big_string = "User Not Found. Please make sure the username and account type you put are correct"
+        await ctx.channel.send("User Not Found! Please make sure the "
+                               "username and account type are correct.")
     else:
         hiscore_list = get_hiscore_list(user_data)
 
@@ -629,7 +640,7 @@ async def points(ctx, rsn, *args):
                      misc_points_str + "\n" + clue_points_str + "\n" + \
                      lms_points_str + "\n" + "\n" + total_points_str + \
                      FORMAT_SYMBOLS
-        print('big string: ', '\n', big_string)
+        #print('big string: ', '\n', big_string)
         raids_tuple = calc_raids(hiscore_list)
 
         print()
@@ -843,6 +854,84 @@ async def full_points(ctx, rsn, *args):
             discord_file.close()
 
         image_file_lock.release()
+
+        # Check when user is eligible for next rank
+        # Calculate point parameters
+        total_cox_points = cox_points + cm_points
+        total_tob_points = tob_points + tob_hm_points
+        total_toa_points = toa_points + toa_hard_points
+
+
+        # Find date of last rank upgrade
+        # Get all CC role-related ranks
+        Trialist = discord.utils.get(ctx.guild.roles, name='Trialist')
+        Battlemage = discord.utils.get(ctx.guild.roles, name='Battlemage')
+        Artillery = discord.utils.get(ctx.guild.roles, name='Artillery')
+        Infantry = discord.utils.get(ctx.guild.roles, name='Infantry')
+        Crusader = discord.utils.get(ctx.guild.roles, name='Crusader')
+        Sniper = discord.utils.get(ctx.guild.roles, name='Sniper')
+        Carry = discord.utils.get(ctx.guild.roles, name='Carry')
+        Guthixian = discord.utils.get(ctx.guild.roles, name='Guthixian')
+        Skiller = discord.utils.get(ctx.guild.roles, name='Skiller')
+        Maxed = discord.utils.get(ctx.guild.roles, name='Maxed')
+
+        # List that contains all role ranks
+        role_list = [Trialist, Battlemage, Artillery, Infantry, Crusader,
+                     Sniper, Carry, Guthixian, Skiller, Maxed]
+        current_role = Trialist
+
+        file_path = ''
+        # Find if user has current rank in CC (and if so, what rank it is)
+        for role in ctx.author.roles:
+            if role in role_list:
+                file_path = 'applications/' + str(role) + '/' + rsn + '.txt'
+                file_exists = path.exists(file_path)
+                if file_exists:
+                    current_role = role
+                    break
+
+        index = 0
+        # Find index of current_role in role_list
+        for role in role_list:
+            if current_role != role:
+                index += 1
+            else:
+                break
+
+        my_file = open(file_path, 'r')
+        eligible_date = my_file.readlines()[12]
+        my_file.close()
+
+        eligible_message = check_eligibility(total_points, pvm_points,
+                                           raid_points,
+                          total_cox_points, total_tob_points,
+                          total_toa_points, eligible_date, current_role, index)
+        await ctx.channel.send(eligible_message)
+
+def check_eligibility(total_points, pvm_points, raid_points,
+                          total_cox_points, total_tob_points,
+                      total_toa_points, eligible_date, current_role, index):
+    '''
+    # List of all roles
+    role_list = ['Trialist', 'Battlemage', 'Artillery', 'Infantry', 'Crusader',
+                 'Sniper', 'Carry', 'Guthixian', 'Skiller', 'Maxed']
+
+    # Determine next role for which to check eligibility
+    role_to_check = role_list[index + 1]
+    eligible_role = 'Trialist'
+
+    # Compare user's points with next rank
+    # Check Battlemage
+    '''
+
+    # Compare time since last upgraded role
+    # Find today's date
+    #date_today = datetime.datetime.today()
+    # Find 1 month from last rank up
+
+    date_message = 'You can apply for this rank after ' + eligible_date
+
+    return date_message
 
 def verify_rsn(rsn):
     rsn_re = re.compile('^[a-z0-9 \_]+$').search
@@ -1139,7 +1228,8 @@ async def show_queue(ctx):
 @bot.command(name='apply')
 async def save_application(ctx, rsn, type=None, about_me="", force=None):
     channel = await bot.fetch_channel(797956922703347764)
-    if channel != ctx.channel:
+    channel_test = await bot.fetch_channel(1062028387385888851)
+    if (channel != ctx.channel) and (channel_test != ctx.channel):
         return
     application_received = ""
     account_type = "ironman"
@@ -1187,10 +1277,10 @@ async def save_application(ctx, rsn, type=None, about_me="", force=None):
         total_points = skill_points + clue_points + raid_points + \
                        bossing_points + total_xp_points
 
-        current_date = datetime.datetime.now()
+        date_today = datetime.datetime.today()
         if total_points >= TOTAL_POINTS_MIN:
             fileName = 'applications/' + rsn + ".txt"
-            print(fileName)
+            #print(fileName)
             myFile = open(fileName, 'w')
             fileContents = \
                 '''RSN: %s
@@ -1209,9 +1299,7 @@ async def save_application(ctx, rsn, type=None, about_me="", force=None):
                 rsn, about_me, discord_name, raid_points,
                 str(cox_points), str(tob_points), str(toa_points),
                 bossing_points, str(total_pvm_points),
-                skill_points, total_xp_points, total_points) + 'Date: ' + \
-                str(current_date.month) + '/' + str(current_date.day) + '/' +\
-                str(current_date.year)
+                skill_points, total_xp_points, total_points) + str(date_today)
             # print(discord_name)
             myFile.write(fileContents)
             myFile.close()
@@ -1249,7 +1337,7 @@ async def save_application(ctx, rsn, type=None, about_me="", force=None):
             await channel.send(file=discordFile)
 
 
-            '''elif total_points < TOTAL_POINTS_MIN:
+        elif total_points < TOTAL_POINTS_MIN:
             discord_name = ctx.author
             discord.AllowedMentions(everyone=True)
             discord_name = ctx.author
@@ -1259,7 +1347,7 @@ async def save_application(ctx, rsn, type=None, about_me="", force=None):
 
             application_received = "Unfortunately, " + ping_user + " the OSRS account " + '**' + rsn + '**' + " does not meet the " \
                                                                                                               "minimum requirement of " + '**' + "100 total points" + '**' + " to apply to the Pinkopia CC. " \
-                                   + "\n" + "Please resubmit your application once you fulfill this requirement! "'''
+                                   + "\n" + "Please resubmit your application once you fulfill this requirement! "
     await ctx.send(application_received)
 
 
@@ -1284,7 +1372,32 @@ async def accept_application(ctx, rsn, new_role, old_role='None'):
         # Get user's discord name from application file
         myFile = open(filePath, 'r')
         discord_name = myFile.readlines()[2].split(":")[1].strip()
-        print(discord_name)
+        #print(discord_name)
+        myFile.close()
+
+        # Append date when user is eligible for increasing rank to file
+        date_after_month = datetime.datetime.today() + relativedelta(months=1)
+        formatted_date = date_after_month.strftime('%m/%d/%Y')
+
+        # Read in all lines of application file
+        # list to store file lines
+        lines = []
+        # read file
+        myFile = open(filePath, 'r')
+        # read an store all lines into list
+        lines = myFile.readlines()
+        myFile.close()
+
+        # Delete last line of application (date) and replace with date one
+        # month from acceptance
+        myFile = open(filePath, 'w')
+        for number, line in enumerate(lines):
+            # delete line 5 and 8. or pass any Nth line you want to remove
+            # note list index starts from 0
+            if number not in [12]:
+                myFile.write(line)
+            else:
+                myFile.write(formatted_date)
         myFile.close()
 
         # Get member object for the user applying
@@ -1308,6 +1421,7 @@ async def accept_application(ctx, rsn, new_role, old_role='None'):
         accept_msg = "Congrats " + ping_user + "! The osrs account " + '**' + rsn\
                      + '**' + " has just been ranked " + new_role + "!"
         channel = await bot.fetch_channel(797957000788180992)
+
     except Exception as e:
         print(e)
         raise e
