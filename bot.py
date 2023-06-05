@@ -76,12 +76,12 @@ def calc_skilling(hiscore_list, user_type):
 def calc_clue(hiscore_list):
     points = 0
 
-    beginner_clue = int(hiscore_list[28][1])
-    easy_clue = int(hiscore_list[29][1])
-    medium_clue = int(hiscore_list[30][1])
-    hard_clue = int(hiscore_list[31][1])
-    elite_clue = int(hiscore_list[32][1])
-    master_clue = int(hiscore_list[33][1])
+    beginner_clue = int(hiscore_list[30][1])
+    easy_clue = int(hiscore_list[31][1])
+    medium_clue = int(hiscore_list[32][1])
+    hard_clue = int(hiscore_list[33][1])
+    elite_clue = int(hiscore_list[34][1])
+    master_clue = int(hiscore_list[35][1])
 
     # print(beginner_clue)
     # print(easy_clue)
@@ -112,18 +112,18 @@ def calc_raids(hiscore_list):
     # cox
     cox_points = 0
     cm_points = 0
-    cox_kc = int(hiscore_list[46][1])
-    cm_cox_kc = int(hiscore_list[47][1])
+    cox_kc = int(hiscore_list[48][1])
+    cm_cox_kc = int(hiscore_list[49][1])
     # tob
     tob_points = 0
     tob_hm_points = 0
-    tob_kc = int(hiscore_list[77][1])
-    tob_hm_kc = int(hiscore_list[78][1])
+    tob_kc = int(hiscore_list[81][1])
+    tob_hm_kc = int(hiscore_list[82][1])
     # toa
     toa_points = 0
     toa_hard_points = 0
-    toa_kc = int(hiscore_list[80][1])
-    toa_hard_kc = int(hiscore_list[81][1])
+    toa_kc = int(hiscore_list[84][1])
+    toa_hard_kc = int(hiscore_list[85][1])
 
     raid_list = []
     # print(cox_kc)
@@ -173,7 +173,7 @@ def calc_raids(hiscore_list):
 
 def calc_lms(hiscore_list):
     points = 0
-    lms_kc = int(hiscore_list[34][1])
+    lms_kc = int(hiscore_list[36][1])
     if lms_kc > 0:
         points = (lms_kc - 500) // 10
 
@@ -182,7 +182,7 @@ def calc_lms(hiscore_list):
 
 def calc_soulWars(hiscore_list):
     points = 0
-    soulWars_kc = int(hiscore_list[36][1])
+    soulWars_kc = int(hiscore_list[38][1])
     #print("this is my soulwars kc", soulWars_kc)
     if soulWars_kc > 0:
         points += (soulWars_kc // 300)
@@ -193,11 +193,11 @@ def calc_soulWars(hiscore_list):
 def calc_bossing(hiscore_list):
     boss_points = 0
 
-    gwd_dict = {"Commander Zilyana": int(hiscore_list[50][1]),
-                "General Graardor": int(hiscore_list[57][1]),
-                "Kree'Arra": int(hiscore_list[64][1]),
-                "K'ril Tsutsaroth": int(hiscore_list[65][1]),
-                "Nex": int(hiscore_list[67][1])}
+    gwd_dict = {"Commander Zilyana": int(hiscore_list[52][1]),
+                "General Graardor": int(hiscore_list[59][1]),
+                "Kree'Arra": int(hiscore_list[66][1]),
+                "K'ril Tsutsaroth": int(hiscore_list[67][1]),
+                "Nex": int(hiscore_list[69][1])}
     #print("nex kc: ", hiscore_list[65][1])
     gwd_points = 0
     for key in gwd_dict:
@@ -211,15 +211,15 @@ def calc_bossing(hiscore_list):
     # print(boss_points)
 
     # GROUP A POINTS
-    boss_A_dict = {"Abyssal Sire": int(hiscore_list[38][1]),
-                   "Alchemical Hydra": int(hiscore_list[39][1]),
-                   "Callisto": int(hiscore_list[43][1]),
-                   "Cerberus": int(hiscore_list[45][1]), "Venenatis":
-                       int(hiscore_list[84][1]),
-                   "Vet'ion": int(hiscore_list[85][1]),
-                   "Vorkath": int(hiscore_list[86][1]),
-                   "Zulrah": int(hiscore_list[89][1]), "Phantom Muspah": int(
-                    hiscore_list[71][1])}
+    boss_A_dict = {"Abyssal Sire": int(hiscore_list[40][1]),
+                   "Alchemical Hydra": int(hiscore_list[41][1]),
+                   "Callisto": int(hiscore_list[45][1]),
+                   "Cerberus": int(hiscore_list[47][1]), "Venenatis":
+                       int(hiscore_list[88][1]),
+                   "Vet'ion": int(hiscore_list[89][1]),
+                   "Vorkath": int(hiscore_list[90][1]),
+                   "Zulrah": int(hiscore_list[93][1]), "Phantom Muspah": int(
+                    hiscore_list[73][1])}
 
     boss_A_points = 0
     for key in boss_A_dict:
@@ -231,21 +231,21 @@ def calc_bossing(hiscore_list):
     #print(boss_A_points)
 
     # GROUP B POINTS
-    boss_B_dict = {"Chaos Elemental": int(hiscore_list[48][1]),
-                   "Chaos Fanatic": int(hiscore_list[49][1]),
-                   "Dagannoth Prime": int(hiscore_list[53][1]),
-                   "Dagannoth_Rex": int(hiscore_list[54][1]),
-                   "Dagannoth Supreme": int(hiscore_list[55][1]),
-                   "Giant Mole": int(hiscore_list[58][1]),
-                   "Grotesque Guardians": int(hiscore_list[59][1]),
-                   "Kalphite Queen": int(hiscore_list[61][1]),
-                   "King Black Dragon": int(hiscore_list[62][1]),
-                   "Kraken": int(hiscore_list[63][1]), "Sarachnis":
-                       int(hiscore_list[72][1]),
-                   "Scorpia": int(hiscore_list[71][1]),
+    boss_B_dict = {"Chaos Elemental": int(hiscore_list[50][1]),
+                   "Chaos Fanatic": int(hiscore_list[51][1]),
+                   "Dagannoth Prime": int(hiscore_list[55][1]),
+                   "Dagannoth_Rex": int(hiscore_list[56][1]),
+                   "Dagannoth Supreme": int(hiscore_list[57][1]),
+                   "Giant Mole": int(hiscore_list[60][1]),
+                   "Grotesque Guardians": int(hiscore_list[61][1]),
+                   "Kalphite Queen": int(hiscore_list[63][1]),
+                   "King Black Dragon": int(hiscore_list[64][1]),
+                   "Kraken": int(hiscore_list[65][1]), "Sarachnis":
+                       int(hiscore_list[74][1]),
+                   "Scorpia": int(hiscore_list[75][1]),
                    "Thermonuclear Smoke Devil":
-                       int(hiscore_list[79][1]),
-                   "Zalcano": int(hiscore_list[88][1])}
+                       int(hiscore_list[83][1]),
+                   "Zalcano": int(hiscore_list[92][1])}
 
     #print("Sarachnis", int(hiscore_list[69][1]))
     #print("Scorpia", int(hiscore_list[70][1]))
@@ -261,15 +261,15 @@ def calc_bossing(hiscore_list):
     #print(boss_B_dict)
 
     # GROUP C POINTS
-    boss_C_dict = {"Barrows Chests": int(hiscore_list[41][1]),
-                   "Crazy Archaeologist": int(hiscore_list[52][1]),
-                   "Deranged Archaeologist": int(hiscore_list[56][1]),
-                   "Wintertodt": int(hiscore_list[87][1]),
-                   "Guardians of the Rift": int(hiscore_list[37][1]),
-                   "Tempoross": int(hiscore_list[74][1]),
-                   "Artio": int(hiscore_list[40][1]),
-                   "Calvar'ion": int(hiscore_list[44][1]),
-                   "Spindel": int(hiscore_list[73][1])}
+    boss_C_dict = {"Barrows Chests": int(hiscore_list[43][1]),
+                   "Crazy Archaeologist": int(hiscore_list[54][1]),
+                   "Deranged Archaeologist": int(hiscore_list[58][1]),
+                   "Wintertodt": int(hiscore_list[91][1]),
+                   "Guardians of the Rift": int(hiscore_list[39][1]),
+                   "Tempoross": int(hiscore_list[78][1]),
+                   "Artio": int(hiscore_list[42][1]),
+                   "Calvar'ion": int(hiscore_list[46][1]),
+                   "Spindel": int(hiscore_list[77][1])}
 
     boss_C_points = 0
     for key in boss_C_dict:
@@ -283,62 +283,62 @@ def calc_bossing(hiscore_list):
     # print(boss_C_dict["Deranged Archaeologist"])
     # print(boss_points)
 
-    skotizo_kc = int(hiscore_list[72][1])
+    skotizo_kc = int(hiscore_list[76][1])
     if skotizo_kc > 0:
         boss_points += skotizo_kc // 3
     #print("skotizo", skotizo_kc)
 
-    obor_kc = int(hiscore_list[70][1])
+    obor_kc = int(hiscore_list[72][1])
     if obor_kc > 0:
         boss_points += obor_kc // 10
     #print("obor", obor_kc)
 
-    bryophyta_kc = int(hiscore_list[42][1])
+    bryophyta_kc = int(hiscore_list[44][1])
     if bryophyta_kc > 0:
         boss_points += bryophyta_kc // 10
     #print("bryophyta_kc", bryophyta_kc)
 
-    corporeal_kc = int(hiscore_list[51][1])
+    corporeal_kc = int(hiscore_list[53][1])
     if corporeal_kc > 0:
         boss_points += corporeal_kc // 7
     #print(corporeal_kc)
 
-    mimic_kc = int(hiscore_list[66][1])
+    mimic_kc = int(hiscore_list[68][1])
     if mimic_kc > 0:
         boss_points += mimic_kc
     #print("mimic_kc", mimic_kc)
 
-    hespori_kc = int(hiscore_list[60][1])
+    hespori_kc = int(hiscore_list[62][1])
     if hespori_kc > 0:
         boss_points += hespori_kc // 5
     #print("hespori", hespori_kc)
 
-    nightmare_kc = int(hiscore_list[68][1])
+    nightmare_kc = int(hiscore_list[70][1])
     if nightmare_kc > 0:
         boss_points += nightmare_kc // 5
     #print("nightmare_kc", nightmare_kc)
 
-    phosani_nm_kc = int(hiscore_list[69][1])
+    phosani_nm_kc = int(hiscore_list[71][1])
     if phosani_nm_kc > 0:
         boss_points += phosani_nm_kc // 2
     #print("pnm_kc", phosani_nm_kc)
 
-    gauntlet_kc = int(hiscore_list[75][1])
+    gauntlet_kc = int(hiscore_list[79][1])
     if gauntlet_kc > 0:
         boss_points += gauntlet_kc // 5
     #print("gauntlet_kc", gauntlet_kc)
 
-    corrupted_gauntlet_kc = int(hiscore_list[76][1])
+    corrupted_gauntlet_kc = int(hiscore_list[80][1])
     if corrupted_gauntlet_kc > 0:
         boss_points += corrupted_gauntlet_kc // 3
     #print("corrupted_gauntlet_kc", corrupted_gauntlet_kc)
 
-    jad_kc = int(hiscore_list[83][1])
+    jad_kc = int(hiscore_list[87][1])
     if jad_kc > 0:
         boss_points += jad_kc
     #print("jad_kc", jad_kc)
 
-    zuk_kc = int(hiscore_list[82][1])
+    zuk_kc = int(hiscore_list[86][1])
     if zuk_kc > 0:
         boss_points += zuk_kc * 9
     #print("zuk_kc", zuk_kc)
@@ -640,7 +640,7 @@ async def points(ctx, rsn, *args):
                      misc_points_str + "\n" + clue_points_str + "\n" + \
                      lms_points_str + "\n" + "\n" + total_points_str + \
                      FORMAT_SYMBOLS
-        #print('big string: ', '\n', big_string)
+        print('big string: ', '\n', big_string)
         raids_tuple = calc_raids(hiscore_list)
 
         print()
