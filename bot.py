@@ -245,7 +245,11 @@ def calc_bossing(hiscore_list):
                    "Scorpia": int(hiscore_list[75][1]),
                    "Thermonuclear Smoke Devil":
                        int(hiscore_list[83][1]),
-                   "Zalcano": int(hiscore_list[92][1])}
+                   "Zalcano": int(hiscore_list[92][1]),
+                   "Artio": int(hiscore_list[42][1]),
+                   "Calvar'ion": int(hiscore_list[46][1]),
+                   "Spindel": int(hiscore_list[77][1])
+                   }
 
     #print("Sarachnis", int(hiscore_list[69][1]))
     #print("Scorpia", int(hiscore_list[70][1]))
@@ -266,10 +270,7 @@ def calc_bossing(hiscore_list):
                    "Deranged Archaeologist": int(hiscore_list[58][1]),
                    "Wintertodt": int(hiscore_list[91][1]),
                    "Guardians of the Rift": int(hiscore_list[39][1]),
-                   "Tempoross": int(hiscore_list[78][1]),
-                   "Artio": int(hiscore_list[42][1]),
-                   "Calvar'ion": int(hiscore_list[46][1]),
-                   "Spindel": int(hiscore_list[77][1])}
+                   "Tempoross": int(hiscore_list[78][1])}
 
     boss_C_points = 0
     for key in boss_C_dict:
