@@ -15,7 +15,7 @@ import re
 import time
 import datetime
 from dateutil.relativedelta import relativedelta
-from enum import Enum
+from bosses_enum import Bosses
 
 import discord
 from discord.ext import commands
@@ -112,18 +112,18 @@ def calc_raids(hiscore_list):
     # cox
     cox_points = 0
     cm_points = 0
-    cox_kc = int(hiscore_list[48][1])
-    cm_cox_kc = int(hiscore_list[49][1])
+    cox_kc = int(hiscore_list[Bosses.COX.value][1])
+    cm_cox_kc = int(hiscore_list[Bosses.COX_CM.value][1])
     # tob
     tob_points = 0
     tob_hm_points = 0
-    tob_kc = int(hiscore_list[84][1])
-    tob_hm_kc = int(hiscore_list[85][1])
+    tob_kc = int(hiscore_list[Bosses.TOB.value][1])
+    tob_hm_kc = int(hiscore_list[Bosses.TOB_HM.value][1])
     # toa
     toa_points = 0
     toa_hard_points = 0
-    toa_kc = int(hiscore_list[87][1])
-    toa_hard_kc = int(hiscore_list[88][1])
+    toa_kc = int(hiscore_list[Bosses.TOA.value][1])
+    toa_hard_kc = int(hiscore_list[Bosses.TOA_HM.value][1])
 
     raid_list = []
     # print(cox_kc)
@@ -217,15 +217,16 @@ def calc_bossing(hiscore_list):
     # print(boss_points)
 
     # GROUP A POINTS
-    boss_A_dict = {"Abyssal Sire": int(hiscore_list[40][1]),
-                   "Alchemical Hydra": int(hiscore_list[41][1]),
-                   "Callisto": int(hiscore_list[45][1]),
-                   "Cerberus": int(hiscore_list[47][1]), "Venenatis":
-                       int(hiscore_list[92][1]),
-                   "Vet'ion": int(hiscore_list[93][1]),
-                   "Vorkath": int(hiscore_list[94][1]),
-                   "Zulrah": int(hiscore_list[97][1]), "Phantom Muspah": int(
-            hiscore_list[74][1])}
+    boss_A_dict =\
+        {"Abyssal Sire": int(hiscore_list[Bosses.ABYSSAL_SIRE.value][1]),
+         "Alchemical Hydra": int(hiscore_list[Bosses.ALCHEMICAL_HDYRA.value][1]),
+         "Callisto": int(hiscore_list[Bosses.CALLISTO.value][1]),
+         "Cerberus": int(hiscore_list[Bosses.CERBERUS.value][1]),
+         "Venenatis": int(hiscore_list[Bosses.VENENATIS.value][1]),
+         "Vet'ion": int(hiscore_list[Bosses.VETION.value][1]),
+         "Vorkath": int(hiscore_list[Bosses.VORKATH.value][1]),
+         "Zulrah": int(hiscore_list[Bosses.ZULRAH.value][1]),
+         "Phantom Muspah": int(hiscore_list[Bosses.PHANTOM_MUSPAH.value][1])}
 
     boss_A_points = 0
     for key in boss_A_dict:
@@ -237,25 +238,27 @@ def calc_bossing(hiscore_list):
     # print(boss_A_points)
 
     # GROUP B POINTS
-    boss_B_dict = {"Chaos Elemental": int(hiscore_list[50][1]),
-                   "Chaos Fanatic": int(hiscore_list[51][1]),
-                   "Dagannoth Prime": int(hiscore_list[55][1]),
-                   "Dagannoth_Rex": int(hiscore_list[56][1]),
-                   "Dagannoth Supreme": int(hiscore_list[57][1]),
-                   "Giant Mole": int(hiscore_list[61][1]),
-                   "Grotesque Guardians": int(hiscore_list[62][1]),
-                   "Kalphite Queen": int(hiscore_list[64][1]),
-                   "King Black Dragon": int(hiscore_list[65][1]),
-                   "Kraken": int(hiscore_list[66][1]), "Sarachnis":
-                       int(hiscore_list[75][1]),
-                   "Scorpia": int(hiscore_list[76][1]),
-                   "Thermonuclear Smoke Devil":
-                       int(hiscore_list[86][1]),
-                   "Zalcano": int(hiscore_list[96][1]),
-                   "Artio": int(hiscore_list[42][1]),
-                   "Calvar'ion": int(hiscore_list[46][1]),
-                   "Spindel": int(hiscore_list[78][1])
-                   }
+    boss_B_dict =\
+        {"Chaos Elemental": int(hiscore_list[Bosses.CHAOS_ELEMENTAL.value][1]),
+         "Chaos Fanatic": int(hiscore_list[Bosses.CHAOS_FANATIC.value][1]),
+         "Dagannoth Prime": int(hiscore_list[Bosses.DAG_PRIME.value][1]),
+         "Dagannoth_Rex": int(hiscore_list[Bosses.DAG_REX.value][1]),
+         "Dagannoth Supreme": int(hiscore_list[Bosses.DAG_SUPREME.value][1]),
+         "Giant Mole": int(hiscore_list[Bosses.GIANT_MOLE.value][1]),
+         "Grotesque Guardians": int(hiscore_list[
+                                        Bosses.GROTESQUE_GUARDIANS.value][1]),
+         "Kalphite Queen": int(hiscore_list[Bosses.KALPHITE_QUEEN.value][1]),
+         "King Black Dragon": int(hiscore_list[Bosses.KING_BLACK_DRAGON.value][
+                                      1]),
+         "Kraken": int(hiscore_list[Bosses.KRAKEN.value][1]),
+         "Sarachnis": int(hiscore_list[Bosses.SARACHNIS.value][1]),
+         "Scorpia": int(hiscore_list[Bosses.SCORPIA.value][1]),
+         "Thermonuclear Smoke Devil": int(hiscore_list[
+                    Bosses.THERMONUCLEAR_SMOKE_DEVIL.value][1]),
+         "Zalcano": int(hiscore_list[Bosses.ZALCANO.value][1]),
+         "Artio": int(hiscore_list[Bosses.ARTIO.value][1]),
+         "Calvar'ion": int(hiscore_list[Bosses.CALVARION.value][1]),
+         "Spindel": int(hiscore_list[Bosses.SPINDEL.value][1])}
 
     # print("Sarachnis", int(hiscore_list[69][1]))
     # print("Scorpia", int(hiscore_list[70][1]))
@@ -271,12 +274,15 @@ def calc_bossing(hiscore_list):
     # print(boss_B_dict)
 
     # GROUP C POINTS
-    boss_C_dict = {"Barrows Chests": int(hiscore_list[43][1]),
-                   "Crazy Archaeologist": int(hiscore_list[54][1]),
-                   "Deranged Archaeologist": int(hiscore_list[58][1]),
-                   "Wintertodt": int(hiscore_list[95][1]),
-                   "Guardians of the Rift": int(hiscore_list[39][1]),
-                   "Tempoross": int(hiscore_list[79][1])}
+    boss_C_dict =\
+        {"Barrows Chests": int(hiscore_list[Bosses.BARROWS.value][1]),
+         "Crazy Archaeologist": int(hiscore_list[
+                                    Bosses.CRAZY_ARCHAEOLOGIST.value][1]),
+         "Deranged Archaeologist": int(hiscore_list[
+                                    Bosses.DERANGED_ARCHAEOLOGIST.value][1]),
+         "Wintertodt": int(hiscore_list[Bosses.WINTERTODT.value][1]),
+         "Guardians of the Rift": int(hiscore_list[39][1]),
+         "Tempoross": int(hiscore_list[Bosses.TEMPOROSS.value][1])}
 
     boss_C_points = 0
     for key in boss_C_dict:
