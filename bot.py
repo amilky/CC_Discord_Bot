@@ -15,7 +15,7 @@ import re
 import time
 import datetime
 from dateutil.relativedelta import relativedelta
-
+from enum import Enum
 
 import discord
 from discord.ext import commands
@@ -117,13 +117,13 @@ def calc_raids(hiscore_list):
     # tob
     tob_points = 0
     tob_hm_points = 0
-    tob_kc = int(hiscore_list[81][1])
-    tob_hm_kc = int(hiscore_list[82][1])
+    tob_kc = int(hiscore_list[84][1])
+    tob_hm_kc = int(hiscore_list[85][1])
     # toa
     toa_points = 0
     toa_hard_points = 0
-    toa_kc = int(hiscore_list[84][1])
-    toa_hard_kc = int(hiscore_list[85][1])
+    toa_kc = int(hiscore_list[87][1])
+    toa_hard_kc = int(hiscore_list[88][1])
 
     raid_list = []
     # print(cox_kc)
@@ -161,7 +161,7 @@ def calc_raids(hiscore_list):
         raid_list.append(toa_points)
     else:
         raid_list.append(placeHolder)
-    #Add toa expert kc
+    # Add toa expert kc
     if toa_hard_kc > 0:
         toa_hard_points += toa_hard_kc * 2
         raid_list.append(toa_hard_points)
@@ -183,7 +183,7 @@ def calc_lms(hiscore_list):
 def calc_soulWars(hiscore_list):
     points = 0
     soulWars_kc = int(hiscore_list[38][1])
-    #print("this is my soulwars kc", soulWars_kc)
+    # print("this is my soulwars kc", soulWars_kc)
     if soulWars_kc > 0:
         points += (soulWars_kc // 300)
 
@@ -191,14 +191,20 @@ def calc_soulWars(hiscore_list):
 
 
 def calc_bossing(hiscore_list):
+    '''
+    "Duke Sucellus": int(hiscore_list[59][1]
+    "Leviathan": int(hiscore_list[82][1]
+    "Whisperer": int(hiscore_list[83][1]
+    "Vardorvis": int(hiscore_list[91][1]
+    '''
     boss_points = 0
 
     gwd_dict = {"Commander Zilyana": int(hiscore_list[52][1]),
-                "General Graardor": int(hiscore_list[59][1]),
-                "Kree'Arra": int(hiscore_list[66][1]),
-                "K'ril Tsutsaroth": int(hiscore_list[67][1]),
-                "Nex": int(hiscore_list[69][1])}
-    #print("nex kc: ", hiscore_list[65][1])
+                "General Graardor": int(hiscore_list[60][1]),
+                "Kree'Arra": int(hiscore_list[67][1]),
+                "K'ril Tsutsaroth": int(hiscore_list[68][1]),
+                "Nex": int(hiscore_list[70][1])}
+    # print("nex kc: ", hiscore_list[65][1])
     gwd_points = 0
     for key in gwd_dict:
         # print(gwd_dict[key])
@@ -207,7 +213,7 @@ def calc_bossing(hiscore_list):
             gwd_points += gwd_dict[key]
 
     boss_points += gwd_points // 10
-    #print(gwd_points)
+    # print(gwd_points)
     # print(boss_points)
 
     # GROUP A POINTS
@@ -215,11 +221,11 @@ def calc_bossing(hiscore_list):
                    "Alchemical Hydra": int(hiscore_list[41][1]),
                    "Callisto": int(hiscore_list[45][1]),
                    "Cerberus": int(hiscore_list[47][1]), "Venenatis":
-                       int(hiscore_list[88][1]),
-                   "Vet'ion": int(hiscore_list[89][1]),
-                   "Vorkath": int(hiscore_list[90][1]),
-                   "Zulrah": int(hiscore_list[93][1]), "Phantom Muspah": int(
-                    hiscore_list[73][1])}
+                       int(hiscore_list[92][1]),
+                   "Vet'ion": int(hiscore_list[93][1]),
+                   "Vorkath": int(hiscore_list[94][1]),
+                   "Zulrah": int(hiscore_list[97][1]), "Phantom Muspah": int(
+            hiscore_list[74][1])}
 
     boss_A_points = 0
     for key in boss_A_dict:
@@ -228,7 +234,7 @@ def calc_bossing(hiscore_list):
             boss_A_points += boss_A_dict[key]
 
     boss_points += boss_A_points // 20
-    #print(boss_A_points)
+    # print(boss_A_points)
 
     # GROUP B POINTS
     boss_B_dict = {"Chaos Elemental": int(hiscore_list[50][1]),
@@ -236,23 +242,23 @@ def calc_bossing(hiscore_list):
                    "Dagannoth Prime": int(hiscore_list[55][1]),
                    "Dagannoth_Rex": int(hiscore_list[56][1]),
                    "Dagannoth Supreme": int(hiscore_list[57][1]),
-                   "Giant Mole": int(hiscore_list[60][1]),
-                   "Grotesque Guardians": int(hiscore_list[61][1]),
-                   "Kalphite Queen": int(hiscore_list[63][1]),
-                   "King Black Dragon": int(hiscore_list[64][1]),
-                   "Kraken": int(hiscore_list[65][1]), "Sarachnis":
-                       int(hiscore_list[74][1]),
-                   "Scorpia": int(hiscore_list[75][1]),
+                   "Giant Mole": int(hiscore_list[61][1]),
+                   "Grotesque Guardians": int(hiscore_list[62][1]),
+                   "Kalphite Queen": int(hiscore_list[64][1]),
+                   "King Black Dragon": int(hiscore_list[65][1]),
+                   "Kraken": int(hiscore_list[66][1]), "Sarachnis":
+                       int(hiscore_list[75][1]),
+                   "Scorpia": int(hiscore_list[76][1]),
                    "Thermonuclear Smoke Devil":
-                       int(hiscore_list[83][1]),
-                   "Zalcano": int(hiscore_list[92][1]),
+                       int(hiscore_list[86][1]),
+                   "Zalcano": int(hiscore_list[96][1]),
                    "Artio": int(hiscore_list[42][1]),
                    "Calvar'ion": int(hiscore_list[46][1]),
-                   "Spindel": int(hiscore_list[77][1])
+                   "Spindel": int(hiscore_list[78][1])
                    }
 
-    #print("Sarachnis", int(hiscore_list[69][1]))
-    #print("Scorpia", int(hiscore_list[70][1]))
+    # print("Sarachnis", int(hiscore_list[69][1]))
+    # print("Scorpia", int(hiscore_list[70][1]))
 
     boss_B_points = 0
     for key in boss_B_dict:
@@ -261,16 +267,16 @@ def calc_bossing(hiscore_list):
             boss_B_points += boss_B_dict[key]
 
     boss_points += boss_B_points // 50
-    #print(boss_B_points)
-    #print(boss_B_dict)
+    # print(boss_B_points)
+    # print(boss_B_dict)
 
     # GROUP C POINTS
     boss_C_dict = {"Barrows Chests": int(hiscore_list[43][1]),
                    "Crazy Archaeologist": int(hiscore_list[54][1]),
                    "Deranged Archaeologist": int(hiscore_list[58][1]),
-                   "Wintertodt": int(hiscore_list[91][1]),
+                   "Wintertodt": int(hiscore_list[95][1]),
                    "Guardians of the Rift": int(hiscore_list[39][1]),
-                   "Tempoross": int(hiscore_list[78][1])}
+                   "Tempoross": int(hiscore_list[79][1])}
 
     boss_C_points = 0
     for key in boss_C_dict:
@@ -279,71 +285,71 @@ def calc_bossing(hiscore_list):
             boss_C_points += boss_C_dict[key]
 
     boss_points += boss_C_points // 80
-    #print(boss_C_points)
+    # print(boss_C_points)
     # print(boss_C_dict["Deranged Archaeologist"])
     # print(boss_C_dict["Deranged Archaeologist"])
     # print(boss_points)
 
-    skotizo_kc = int(hiscore_list[76][1])
+    skotizo_kc = int(hiscore_list[77][1])
     if skotizo_kc > 0:
         boss_points += skotizo_kc // 3
-    #print("skotizo", skotizo_kc)
+    # print("skotizo", skotizo_kc)
 
-    obor_kc = int(hiscore_list[72][1])
+    obor_kc = int(hiscore_list[73][1])
     if obor_kc > 0:
         boss_points += obor_kc // 10
-    #print("obor", obor_kc)
+    # print("obor", obor_kc)
 
     bryophyta_kc = int(hiscore_list[44][1])
     if bryophyta_kc > 0:
         boss_points += bryophyta_kc // 10
-    #print("bryophyta_kc", bryophyta_kc)
+    # print("bryophyta_kc", bryophyta_kc)
 
     corporeal_kc = int(hiscore_list[53][1])
     if corporeal_kc > 0:
         boss_points += corporeal_kc // 7
-    #print(corporeal_kc)
+    # print(corporeal_kc)
 
-    mimic_kc = int(hiscore_list[68][1])
+    mimic_kc = int(hiscore_list[69][1])
     if mimic_kc > 0:
         boss_points += mimic_kc
-    #print("mimic_kc", mimic_kc)
+    # print("mimic_kc", mimic_kc)
 
-    hespori_kc = int(hiscore_list[62][1])
+    hespori_kc = int(hiscore_list[63][1])
     if hespori_kc > 0:
         boss_points += hespori_kc // 5
-    #print("hespori", hespori_kc)
+    # print("hespori", hespori_kc)
 
-    nightmare_kc = int(hiscore_list[70][1])
+    nightmare_kc = int(hiscore_list[71][1])
     if nightmare_kc > 0:
         boss_points += nightmare_kc // 5
-    #print("nightmare_kc", nightmare_kc)
+    # print("nightmare_kc", nightmare_kc)
 
-    phosani_nm_kc = int(hiscore_list[71][1])
+    phosani_nm_kc = int(hiscore_list[72][1])
     if phosani_nm_kc > 0:
         boss_points += phosani_nm_kc // 2
-    #print("pnm_kc", phosani_nm_kc)
+    # print("pnm_kc", phosani_nm_kc)
 
-    gauntlet_kc = int(hiscore_list[79][1])
+    gauntlet_kc = int(hiscore_list[80][1])
     if gauntlet_kc > 0:
         boss_points += gauntlet_kc // 5
-    #print("gauntlet_kc", gauntlet_kc)
+    # print("gauntlet_kc", gauntlet_kc)
 
-    corrupted_gauntlet_kc = int(hiscore_list[80][1])
+    corrupted_gauntlet_kc = int(hiscore_list[81][1])
     if corrupted_gauntlet_kc > 0:
         boss_points += corrupted_gauntlet_kc // 3
-    #print("corrupted_gauntlet_kc", corrupted_gauntlet_kc)
+    # print("corrupted_gauntlet_kc", corrupted_gauntlet_kc)
 
-    jad_kc = int(hiscore_list[87][1])
+    jad_kc = int(hiscore_list[90][1])
     if jad_kc > 0:
         boss_points += jad_kc
-    #print("jad_kc", jad_kc)
+    # print("jad_kc", jad_kc)
 
-    zuk_kc = int(hiscore_list[86][1])
+    zuk_kc = int(hiscore_list[89][1])
     if zuk_kc > 0:
         boss_points += zuk_kc * 9
-    #print("zuk_kc", zuk_kc)
-    #print(boss_points)
+    # print("zuk_kc", zuk_kc)
+    # print(boss_points)
 
     return boss_points
 
@@ -421,7 +427,7 @@ def query_website(username, account_type):
     print("Querying: " + str(url))
     try:
         osrs_response = requests.get(url, timeout=10)
-        #print("Responded?" + str(osrs_response))
+        # print("Responded?" + str(osrs_response))
         if osrs_response.status_code == 200:
             # text takes the webpages data and converts it to a string
             response = osrs_response.text
@@ -511,7 +517,7 @@ async def points(ctx, rsn, *args):
     force = False
     advanced = False
     account_type = "main"
-    #print("In !points")
+    # print("In !points")
     for arg in args:
         if arg == "force":
             force = True
@@ -519,7 +525,7 @@ async def points(ctx, rsn, *args):
             advanced = True
         if arg == "ironman":
             account_type = "ironman"
-        if arg == "gim" or arg =="ugim":
+        if arg == "gim" or arg == "ugim":
             account_type = "gim"
 
     user_data = get_user_data(rsn, account_type, force)
@@ -546,10 +552,10 @@ async def points(ctx, rsn, *args):
         total_points += total_xp_points
         skill_points += total_xp_points
         total_xp_points_str = "  Exp: " + str(total_xp_points)
-        #print('this is my total expp: ', total_xp_points)
-        #print('this is my total exp: ', total_xp)
-        #for x in range(len(hiscore_list)):
-            #print(str(x) + ": " + str(hiscore_list[x]))
+        # print('this is my total expp: ', total_xp_points)
+        # print('this is my total exp: ', total_xp)
+        # for x in range(len(hiscore_list)):
+        # print(str(x) + ": " + str(hiscore_list[x]))
 
         # calculating skilling points
         skilling_points = calc_skilling(hiscore_list, account_type)
@@ -579,20 +585,20 @@ async def points(ctx, rsn, *args):
         lms_points_str = "  LMS: " + str(lms_points)
 
         miscellaneous_points += lms_points
-        #print("misc points before soul wars", miscellaneous_points)
+        # print("misc points before soul wars", miscellaneous_points)
         # calculating soul wars points
 
         soulWars_points = calc_soulWars(hiscore_list)
 
-        #print("soul wars points", soulWars_points)
+        # print("soul wars points", soulWars_points)
         if soulWars_points > 0:
             total_points += soulWars_points
         else:
             soulWars_points = 0
         miscellaneous_points += soulWars_points
 
-        #print("misc points after soul", miscellaneous_points)
-        #print("soul wars points", miscellaneous_points)
+        # print("misc points after soul", miscellaneous_points)
+        # print("soul wars points", miscellaneous_points)
 
         pvm_points = 0
 
@@ -618,7 +624,6 @@ async def points(ctx, rsn, *args):
         toa_points_str = "    TOA: " + str(toa_points)
         toa_hard_points = raid_list[5]
         toa_hard_points_str = "    TOA HM: " + str(toa_hard_points)
-
 
         # calculating bossing points
         bossing_points = calc_bossing(hiscore_list)
@@ -683,6 +688,7 @@ async def points(ctx, rsn, *args):
 
         image_file_lock.release()
 
+
 @bot.command(name='fullpoints')
 async def full_points(ctx, rsn, *args):
     force = False
@@ -719,10 +725,10 @@ async def full_points(ctx, rsn, *args):
         total_points += total_xp_points
         skill_points += total_xp_points
         total_xp_points_str = "  Exp: " + str(total_xp_points)
-        #print('this is my total expp: ', total_xp_points)
-        #print('this is my total exp: ', total_xp)
-        #for x in range(len(hiscore_list)):
-            #print(str(x) + ": " + str(hiscore_list[x]))
+        # print('this is my total expp: ', total_xp_points)
+        # print('this is my total exp: ', total_xp)
+        # for x in range(len(hiscore_list)):
+        # print(str(x) + ": " + str(hiscore_list[x]))
 
         # calculating skilling points
         skilling_points = calc_skilling(hiscore_list, account_type)
@@ -752,20 +758,20 @@ async def full_points(ctx, rsn, *args):
         lms_points_str = "  LMS: " + str(lms_points)
 
         miscellaneous_points += lms_points
-        #print("misc points before soul wars", miscellaneous_points)
+        # print("misc points before soul wars", miscellaneous_points)
         # calculating soul wars points
 
         soulWars_points = calc_soulWars(hiscore_list)
 
-        #print("soul wars points", soulWars_points)
+        # print("soul wars points", soulWars_points)
         if soulWars_points > 0:
             total_points += soulWars_points
         else:
             soulWars_points = 0
         miscellaneous_points += soulWars_points
 
-        #print("misc points after soul", miscellaneous_points)
-        #print("soul wars points", miscellaneous_points)
+        # print("misc points after soul", miscellaneous_points)
+        # print("soul wars points", miscellaneous_points)
 
         pvm_points = 0
 
@@ -792,7 +798,6 @@ async def full_points(ctx, rsn, *args):
         toa_hard_points = raid_list[5]
         toa_hard_points_str = "    TOA HM: " + str(toa_hard_points)
 
-
         # calculating bossing points
         bossing_points = calc_bossing(hiscore_list)
         total_points += bossing_points
@@ -814,10 +819,10 @@ async def full_points(ctx, rsn, *args):
                      misc_points_str + "\n" + clue_points_str + "\n" + \
                      lms_points_str + "\n" + "\n" + total_points_str + \
                      FORMAT_SYMBOLS
-        #print('big string: ', '\n', big_string)
+        # print('big string: ', '\n', big_string)
         raids_tuple = calc_raids(hiscore_list)
 
-        #print()
+        # print()
 
         cm_pts = raids_tuple[1]
         tob_pts = raids_tuple[2]
@@ -862,7 +867,6 @@ async def full_points(ctx, rsn, *args):
         total_tob_points = tob_points + tob_hm_points
         total_toa_points = toa_points + toa_hard_points
 
-
         # Find date of last rank upgrade
         # Get all CC role-related ranks
         Trialist = discord.utils.get(ctx.guild.roles, name='Trialist')
@@ -904,13 +908,15 @@ async def full_points(ctx, rsn, *args):
         my_file.close()
 
         eligible_message = check_eligibility(total_points, pvm_points,
-                                           raid_points,
-                          total_cox_points, total_tob_points,
-                          total_toa_points, eligible_date, current_role, index)
+                                             raid_points,
+                                             total_cox_points, total_tob_points,
+                                             total_toa_points, eligible_date,
+                                             current_role, index)
         await ctx.channel.send(eligible_message)
 
+
 def check_eligibility(total_points, pvm_points, raid_points,
-                          total_cox_points, total_tob_points,
+                      total_cox_points, total_tob_points,
                       total_toa_points, eligible_date, current_role, index):
     '''
     # List of all roles
@@ -927,12 +933,13 @@ def check_eligibility(total_points, pvm_points, raid_points,
 
     # Compare time since last upgraded role
     # Find today's date
-    #date_today = datetime.datetime.today()
+    # date_today = datetime.datetime.today()
     # Find 1 month from last rank up
 
     date_message = 'You can apply for this rank after ' + eligible_date
 
     return date_message
+
 
 def verify_rsn(rsn):
     rsn_re = re.compile('^[a-z0-9 \_]+$').search
@@ -955,6 +962,7 @@ async def create_party(ctx):
 
     await ctx.channel.send(output_string)
 
+
 @bot.command(name='test')
 async def nine_nine(ctx):
     print("hello")
@@ -967,6 +975,7 @@ async def nine_nine(ctx):
 
     response = random.choice(brooklyn_99_quotes)
     await ctx.send(response)
+
 
 @bot.command(name='endparty')
 @commands.has_role('Teacher CoX')
@@ -1281,7 +1290,7 @@ async def save_application(ctx, rsn, type=None, about_me="", force=None):
         date_today = datetime.datetime.today()
         if total_points >= TOTAL_POINTS_MIN:
             fileName = 'applications/' + rsn + ".txt"
-            #print(fileName)
+            # print(fileName)
             myFile = open(fileName, 'w')
             fileContents = \
                 '''RSN: %s
@@ -1297,10 +1306,11 @@ async def save_application(ctx, rsn, type=None, about_me="", force=None):
                 Exp Points: %s
                 Total Points: %d
                     ''' % (
-                rsn, about_me, discord_name, raid_points,
-                str(cox_points), str(tob_points), str(toa_points),
-                bossing_points, str(total_pvm_points),
-                skill_points, total_xp_points, total_points) + str(date_today)
+                    rsn, about_me, discord_name, raid_points,
+                    str(cox_points), str(tob_points), str(toa_points),
+                    bossing_points, str(total_pvm_points),
+                    skill_points, total_xp_points, total_points) + str(
+                    date_today)
             # print(discord_name)
             myFile.write(fileContents)
             myFile.close()
@@ -1344,7 +1354,6 @@ async def save_application(ctx, rsn, type=None, about_me="", force=None):
             discord_name = ctx.author
             ping_user = ctx.author.mention
             test = ("'*** test ***'")
-            
 
             application_received = "Unfortunately, " + ping_user + " the OSRS account " + '**' + rsn + '**' + " does not meet the " \
                                                                                                               "minimum requirement of " + '**' + "100 total points" + '**' + " to apply to the Pinkopia CC. " \
@@ -1368,12 +1377,12 @@ async def accept_application(ctx, rsn, new_role, old_role='None'):
         # File path is user is current applicant
         else:
             filePath = 'applications/' + old_role + '/' + rsn + '.txt'
-            #print(filePath)
+            # print(filePath)
 
         # Get user's discord name from application file
         myFile = open(filePath, 'r')
         discord_name = myFile.readlines()[2].split(":")[1].strip()
-        #print(discord_name)
+        # print(discord_name)
         myFile.close()
 
         # Append date when user is eligible for increasing rank to file
@@ -1408,7 +1417,7 @@ async def accept_application(ctx, rsn, new_role, old_role='None'):
         os.replace(filePath, 'applications/' + new_role + '/' + rsn + ".txt")
 
         # Remove old application
-        #if old_role != "None":
+        # if old_role != "None":
         #    os.remove('applications/' + old_role + '/' + rsn + '.txt')
 
         # Add new role
@@ -1419,7 +1428,7 @@ async def accept_application(ctx, rsn, new_role, old_role='None'):
 
         # Notify user of new rank
         ping_user = discord_member.mention
-        accept_msg = "Congrats " + ping_user + "! The osrs account " + '**' + rsn\
+        accept_msg = "Congrats " + ping_user + "! The osrs account " + '**' + rsn \
                      + '**' + " has just been ranked " + new_role + "!"
         channel = await bot.fetch_channel(797957000788180992)
 
