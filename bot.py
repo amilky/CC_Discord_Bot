@@ -189,6 +189,15 @@ def calc_soulWars(hiscore_list):
 
     return points
 
+def calc_glory(hiscore_list):
+    points = 0
+    glory_pts = int(hiscore_list[41][1])
+    # print("this is my soulwars kc", soulWars_kc)
+    if glory_pts > 0:
+        points += (glory_pts // 1000)
+
+    return points
+
 
 def calc_bossing(hiscore_list):
     '''
@@ -236,6 +245,7 @@ def calc_bossing(hiscore_list):
 
     boss_points += boss_A_points // 20
     # print(boss_A_points)
+    # print('zulrah', int(hiscore_list[Bosses.ZULRAH.value][1]))
 
     # GROUP B POINTS
     boss_B_dict =\
@@ -282,7 +292,8 @@ def calc_bossing(hiscore_list):
                                     Bosses.DERANGED_ARCHAEOLOGIST.value][1]),
          "Wintertodt": int(hiscore_list[Bosses.WINTERTODT.value][1]),
          "Guardians of the Rift": int(hiscore_list[39][1]),
-         "Tempoross": int(hiscore_list[Bosses.TEMPOROSS.value][1])}
+         "Tempoross": int(hiscore_list[Bosses.TEMPOROSS.value][1]),
+         "Scurrius": int(hiscore_list[Bosses.SCURRIUS.value][1])}
 
     boss_C_points = 0
     for key in boss_C_dict:
@@ -296,66 +307,79 @@ def calc_bossing(hiscore_list):
     # print(boss_C_dict["Deranged Archaeologist"])
     # print(boss_points)
 
-    skotizo_kc = int(hiscore_list[77][1])
+    skotizo_kc = int(hiscore_list[Bosses.SKOTIZO.value][1])
     if skotizo_kc > 0:
         boss_points += skotizo_kc // 3
     # print("skotizo", skotizo_kc)
 
-    obor_kc = int(hiscore_list[73][1])
+    lunar_chests_kc = int(hiscore_list[Bosses.LUNAR_CHESTS.value][1])
+    if lunar_chests_kc > 0:
+        boss_points += lunar_chests_kc // 65
+
+    print("LUNAR CHESTS:", lunar_chests_kc)
+
+    obor_kc = int(hiscore_list[Bosses.OBOR.value][1])
     if obor_kc > 0:
         boss_points += obor_kc // 10
     # print("obor", obor_kc)
 
-    bryophyta_kc = int(hiscore_list[44][1])
+    bryophyta_kc = int(hiscore_list[Bosses.BRYOPHYTA.value][1])
     if bryophyta_kc > 0:
         boss_points += bryophyta_kc // 10
     # print("bryophyta_kc", bryophyta_kc)
 
-    corporeal_kc = int(hiscore_list[53][1])
+    corporeal_kc = int(hiscore_list[Bosses.CORPORAL_BEAST.value][1])
     if corporeal_kc > 0:
         boss_points += corporeal_kc // 7
     # print(corporeal_kc)
 
-    mimic_kc = int(hiscore_list[69][1])
+    mimic_kc = int(hiscore_list[Bosses.MIMIC.value][1])
     if mimic_kc > 0:
         boss_points += mimic_kc
     # print("mimic_kc", mimic_kc)
 
-    hespori_kc = int(hiscore_list[63][1])
+    hespori_kc = int(hiscore_list[Bosses.HESPORI.value][1])
     if hespori_kc > 0:
         boss_points += hespori_kc // 5
     # print("hespori", hespori_kc)
 
-    nightmare_kc = int(hiscore_list[71][1])
+    nightmare_kc = int(hiscore_list[Bosses.NIGHTMARE.value][1])
     if nightmare_kc > 0:
         boss_points += nightmare_kc // 5
     # print("nightmare_kc", nightmare_kc)
 
-    phosani_nm_kc = int(hiscore_list[72][1])
+    phosani_nm_kc = int(hiscore_list[Bosses.PHOSANIS_NIGHTMARE.value][1])
     if phosani_nm_kc > 0:
         boss_points += phosani_nm_kc // 2
     # print("pnm_kc", phosani_nm_kc)
 
-    gauntlet_kc = int(hiscore_list[80][1])
+    gauntlet_kc = int(hiscore_list[Bosses.GAUNTLET.value][1])
     if gauntlet_kc > 0:
         boss_points += gauntlet_kc // 5
     # print("gauntlet_kc", gauntlet_kc)
 
-    corrupted_gauntlet_kc = int(hiscore_list[81][1])
+    corrupted_gauntlet_kc = int(hiscore_list[
+                                    Bosses.CORRUPTED_GAUNTLET.value][1])
     if corrupted_gauntlet_kc > 0:
         boss_points += corrupted_gauntlet_kc // 3
     # print("corrupted_gauntlet_kc", corrupted_gauntlet_kc)
 
-    jad_kc = int(hiscore_list[90][1])
+    jad_kc = int(hiscore_list[Bosses.JAD.value][1])
     if jad_kc > 0:
         boss_points += jad_kc
     # print("jad_kc", jad_kc)
 
-    zuk_kc = int(hiscore_list[89][1])
+    zuk_kc = int(hiscore_list[Bosses.ZUK.value][1])
     if zuk_kc > 0:
         boss_points += zuk_kc * 9
     # print("zuk_kc", zuk_kc)
     # print(boss_points)
+
+    sol_kc = int(hiscore_list[Bosses.SOL_HEREDIT.value][1])
+    if sol_kc > 0:
+        boss_points += sol_kc * 4
+
+    print("SOL KC", sol_kc)
 
     return boss_points
 
@@ -595,13 +619,20 @@ async def points(ctx, rsn, *args):
         # calculating soul wars points
 
         soulWars_points = calc_soulWars(hiscore_list)
-
         # print("soul wars points", soulWars_points)
         if soulWars_points > 0:
             total_points += soulWars_points
         else:
             soulWars_points = 0
         miscellaneous_points += soulWars_points
+
+        glory_points = calc_glory(hiscore_list)
+        print("glory points", glory_points)
+        if glory_points > 0:
+            total_points += glory_points
+        else:
+            glory_points = 0
+        miscellaneous_points += glory_points
 
         # print("misc points after soul", miscellaneous_points)
         # print("soul wars points", miscellaneous_points)
