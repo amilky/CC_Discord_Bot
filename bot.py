@@ -200,19 +200,15 @@ def calc_glory(hiscore_list):
 
 
 def calc_bossing(hiscore_list):
-    '''
-    "Duke Sucellus": int(hiscore_list[59][1]
-    "Leviathan": int(hiscore_list[82][1]
-    "Whisperer": int(hiscore_list[83][1]
-    "Vardorvis": int(hiscore_list[91][1]
-    '''
     boss_points = 0
 
-    gwd_dict = {"Commander Zilyana": int(hiscore_list[52][1]),
-                "General Graardor": int(hiscore_list[60][1]),
-                "Kree'Arra": int(hiscore_list[67][1]),
-                "K'ril Tsutsaroth": int(hiscore_list[68][1]),
-                "Nex": int(hiscore_list[70][1])}
+    gwd_dict = {
+        "Commander Zilyana": int(hiscore_list[Bosses.COMMANDER_ZILYANA.value][1]),
+        "General Graardor": int(hiscore_list[Bosses.GENERAL_GRAARDOR.value][1]),
+        "Kree'Arra": int(hiscore_list[Bosses.KREEARRA.value][1]),
+        "K'ril Tsutsaroth": int(hiscore_list[Bosses.KRIL_TSUTSAROTH.value][1]),
+        "Nex": int(hiscore_list[Bosses.NEX.value][1])
+    }
     # print("nex kc: ", hiscore_list[65][1])
     gwd_points = 0
     for key in gwd_dict:
@@ -220,9 +216,9 @@ def calc_bossing(hiscore_list):
         if gwd_dict[key] > 0:
             # print(gwd_points)
             gwd_points += gwd_dict[key]
+    # print("GWD KC:", gwd_points)
 
     boss_points += gwd_points // 10
-    # print(gwd_points)
     # print(boss_points)
 
     # GROUP A POINTS
@@ -237,6 +233,7 @@ def calc_bossing(hiscore_list):
          "Zulrah": int(hiscore_list[Bosses.ZULRAH.value][1]),
          "Phantom Muspah": int(hiscore_list[Bosses.PHANTOM_MUSPAH.value][1])}
 
+
     boss_A_points = 0
     for key in boss_A_dict:
         # print(boss_A_dict, "kc", boss_A_dict[key])
@@ -244,8 +241,8 @@ def calc_bossing(hiscore_list):
             boss_A_points += boss_A_dict[key]
 
     boss_points += boss_A_points // 20
-    # print(boss_A_points)
-    # print('zulrah', int(hiscore_list[Bosses.ZULRAH.value][1]))
+    print("TIER 1:", boss_A_points)
+    # print('sire', int(hiscore_list[Bosses.ABYSSAL_SIRE.value][1]))
 
     # GROUP B POINTS
     boss_B_dict =\
@@ -271,7 +268,7 @@ def calc_bossing(hiscore_list):
          "Spindel": int(hiscore_list[Bosses.SPINDEL.value][1])}
 
     # print("Sarachnis", int(hiscore_list[69][1]))
-    # print("Scorpia", int(hiscore_list[70][1]))
+    # print("Scorpia", int(hiscore_list[Bosses.SCORPIA.value][1]))
 
     boss_B_points = 0
     for key in boss_B_dict:
@@ -280,7 +277,7 @@ def calc_bossing(hiscore_list):
             boss_B_points += boss_B_dict[key]
 
     boss_points += boss_B_points // 50
-    # print(boss_B_points)
+    print("TIER 2:", boss_B_points)
     # print(boss_B_dict)
 
     # GROUP C POINTS
@@ -291,9 +288,11 @@ def calc_bossing(hiscore_list):
          "Deranged Archaeologist": int(hiscore_list[
                                     Bosses.DERANGED_ARCHAEOLOGIST.value][1]),
          "Wintertodt": int(hiscore_list[Bosses.WINTERTODT.value][1]),
-         "Guardians of the Rift": int(hiscore_list[39][1]),
+         "Guardians of the Rift": int(hiscore_list[40][1]),
          "Tempoross": int(hiscore_list[Bosses.TEMPOROSS.value][1]),
          "Scurrius": int(hiscore_list[Bosses.SCURRIUS.value][1])}
+
+    # print("SCURRIUS:", int(hiscore_list[Bosses.SCURRIUS.value][1]))
 
     boss_C_points = 0
     for key in boss_C_dict:
@@ -302,10 +301,29 @@ def calc_bossing(hiscore_list):
             boss_C_points += boss_C_dict[key]
 
     boss_points += boss_C_points // 80
-    # print(boss_C_points)
+    print("TIER 3:", boss_C_points)
     # print(boss_C_dict["Deranged Archaeologist"])
     # print(boss_C_dict["Deranged Archaeologist"])
     # print(boss_points)
+
+    dt2_dict = {
+        "Vardorvis": int(hiscore_list[Bosses.VARDORVIS.value][1]),
+        "Whisperer": int(hiscore_list[Bosses.WHISPERER.value][1]),
+        "Duke Sucellus": int(hiscore_list[Bosses.DUKE_SUCELLUS.value][1]),
+        "Leviathan": int(hiscore_list[Bosses.LEVIATHAN.value][1])
+    }
+
+    # print("VARD", dt2_dict["Vardorvis"])
+    # print("WHISP", dt2_dict["Whisperer"])
+    # print("DUKE", dt2_dict["Duke Sucellus"])
+    # print("LEVI", dt2_dict["Leviathan"])
+
+    dt2_points = 0
+    for key in dt2_dict:
+        if dt2_dict[key] > 0:
+            print("ADDING:", dt2_dict[key])
+            dt2_points += dt2_dict[key]
+    boss_points += dt2_points // 15
 
     skotizo_kc = int(hiscore_list[Bosses.SKOTIZO.value][1])
     if skotizo_kc > 0:
@@ -331,7 +349,7 @@ def calc_bossing(hiscore_list):
     corporeal_kc = int(hiscore_list[Bosses.CORPORAL_BEAST.value][1])
     if corporeal_kc > 0:
         boss_points += corporeal_kc // 7
-    # print(corporeal_kc)
+    print(corporeal_kc)
 
     mimic_kc = int(hiscore_list[Bosses.MIMIC.value][1])
     if mimic_kc > 0:
@@ -379,7 +397,7 @@ def calc_bossing(hiscore_list):
     if sol_kc > 0:
         boss_points += sol_kc * 4
 
-    print("SOL KC", sol_kc)
+    # print("SOL KC", sol_kc)
 
     return boss_points
 
@@ -627,7 +645,7 @@ async def points(ctx, rsn, *args):
         miscellaneous_points += soulWars_points
 
         glory_points = calc_glory(hiscore_list)
-        print("glory points", glory_points)
+        # print("glory points", glory_points)
         if glory_points > 0:
             total_points += glory_points
         else:
