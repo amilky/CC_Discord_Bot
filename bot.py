@@ -183,7 +183,7 @@ def calc_lms(hiscore_list):
 def calc_soulWars(hiscore_list):
     points = 0
     soulWars_kc = int(hiscore_list[38][1])
-    # print("this is my soulwars kc", soulWars_kc)
+    print("this is my soulwars kc", soulWars_kc)
     if soulWars_kc > 0:
         points += (soulWars_kc // 300)
 
@@ -192,11 +192,18 @@ def calc_soulWars(hiscore_list):
 def calc_glory(hiscore_list):
     points = 0
     glory_pts = int(hiscore_list[41][1])
-    # print("this is my soulwars kc", soulWars_kc)
+    print("this is my soulwars kc", glory_pts)
     if glory_pts > 0:
         points += (glory_pts // 1000)
 
     return points
+
+def calc_collLog(hiscore_list):
+    points = 0
+    collection_points = int(hiscore_list[42][1])
+    print("COLLECTION LOG", collection_points)
+    if collection_points > 0:
+        points += collection_points
 
 
 def calc_bossing(hiscore_list):
@@ -231,7 +238,8 @@ def calc_bossing(hiscore_list):
          "Vet'ion": int(hiscore_list[Bosses.VETION.value][1]),
          "Vorkath": int(hiscore_list[Bosses.VORKATH.value][1]),
          "Zulrah": int(hiscore_list[Bosses.ZULRAH.value][1]),
-         "Phantom Muspah": int(hiscore_list[Bosses.PHANTOM_MUSPAH.value][1])}
+         "Phantom Muspah": int(hiscore_list[Bosses.PHANTOM_MUSPAH.value][1]),
+         "Araxxor": int(hiscore_list[Bosses.ARAXXOR.value][1])}
 
 
     boss_A_points = 0
@@ -265,7 +273,10 @@ def calc_bossing(hiscore_list):
          "Zalcano": int(hiscore_list[Bosses.ZALCANO.value][1]),
          "Artio": int(hiscore_list[Bosses.ARTIO.value][1]),
          "Calvar'ion": int(hiscore_list[Bosses.CALVARION.value][1]),
-         "Spindel": int(hiscore_list[Bosses.SPINDEL.value][1])}
+         "Spindel": int(hiscore_list[Bosses.SPINDEL.value][1]),
+         "The Hueycoatl": int(hiscore_list[Bosses.THE_HUEYCOATL.value][1]),
+         "The Royal Titans": int(hiscore_list[Bosses.THE_ROYAL_TITANS.value][1]),
+         "Amoxliatl": int(hiscore_list[Bosses.AMOXLIATL.value][1])}
 
     # print("Sarachnis", int(hiscore_list[69][1]))
     # print("Scorpia", int(hiscore_list[Bosses.SCORPIA.value][1]))
@@ -651,6 +662,15 @@ async def points(ctx, rsn, *args):
         else:
             glory_points = 0
         miscellaneous_points += glory_points
+
+        # calculating collection log points
+        collection_points = calc_collLog(hiscore_list)
+        if collection_points > 0:
+            total_points += collection_points
+        else:
+            collection_points = 0
+
+            miscellaneous_points += collection_points
 
         # print("misc points after soul", miscellaneous_points)
         # print("soul wars points", miscellaneous_points)
