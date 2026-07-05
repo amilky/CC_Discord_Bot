@@ -182,7 +182,7 @@ def calc_lms(hiscore_list):
 
 def calc_soulWars(hiscore_list):
     points = 0
-    soulWars_kc = int(hiscore_list[38][1])
+    soulWars_kc = int(hiscore_list[39][1])
     print("this is my soulwars kc", soulWars_kc)
     if soulWars_kc > 0:
         points += (soulWars_kc // 300)
@@ -204,6 +204,8 @@ def calc_collLog(hiscore_list):
     print("COLLECTION LOG", collection_points)
     if collection_points > 0:
         points += collection_points
+
+    return points
 
 
 def calc_bossing(hiscore_list):
@@ -240,7 +242,7 @@ def calc_bossing(hiscore_list):
          "Zulrah": int(hiscore_list[Bosses.ZULRAH.value][1]),
          "Phantom Muspah": int(hiscore_list[Bosses.PHANTOM_MUSPAH.value][1]),
          "Araxxor": int(hiscore_list[Bosses.ARAXXOR.value][1])}
-
+    print("ZULRAH:", int(hiscore_list[Bosses.ZULRAH.value][1]))
 
     boss_A_points = 0
     for key in boss_A_dict:
@@ -250,7 +252,7 @@ def calc_bossing(hiscore_list):
 
     boss_points += boss_A_points // 20
     print("TIER 1:", boss_A_points)
-    # print('sire', int(hiscore_list[Bosses.ABYSSAL_SIRE.value][1]))
+    print('sire', int(hiscore_list[Bosses.ABYSSAL_SIRE.value][1]))
 
     # GROUP B POINTS
     boss_B_dict =\
@@ -670,7 +672,7 @@ async def points(ctx, rsn, *args):
         else:
             collection_points = 0
 
-            miscellaneous_points += collection_points
+        miscellaneous_points += collection_points
 
         # print("misc points after soul", miscellaneous_points)
         # print("soul wars points", miscellaneous_points)
