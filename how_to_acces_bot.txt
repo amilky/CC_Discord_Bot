@@ -1,0 +1,3 @@
+- go to https://aws.amazon.com/pm/ec2-amd/?trk=62413b55-57b1-441c-bb89-a9aca108f445&sc_channel=ps&ef_id=CjwKCAjwgajSBhBEEiwASicJUwCxEEImbIC5-HEE-IsxdtejF6-1yhBXl1lGQ5a6DWGEPv3auvUXMBoCazsQAvD_BwE&gads_camp=23527793276&gads_ag=193430470275&gads_ad=795794141668&gads_kw=amazon%20web%20server&gads_matchtype=e&gads_network=g&gads_device=c&gads_geo=9198809&gad_campaignid=23527793276&gbraid=0AAAAADjHtp8qSYod7FDG7CB4B8kJxAnGH&gclid=CjwKCAjwgajSBhBEEiwASicJUwCxEEImbIC5-HEE-IsxdtejF6-1yhBXl1lGQ5a6DWGEPv3auvUXMBoCazsQAvD_BwE
+    - log in details are on my phone
+- go to EC2 instance and then connect
