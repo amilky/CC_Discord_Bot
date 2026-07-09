@@ -49,6 +49,7 @@ def calc_skilling(hiscore_list, user_type):
     points = 0
 
     total_level = int(hiscore_list[0][1])
+    print(f"total leveL: {total_level}")
 
     if total_level < 500:
         points = 0
@@ -66,7 +67,7 @@ def calc_skilling(hiscore_list, user_type):
         points += 800
     elif 2200 <= total_level < 2277:
         points += 1600
-    elif total_level == 2277:
+    elif total_level == 2376:
         points += 2600
     if user_type == "hardcore" or user_type == "ironman" or user_type == "gim":
         points = int(points * 1.1)
@@ -76,19 +77,19 @@ def calc_skilling(hiscore_list, user_type):
 def calc_clue(hiscore_list):
     points = 0
 
-    beginner_clue = int(hiscore_list[30][1])
-    easy_clue = int(hiscore_list[31][1])
-    medium_clue = int(hiscore_list[32][1])
-    hard_clue = int(hiscore_list[33][1])
-    elite_clue = int(hiscore_list[34][1])
-    master_clue = int(hiscore_list[35][1])
+    beginner_clue = int(hiscore_list[33][1])
+    easy_clue = int(hiscore_list[34][1])
+    medium_clue = int(hiscore_list[35][1])
+    hard_clue = int(hiscore_list[36][1])
+    elite_clue = int(hiscore_list[37][1])
+    master_clue = int(hiscore_list[38][1])
 
-    # print(beginner_clue)
+    print(beginner_clue)
     # print(easy_clue)
     # print(medium_clue)
     # print(hard_clue)
     # print(elite_clue)
-    # print(master_clue)
+    print(master_clue)
 
     if beginner_clue > 0:
         points += beginner_clue // 60
@@ -167,13 +168,14 @@ def calc_raids(hiscore_list):
         raid_list.append(toa_hard_points)
     else:
         raid_list.append(placeHolder)
-    # print(raid_list)
+    print(f"RAIDS: {raid_list}")
     return raid_list
 
 
 def calc_lms(hiscore_list):
     points = 0
-    lms_kc = int(hiscore_list[36][1])
+    lms_kc = int(hiscore_list[39][1])
+    print(f"lms: {int(hiscore_list[39][1])}")
     if lms_kc > 0:
         points = (lms_kc - 500) // 10
 
@@ -182,7 +184,7 @@ def calc_lms(hiscore_list):
 
 def calc_soulWars(hiscore_list):
     points = 0
-    soulWars_kc = int(hiscore_list[39][1])
+    soulWars_kc = int(hiscore_list[41][1])
     print("this is my soulwars kc", soulWars_kc)
     if soulWars_kc > 0:
         points += (soulWars_kc // 300)
@@ -191,7 +193,7 @@ def calc_soulWars(hiscore_list):
 
 def calc_glory(hiscore_list):
     points = 0
-    glory_pts = int(hiscore_list[41][1])
+    glory_pts = int(hiscore_list[43][1])
     print("this is my soulwars kc", glory_pts)
     if glory_pts > 0:
         points += (glory_pts // 1000)
@@ -200,7 +202,7 @@ def calc_glory(hiscore_list):
 
 def calc_collLog(hiscore_list):
     points = 0
-    collection_points = int(hiscore_list[42][1])
+    collection_points = int(hiscore_list[44][1])
     print("COLLECTION LOG", collection_points)
     if collection_points > 0:
         points += collection_points
@@ -218,7 +220,7 @@ def calc_bossing(hiscore_list):
         "K'ril Tsutsaroth": int(hiscore_list[Bosses.KRIL_TSUTSAROTH.value][1]),
         "Nex": int(hiscore_list[Bosses.NEX.value][1])
     }
-    # print("nex kc: ", hiscore_list[65][1])
+    print(f"nex: {int(hiscore_list[Bosses.NEX.value][1])}")
     gwd_points = 0
     for key in gwd_dict:
         # print(gwd_dict[key])
@@ -278,7 +280,8 @@ def calc_bossing(hiscore_list):
          "Spindel": int(hiscore_list[Bosses.SPINDEL.value][1]),
          "The Hueycoatl": int(hiscore_list[Bosses.THE_HUEYCOATL.value][1]),
          "The Royal Titans": int(hiscore_list[Bosses.THE_ROYAL_TITANS.value][1]),
-         "Amoxliatl": int(hiscore_list[Bosses.AMOXLIATL.value][1])}
+         "Amoxliatl": int(hiscore_list[Bosses.AMOXLIATL.value][1]),
+         "Shellbane Gryphon": int(hiscore_list[Bosses.SHELLBANE_GRYPHON.value][1])}
 
     # print("Sarachnis", int(hiscore_list[69][1]))
     # print("Scorpia", int(hiscore_list[Bosses.SCORPIA.value][1]))
@@ -303,9 +306,11 @@ def calc_bossing(hiscore_list):
          "Wintertodt": int(hiscore_list[Bosses.WINTERTODT.value][1]),
          "Guardians of the Rift": int(hiscore_list[40][1]),
          "Tempoross": int(hiscore_list[Bosses.TEMPOROSS.value][1]),
-         "Scurrius": int(hiscore_list[Bosses.SCURRIUS.value][1])}
+         "Scurrius": int(hiscore_list[Bosses.SCURRIUS.value][1]),
+         "Brutus": int(hiscore_list[Bosses.BRUTUS.value][1])}
 
     # print("SCURRIUS:", int(hiscore_list[Bosses.SCURRIUS.value][1]))
+    print(f"GOTR: {int(hiscore_list[41][1])}")
 
     boss_C_points = 0
     for key in boss_C_dict:
@@ -337,6 +342,16 @@ def calc_bossing(hiscore_list):
             print("ADDING:", dt2_dict[key])
             dt2_points += dt2_dict[key]
     boss_points += dt2_points // 15
+
+    yama_kc = int(hiscore_list[Bosses.YAMA.value][1])
+    if yama_kc > 0:
+        boss_points += yama_kc // 15
+    print(f"YAMA KC: {yama_kc}")
+
+    maggot_kc = int(hiscore_list[Bosses.MAGGOT_KING.value][1])
+    if maggot_kc > 0:
+        boss_points += maggot_kc // 15
+    print(f"MAGGOT KC: {maggot_kc}")
 
     skotizo_kc = int(hiscore_list[Bosses.SKOTIZO.value][1])
     if skotizo_kc > 0:
@@ -394,6 +409,11 @@ def calc_bossing(hiscore_list):
     if corrupted_gauntlet_kc > 0:
         boss_points += corrupted_gauntlet_kc // 3
     # print("corrupted_gauntlet_kc", corrupted_gauntlet_kc)
+
+    doom_kc = int(hiscore_list[Bosses.DOOM.value][1])
+    if doom_kc > 0:
+        boss_points += doom_kc // 3
+    print("doom kc", doom_kc)
 
     jad_kc = int(hiscore_list[Bosses.JAD.value][1])
     if jad_kc > 0:
@@ -671,7 +691,7 @@ async def points(ctx, rsn, *args):
             total_points += collection_points
         else:
             collection_points = 0
-
+        print("HI")
         miscellaneous_points += collection_points
 
         # print("misc points after soul", miscellaneous_points)
